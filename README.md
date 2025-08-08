@@ -12,7 +12,7 @@ Nosso público-alvo são **estudantes do ensino médio e superior**, com idade e
 
 A identidade visual do **LevelLearn** será composta por:
 
-- **Formas:** Utilização de formas arredondadas e amigáveis, remetendo a botões de jogos e aplicativos modernos.
+- **Formas:** Utilização de formas quadradas e inspiradas nos jogos antigos, remetendo a botões de jogos e outras caracteristicas dessa cultura.
 - **Figuras:** Ícones estilizados representando livros, moedas, estrelas, skins, medidores de tempo (pomodoro) e conquistas.
 - **Cores:** Paleta baseada em tons de azul, tanto na parte escura quanto na clara (#1b0d34, #2f59dd e #faf3ff)
 - **Tipografia:** Tipos pixelados, como a *Silkscreen* e *Silkscreen bold* e tipos sem sarifa modernos, como *Poppins* ou *Inter*
