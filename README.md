@@ -14,9 +14,9 @@ A identidade visual do **LevelLearn** será composta por:
 
 - **Formas:** Utilização de formas arredondadas e amigáveis, remetendo a botões de jogos e aplicativos modernos.
 - **Figuras:** Ícones estilizados representando livros, moedas, estrelas, skins, medidores de tempo (pomodoro) e conquistas.
-- **Cores:** Paleta baseada em tons de azul e roxo (transmitindo confiança e foco), com detalhes em amarelo ou verde para representar progresso e recompensas.
-- **Tipografia:** Tipos sem serifa modernos, como *Poppins* ou *Inter*, com boa legibilidade em dispositivos móveis.
-- **Fotografia/Ilustrações:** Ilustrações vetoriais em estilo flat ou cartoon para representar os avatares, conquistas e desafios da plataforma.
+- **Cores:** Paleta baseada em tons de azul, tanto na parte escura quanto na clara (#1b0d34, #2f59dd e #faf3ff)
+- **Tipografia:** Tipos pixelados, como a *Silkscreen* e *Silkscreen bold* e tipos sem sarifa modernos, como *Poppins* ou *Inter*
+- **Fotografia/Ilustrações:** Ilustrações vetoriais em estilo flat ou pixelarts para representar os avatares, conquistas e desafios da plataforma.
 
 ## d) Justifique as escolhas do grupo
 
