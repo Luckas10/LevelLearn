@@ -1,0 +1,141 @@
+/* Tema padrão = escuro (mantém suas cores atuais) */
+:root {
+  /* superfícies “vidro” */
+  --glass-bg: rgba(43, 39, 82, 0.59);
+  --glass-card: rgba(21, 23, 55, 0.20);
+
+  /* textos */
+  --text: #ffffff;
+  --text-muted: #bbb;
+
+  /* primária / hover */
+  --primary: #8371fd;
+
+  /* inputs e bordas */
+  --input-border: #bbb;
+
+  /* botões */
+  --btn-bg: #ffffff;
+  --btn-fg: #000000;
+  --btn-hover: var(--primary);
+}
+
+/* Overrides para o tema CLARO */
+:root[data-theme="light"] {
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-card: rgba(255, 255, 255, 0.35);
+
+  --text: #151111;
+  --text-muted: #555;
+
+  --primary: #5b6cff;
+
+  --input-border: #444;
+
+  --btn-bg: #151111;
+  --btn-fg: #ffffff;
+  --btn-hover: #2d2d2d;
+}
+
+/* transições suaves ao trocar de tema */
+.box, .carousel, .heading h2, .logo h4, .toggle, .input-field,
+.labelLoginContainer, .sign-btn, .bullets span.active {
+  transition: color .25s ease, background-color .25s ease, border-color .25s ease, filter .25s ease;
+}
+
+
+body,
+html {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-background {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.bg-video {
+  position: absolute;
+  inset: 0;
+  /* cobre toda a tela */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* mantém proporção */
+  z-index: -1;
+  /* fica atrás */
+  filter: blur(2px);
+  /* opcional */
+}
+
+.app-content {
+  position: relative;
+  z-index: 1;
+  /* garante que o conteúdo fique por cima */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.vb-shell {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.vb-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(var(--vb-blur)) brightness(calc(1 - var(--vb-dark)));
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;                    /* começa invisível */
+  transition: opacity 400ms ease;/* combine com FADE_MS no JS */
+  will-change: opacity;
+  background: #000;      
+}
+
+.vb-media.is-active {
+  opacity: 1;                    /* o vídeo ativo fica visível */
+}
+
+.vb-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  /* se quiser centralizar o conteúdo por padrão: */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 850px) {
+
+  html,
+  body {
+    overflow: auto;
+    /* ou 'visible' */
+    height: auto;
+    /* deixa crescer com o conteúdo */
+  }
+}
+
+@media (max-width: 530px) {
+  html, body {
+    overflow: auto;   /* ou 'visible' */
+    height: auto;     /* deixa crescer com o conteúdo */
+  }
+}
