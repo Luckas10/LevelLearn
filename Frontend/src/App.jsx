@@ -1,32 +1,25 @@
-import { useState, useEffect } from "react";
-import Background from "./components/Background";
-import LoginRegisterContainer from "./components/LoginRegisterContainer";
 import "./style.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { LoginRegister } from "./pages/LoginRegister";
+import { Study } from "./pages/Study";
+import { Profile } from "./pages/Profile";
+import { Store } from "./pages/Store";
+import { Friends } from "./pages/Friends";
 
 export default function App() {
-  const [isNight, setIsNight] = useState(false);
-  const toggleTheme = () => setIsNight(v => !v);
-
-  useEffect(() => {
-    // aplica o atributo para o CSS enxergar
-    document.documentElement.setAttribute("data-theme", isNight ? "dark" : "light");
-  }, [isNight]);
-
-  const videoSrc = isNight
-    ? "/videos/background-night.mp4"
-    : "/videos/background-dayy.mp4";
 
   return (
-    <Background
-      as="main"
-      src={videoSrc}
-      blur={2}
-      dark={isNight ? 0.15 : 0}   // escurece um pouco só no modo noite
-    >
-      <LoginRegisterContainer
-        isNight={isNight}
-        onToggleTheme={toggleTheme}
-      />
-    </Background>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginRegister />} />
+        <Route path="/study" element={<Study />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/store" element={<Store />} />
+        <Route path="/friends" element={<Friends />} />
+      </Routes>
+    </Router>
   );
+
 }

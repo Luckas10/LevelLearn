@@ -1,0 +1,6 @@
+.profile-page {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    color: #333;
+}

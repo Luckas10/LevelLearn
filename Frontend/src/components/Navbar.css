@@ -1,0 +1,148 @@
+body {
+    margin: 0;
+    background-color: #0C0B1A;
+    color: white;
+}
+
+.navbar {
+    width: 15%;
+    background-color: #0C0B1A;
+    color: white;
+    font-weight: bold;
+    height: 100vh;
+    border-right: 0.2em solid #09254D;
+}
+
+.navbarLogo {
+    text-align: center;
+    padding: 1em 0;
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-top: 0.2em;
+    margin-bottom: 4em;
+}
+
+.navbarLogo img {
+    width: 20%;
+    margin-right: 0.3em;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar li {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1em 0;
+}
+
+/* estado normal */
+.navbar a {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    width: 80%;
+    height: 100%;
+    color: #ccc;
+    text-decoration: none;
+    padding: 0.8em 1em;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+/* hover */
+.navbar a:hover {
+    border: 1px solid #4A4DFF;
+    color: white;
+}
+
+/* link ativo */
+.navbar a.active {
+    border: 1px solid #4A4DFF;
+    background-color: #141336;
+    color: #ffffff;
+}
+
+/* para destacar o ícone ativo */
+.navbar a.active svg {
+    color: #4A4DFF;
+}
+
+.navbarLinks {
+    position: relative;
+    /* necessário para o indicador absoluto */
+    padding-left: 0.4rem;
+}
+
+/* <li> permanece centralizando */
+.navbar li {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1em 0;
+}
+
+/* estado normal */
+.navbar a {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    width: 80%;
+    color: #cfcfe6;
+    text-decoration: none;
+    padding: 0.9em 1em;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: transparent;
+
+    /* transições suaves no hover/ativo/troca de rota */
+    transition:
+        background-color 180ms ease,
+        color 180ms ease,
+        border-color 180ms ease,
+        transform 140ms ease,
+        box-shadow 180ms ease;
+}
+
+/* hover suave (sem “baque”) */
+.navbar a:hover {
+    border-color: #4A4DFF;
+    background-color: #111236;
+    color: #ffffff;
+    transform: translateX(2px);
+    /* leve deslocamento */
+    box-shadow: 0 6px 18px -12px rgba(74, 77, 255, 0.7);
+}
+
+/* link ativo */
+.navbar a.active {
+    border-color: #4A4DFF;
+    background: linear-gradient(180deg, #141336, #0f1130);
+    color: #ffffff;
+    box-shadow: 0 8px 24px -14px rgba(74, 77, 255, 0.9);
+}
+
+/* ícone ativo com destaque */
+.navbar a.active svg {
+    color: #6b6eff;
+}
+
+/* foco acessível (teclado) */
+.navbar a:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 77, 255, 0.45);
+}
+
