@@ -12,13 +12,12 @@ class User(SQLModel, table=True):
 
     level: int = Field(default=1)
     xp: int = Field(default=0)
+    coins: int = Field(default=0)
 
     # Relacionamentos
     achievements: List["Achievement"] = Relationship(back_populates="user")
-    friends: List["Friendship"] = Relationship(back_populates="user")
+    friends: List["Friendship"] = Relationship(back_populates="user", sa_relationship_kwargs={"foreign_keys": "[Friendship.user_id]"})
     decks: List["Deck"] = Relationship(back_populates="owner")
-    coins: int = Field(default=0)  
-
 
 # Conquistas
 
@@ -37,7 +36,9 @@ class Friendship(SQLModel, table=True):
     user_id: int = Field(foreign_key="user.id")
     friend_id: int = Field(foreign_key="user.id")
 
-    user: Optional[User] = Relationship(back_populates="friends")
+    # Relacionamentos
+    user: Optional[User] = Relationship(back_populates="friends", sa_relationship_kwargs={"foreign_keys": "[Friendship.user_id]"})
+    friend: Optional[User] = Relationship(sa_relationship_kwargs={"foreign_keys": "[Friendship.friend_id]"})
 
 
 # Loja / Cosméticos
