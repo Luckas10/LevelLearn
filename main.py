@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import lifespan
-from routers import users, achievements, friends, shop, decks, cards, login
+from routers import auth, users, achievements, friends, shop, decks, cards
 
 tags_metadata = [
     {"name": "Usuários", "description": "Gerenciamento de contas, níveis, XP e moedas."},
@@ -35,4 +35,4 @@ app.include_router(friends.router)
 app.include_router(shop.router)
 app.include_router(decks.router)
 app.include_router(cards.router)
-app.include_router(login.router)
+app.include_router(auth.router)

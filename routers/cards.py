@@ -4,6 +4,8 @@ from typing import List
 from models import Card
 from database import SessionDep
 
+from routers.auth import get_current_user
+
 router = APIRouter(prefix="/cards", tags=["Cartas"])
 
 @router.get("")

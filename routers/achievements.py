@@ -4,6 +4,8 @@ from typing import List
 from models import Achievement
 from database import SessionDep
 
+from routers.auth import get_current_user
+
 router = APIRouter(prefix="/achievements", tags=["Conquistas"])
 
 @router.get("")
