@@ -1,7 +1,6 @@
 from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship
 
-
 # Usuário
 
 class User(SQLModel, table=True):
@@ -13,6 +12,7 @@ class User(SQLModel, table=True):
     level: int = Field(default=1)
     xp: int = Field(default=0)
     coins: int = Field(default=0)
+    combo: int = Field(default=0)
 
     # Relacionamentos
     achievements: List["Achievement"] = Relationship(back_populates="user")
