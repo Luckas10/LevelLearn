@@ -61,3 +61,7 @@ def deletar_user(session: SessionDep, id: int, current_user: User = Depends(get_
     session.delete(user)
     session.commit()
     return "Usuário excluído com sucesso."
+
+@router.get("/me")
+def get_me(current_user: User = Depends(get_current_user)):
+    return {"id": current_user.id, "username": current_user.username}
