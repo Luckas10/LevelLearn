@@ -4,3 +4,13 @@
     width: 100vw;
     color: #333;
 }
+
+.flashcards-container {
+    display: flex;
+    justify-content: column;
+}
+
+#flashcards-img {
+    width:600px;
+    height: 600px;
+}
