@@ -11,14 +11,17 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 40px;
+    padding: 3rem 2rem;
 }
 
 .cards-container {
     display: flex;
-    gap: 70px;
+    flex-wrap: wrap;
+    gap: 4rem;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .study-card {
@@ -26,32 +29,81 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 30%; 
-    background-color:#10101a;
-    border: 5px solid #4346E6;
-    border-radius: 15px;
+    width: 40%;
+    height: auto;
+    background-color: #10101a;
+    border: 0.3rem solid #4346E6;
+    border-radius: 1rem;
     cursor: pointer;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 
 .study-card:hover {
     transform: scale(1.05); 
     box-shadow: 0 0 25px #4346E6; 
 }
 
-#flashcards-img, #pomodore-img {
-    width: 250px;
-    height: 250px;
+#flashcards-img, 
+#pomodore-img {
+    width: 100%;
+    max-width: 220px;
+    height: auto;
 }
 
 .study-text {
     display: flex;
-    border-top: 5px solid #4346E6;
-    background-color: #151737;
     flex-direction: column;
     align-items: center;
     text-align: justify;
-    padding: 20px;
+    border-top: 0.3rem solid #4346E6;
+    background-color: #151737;
+    padding: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
+@media (max-width: 768px) {
+    .cards-container {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .study-card {
+        width: 80%;
+    }
+
+    #flashcards-img, 
+    #pomodore-img {
+        max-width: 180px;
+    }
+
+    .study-text {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        padding: 2rem 1rem;
+    }
+
+    .study-card {
+        width: 90%;
+    }
+
+    #flashcards-img, 
+    #pomodore-img {
+        max-width: 150px;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    .study-text {
+        font-size: 0.9rem;
+        padding: 1rem;
+    }
+}
