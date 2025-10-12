@@ -16,7 +16,7 @@ export default function Login() {
     form.append("grant_type", "password");
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/auth", { method: "POST", body: form });
+      const res = await fetch("http://127.0.0.1:8000/auth", { method: "POST", body: form });
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.detail || "Erro no login");

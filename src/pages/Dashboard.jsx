@@ -10,7 +10,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("token");
     if (!token) return navigate("/login");
 
-    fetch("http://127.0.0.1:5000/users/me", { headers: { Authorization: `Bearer ${token}` } })
+    fetch("http://127.0.0.1:8000/users/me", { headers: { Authorization: `Bearer ${token}` } })
       .then(async res => {
         if (!res.ok) throw new Error("Token inválido ou expirado");
         const data = await res.json();

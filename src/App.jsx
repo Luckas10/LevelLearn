@@ -12,13 +12,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
+        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route
           path="/dashboard"
           element={
@@ -27,7 +21,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
       </Routes>
     </Router>
   );
