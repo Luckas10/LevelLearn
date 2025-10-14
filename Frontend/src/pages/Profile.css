@@ -4,3 +4,19 @@
     width: 100vw;
     color: #333;
 }
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+}
+
+@media (max-width: 530px) {
+    .profile-page {
+        flex-direction: column;
+    }
+
+    .profile {
+        width: 100%;
+    }
+}

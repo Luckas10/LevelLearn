@@ -4,3 +4,19 @@
     width: 100vw;
     color: #333;
 }
+
+.store {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+}
+
+@media (max-width: 530px) {
+    .store-page {
+        flex-direction: column;
+    }
+
+    .store {
+        width: 100%;
+    }
+}

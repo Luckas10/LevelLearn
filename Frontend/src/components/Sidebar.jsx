@@ -3,14 +3,14 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
 
-export default function Navbar() {
+export default function Sidebar() {
     return (
-        <nav className="navbar">
-            <div className="navbarLogo">
+        <nav className="sidebar">
+            <div className="sidebarLogo">
                 <img src="./img/LogoSVG.svg" alt="Logo" />
                 <span>LevelLearn</span>
             </div>
-            <ul className="navbarLinks">
+            <ul className="sidebarLinks">
                 <li>
                     <NavLink to="/" end>
                         <FontAwesomeIcon size="lg" icon={fas.faHouse} />

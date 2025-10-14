@@ -4,3 +4,19 @@
     width: 100vw;
     color: #333;
 }
+
+.friends {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+}
+
+@media (max-width: 530px) {
+    .friends-page {
+        flex-direction: column;
+    }
+
+    .friends {
+        width: 100%;
+    }
+}

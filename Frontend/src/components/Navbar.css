@@ -1,0 +1,166 @@
+/* Navbar.css */
+
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px 60px; /* aumentei o padding para mais destaque */
+    background-color: #0b0b16;
+    color: white;
+    gap: 20px; /* mais espaçamento entre os itens */
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+}
+
+/* 🔥 e 💰 */
+.navbar .offensive,
+.navbar .coins {
+    display: flex;
+    align-items: center;
+    margin-right: 30px; /* mais espaçamento entre os blocos */
+    gap: 8px;
+    font-size: 1.2rem; /* texto maior */
+}
+
+.navbar .offensive {
+    gap: 6px;
+}
+
+.navbar img {
+    width: 40px; /* ícones um pouco maiores */
+    height: 40px;
+}
+
+.navbar span {
+    font-weight: 500;
+}
+
+/* 🔵 LVL + barra de progresso */
+.navbar .level {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    margin-right: 35px;
+    font-size: 1rem;
+}
+
+.navbar .level-bar {
+    width: 150px; /* mais longa */
+    height: 8px; /* mais grossa */
+    background-color: #1a1a2e;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.navbar .level-bar-fill {
+    width: 70%;
+    height: 100%;
+    background-color: #2563eb;
+    border-radius: 5px;
+}
+
+/* 👤 avatar */
+.navbar .profile {
+    width: 45px; /* maior */
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.navbar .profile:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+}
+
+.navbar .profile img {
+    object-fit: contain;
+}
+
+@media (max-width: 850px) {
+    .navbar {
+        padding: 15px 30px;
+        gap: 15px;
+    }
+
+    .navbar .offensive,
+    .navbar .coins {
+        font-size: 1rem;
+        margin-right: 20px;
+    }
+
+    .navbar .level {
+        font-size: 0.9rem;
+        margin-right: 25px;
+    }
+
+    .navbar .level-bar {
+        width: 120px;
+        height: 6px;
+    }
+
+    .navbar .profile {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 530px) {
+    .navbar {
+        justify-content: space-between;
+        padding: 10px 20px;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .navbar .offensive,
+    .navbar .coins {
+        font-size: 0.9rem;
+    }
+
+    .navbar .level {
+        font-size: 0.8rem;
+        margin-right: 20px;
+    }
+
+    .navbar .level-bar {
+        width: 100px;
+        height: 5px;
+    }
+
+    .navbar .profile {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 400px) {
+    .navbar {
+        padding: 10px 15px;
+        gap: 8px;
+    }
+
+    .navbar .offensive,
+    .navbar .coins {
+        font-size: 0.7rem;
+    }
+
+    .navbar .level {
+        font-size: 0.7rem;
+    }
+
+    .navbar .level-bar {
+        width: 80px;
+        height: 4px;
+    }
+
+    .navbar .profile {
+        width: 30px;
+        height: 30px;
+        margin-right: 15px;
+    }
+}

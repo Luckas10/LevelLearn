@@ -5,7 +5,7 @@ body {
 }
 
 /* ======= ESTILO PADRÃO (desktop) ======= */
-.navbar {
+.sidebar {
     width: 15%;
     background-color: #0C0B1A;
     color: white;
@@ -17,7 +17,7 @@ body {
     align-items: center;
 }
 
-.navbarLogo {
+.sidebarLogo {
     text-align: center;
     padding: 1em 0;
     font-size: 2em;
@@ -29,19 +29,19 @@ body {
     margin-bottom: 4em;
 }
 
-.navbarLogo img {
+.sidebarLogo img {
     width: 20%;
     margin-right: 0.3em;
 }
 
-.navbar ul {
+.sidebar ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
     width: 100%;
 }
 
-.navbar li {
+.sidebar li {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -49,7 +49,7 @@ body {
     margin: 1em 0;
 }
 
-.navbar a {
+.sidebar a {
     display: flex;
     align-items: center;
     gap: 0.8em;
@@ -68,7 +68,7 @@ body {
         box-shadow 180ms ease;
 }
 
-.navbar a:hover {
+.sidebar a:hover {
     border-color: #4A4DFF;
     background-color: #111236;
     color: #ffffff;
@@ -76,22 +76,22 @@ body {
     box-shadow: 0 6px 18px -12px rgba(74, 77, 255, 0.7);
 }
 
-.navbar a.active {
+.sidebar a.active {
     border-color: #4A4DFF;
     background: linear-gradient(180deg, #141336, #0f1130);
     color: #ffffff;
     box-shadow: 0 8px 24px -14px rgba(74, 77, 255, 0.9);
 }
 
-.navbar a.active svg {
+.sidebar a.active svg {
     color: #6b6eff;
 }
 
-.navbarLogo span {
+.sidebarLogo span {
     font-size: clamp(0.9rem, 1.7vw, 2rem);
 }
 
-.navbar a span {
+.sidebar a span {
     font-size: clamp(0.7rem, 0.9vw, 1rem);
 }
 
@@ -99,32 +99,32 @@ body {
 /* ======= RESPONSIVO 1 (≤850px) ======= */
 /* Some textos e o nome "LevelLearn" */
 @media (max-width: 850px) {
-    .navbar {
+    .sidebar {
         width: 6rem;
     }
 
-    .navbarLogo {
+    .sidebarLogo {
         margin-bottom: 2em;
     }
 
-    .navbarLogo img {
+    .sidebarLogo img {
         width: 50%;
         margin: 0;
     }
 
-    .navbarLogo span,
-    .navbar a span {
+    .sidebarLogo span,
+    .sidebar a span {
         display: none;
     }
 
-    .navbar a {
+    .sidebar a {
         justify-content: center;
         gap: 0;
         width: 70%;
         padding: 0.9em 0;
     }
 
-    .navbar a:hover {
+    .sidebar a:hover {
         transform: none;
     }
 }
@@ -132,7 +132,7 @@ body {
 /* ======= RESPONSIVO 2 (≤530px) ======= */
 /* Barra vai para o rodapé e só mostra ícones */
 @media (max-width: 530px) {
-    .navbar {
+    .sidebar {
         width: 100%;
         height: 4.5rem;
         position: fixed;
@@ -146,22 +146,22 @@ body {
         z-index: 999;
     }
 
-    .navbarLogo {
+    .sidebarLogo {
         display: none;
     }
 
-    .navbar ul {
+    .sidebar ul {
         display: flex;
         justify-content: space-around;
         align-items: center;
         width: 100%;
     }
 
-    .navbar li {
+    .sidebar li {
         margin: 0;
     }
 
-    .navbar a {
+    .sidebar a {
         width: auto;
         padding: 0.5em;
         border: none;
@@ -170,17 +170,17 @@ body {
         color: #cfcfe6;
     }
 
-    .navbar a.active {
+    .sidebar a.active {
         background: none;
         box-shadow: none;
         border: none;
     }
 
-    .navbar a svg {
+    .sidebar a svg {
         font-size: 1.5em;
     }
 
-    .navbar a span {
+    .sidebar a span {
         display: none;
     }
 }

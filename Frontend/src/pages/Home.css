@@ -4,3 +4,19 @@
     width: 100vw;
     color: #333;
 }
+
+.home {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+}
+
+@media (max-width: 530px) {
+    .home-page {
+        flex-direction: column;
+    }
+
+    .home {
+        width: 100%;
+    }
+}
