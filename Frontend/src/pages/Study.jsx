@@ -10,19 +10,21 @@ export function Study() {
             <Sidebar />
             <section className="content">
                 <Navbar />
-                <h1 style={{marginBottom: "15px"}}>ESCOLHA SEU MÉTODO DE ESTUDO</h1>
+                <h1 style={{ marginTop: "80px" }}>ESCOLHA SEU MÉTODO DE ESTUDO</h1>
                 <div className="cards-container">
                     <div className="study-card">
-                        <div><img id="flashcards-img" src={flashcardsimg} alt="Flashcards Image" /></div>
+                        <div className="study-img">
+                            <img id="flashcards-img" src={flashcardsimg} alt="Flashcards Image" />
+                        </div>
                         <div className="study-text">
-                            <h1 style={{marginBottom: "15px"}}>FLASH CARDS</h1>
+                            <h1 style={{ marginBottom: "15px" }}>FLASH CARDS</h1>
                             <p>Cartões com perguntas e respostas usados para memorizar conteúdos por meio da repetição e prática ativa.</p>
                         </div>
                     </div>
                     <div className="study-card">
-                        <div><img id="pomodore-img" src={pomodoreimg} alt="Pomodore Image" /></div>
+                        <div className="study-img"><img id="pomodore-img" src={pomodoreimg} alt="Pomodore Image" /></div>
                         <div className="study-text">
-                            <h1 style={{marginBottom: "15px"}}>POMODORO</h1>
+                            <h1 style={{ marginBottom: "15px" }}>POMODORO</h1>
                             <p>Técnica que divide o foco em períodos de tempo com pausas curtas, ajudando na concentração e produtividade.</p>
                         </div>
                     </div>

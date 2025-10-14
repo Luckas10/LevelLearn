@@ -18,10 +18,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: 4rem;
+    /* Mantido como rem para espaçamento consistente */
     justify-content: center;
     align-items: center;
     width: 100%;
-    max-width: 1200px;
+    height: 100%;
 }
 
 .study-card {
@@ -30,38 +31,45 @@
     justify-content: center;
     align-items: center;
     width: 40%;
-    height: auto;
+    height: 70%;
     background-color: #10101a;
     border: 0.3rem solid #4346E6;
-    border-radius: 1rem;
+    border-radius: 2%;
+    /* substituindo 1rem */
     cursor: pointer;
-    overflow: hidden;
+
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
 .study-card:hover {
-    transform: scale(1.05); 
-    box-shadow: 0 0 25px #4346E6; 
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #4346E6;
 }
 
-#flashcards-img, 
+#flashcards-img,
 #pomodore-img {
-    width: 100%;
-    max-width: 220px;
-    height: auto;
+    max-width: 60%;
+}
+
+.study-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65%;
 }
 
 .study-text {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     text-align: justify;
     border-top: 0.3rem solid #4346E6;
     background-color: #151737;
-    padding: 1.5rem;
-    font-size: 1rem;
-    line-height: 1.5;
+    width: 100%;
+    height: 35%;
+    padding: 5%;
+    line-height: 150%;
 }
 
 @media (max-width: 850px) {
@@ -74,36 +82,38 @@
         width: 80%;
     }
 
-    #flashcards-img, 
+    #flashcards-img,
     #pomodore-img {
         max-width: 180px;
     }
 
     .study-text {
-        font-size: 0.95rem;
+        font-size: 95%;
     }
 }
 
 @media (max-width: 530px) {
     .content {
-        padding: 2rem 1rem;
+        padding: 4% 2%;
+        /* substituindo 2rem 1rem */
     }
 
     .study-card {
         width: 90%;
     }
 
-    #flashcards-img, 
+    #flashcards-img,
     #pomodore-img {
         max-width: 150px;
     }
 
     h1 {
-        font-size: 1.2rem;
+        font-size: 120%;
     }
 
     .study-text {
-        font-size: 0.9rem;
-        padding: 1rem;
+        font-size: 90%;
+        padding: 2% 2%;
+        /* substituindo 1rem */
     }
 }
