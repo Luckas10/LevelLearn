@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 import flashcardsimg from "../assets/Flashcards-img.png";
 import pomodoreimg from "../assets/Pomodore-img.png"
 import "./Study.css";
@@ -6,7 +6,7 @@ import "./Study.css";
 export function Study() {
     return (
         <div className="study-page">
-            <Navbar />
+            <Sidebar />
             <section className="content">
                 <h1 style={{marginBottom: "15px"}}>ESCOLHA SEU MÉTODO DE ESTUDO</h1>
                 <div className="cards-container">
