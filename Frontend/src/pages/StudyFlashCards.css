@@ -1,0 +1,22 @@
+.studyFlashCards-page {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    color: #333;
+}
+
+.studyFlashCards {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+}
+
+@media (max-width: 530px) {
+    .studyFlashCards-page {
+        flex-direction: column;
+    }
+
+    .studyFlashCards {
+        width: 100%;
+    }
+}

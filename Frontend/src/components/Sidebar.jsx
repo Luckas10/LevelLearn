@@ -7,7 +7,7 @@ export default function Sidebar() {
     return (
         <nav className="sidebar">
             <div className="sidebarLogo">
-                <img src="./img/LogoSVG.svg" alt="Logo" />
+                <img src="/img/LogoSVG.svg" alt="Logo" />
                 <span>LevelLearn</span>
             </div>
             <ul className="sidebarLinks">

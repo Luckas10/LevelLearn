@@ -1,0 +1,22 @@
+.studyPomodore-page {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    color: #333;
+}
+
+.studyPomodore {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+}
+
+@media (max-width: 530px) {
+    .studyPomodore-page {
+        flex-direction: column;
+    }
+
+    .studyPomodore {
+        width: 100%;
+    }
+}
