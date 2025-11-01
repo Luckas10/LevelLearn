@@ -11,6 +11,33 @@
     width: 85%;
 }
 
+.studyTabs {
+    display: flex;
+    width: 100%;
+    height: 7%;
+}
+
+.studyTabsSelect {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: larger;
+    width: 50%;
+    height: 100%;
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #131226;
+    transition: 0.3s;
+}
+
+.studyTabsSelect.active {
+    background-color: #151737; 
+    color: white;
+    border-bottom: 5px solid #4346E6;
+}
+
 @media (max-width: 530px) {
     .studyFlashCards-page {
         flex-direction: column;

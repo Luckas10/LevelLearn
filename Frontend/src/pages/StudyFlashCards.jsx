@@ -1,5 +1,6 @@
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import StudyTabs from "../components/StudyFlashCards/StudyTabs";
 import "./StudyFlashCards.css";
 
 export function StudyFlashCards() {
@@ -8,8 +9,7 @@ export function StudyFlashCards() {
             <Sidebar />
             <section className="studyFlashCards">
                 <Navbar />
-                <h1>Study FlashCards Page</h1>
-                <p>Study with flash cards method in this page.</p>
+                <StudyTabs />
             </section>
         </div>
     );
