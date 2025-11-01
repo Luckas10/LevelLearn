@@ -64,14 +64,29 @@
     display: flex;
     outline: none;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    text-align: justify;
+    text-align: center;
     border-top: 0.3rem solid #4346E6;
     background-color: #151737;
     padding: 5%;
     width: 100%;
     height: 40%;
+}
+
+.study-text > p {
+  font-size: clamp(1.5rem, 1vw + 0.4rem, 1.4rem);
+}
+
+@media (max-width: 1400px) {
+  .study-text > p {
+    font-size: clamp(0.9rem, 0.9vw + 0.3rem, 1.2rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .study-text > p {
+    font-size: clamp(0.8rem, 0.8vw + 0.2rem, 1rem);
+  }
 }
 
 @media (max-width: 768px) {
