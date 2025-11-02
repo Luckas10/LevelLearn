@@ -46,12 +46,20 @@
 
 body,
 html {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    overflow-y: auto; /* rolagem global */
+    margin: 0;
+    background-color: #0C0B1A;
+    color: white;
+}
+
+body {
+    padding-left: 15%;
 }
 
 .app-background {
@@ -139,3 +147,4 @@ html {
     height: auto;     /* deixa crescer com o conteúdo */
   }
 }
+

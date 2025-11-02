@@ -23,7 +23,7 @@ export default function Navbar() {
                 </div>
             </div>
 
-            <div className="profile">
+            <div className="profile-image">
                 <img src={UserIcon} alt="User Icon" />
             </div>
         </nav>
