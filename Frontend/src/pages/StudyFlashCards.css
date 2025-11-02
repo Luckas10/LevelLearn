@@ -1,3 +1,7 @@
+body {
+    overflow: hidden;
+}
+
 .studyFlashCards-page {
     display: flex;
     flex-direction: row;
@@ -10,6 +14,7 @@
     display: flex;
     flex-direction: column;
     width: 85%;
+    height: 100%;
 }
 
 .studyTabs {
@@ -44,7 +49,7 @@
 .studyCollection-page {
     width: 100%;
     height: 93%;
-    overflow: auto;   
+    overflow: auto;
 }
 
 .studyCollection-page::-webkit-scrollbar {
