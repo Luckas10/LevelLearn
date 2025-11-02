@@ -58,8 +58,21 @@ html {
     color: white;
 }
 
+
+
 body {
     padding-left: 15%;
+}
+
+body::-webkit-scrollbar {
+    width: 4px;
+}
+body::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 4px;
+}
+body::-webkit-scrollbar-thumb:hover {
+    background: #666;
 }
 
 .app-background {

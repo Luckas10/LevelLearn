@@ -99,12 +99,12 @@
 /* ======= RESPONSIVO 1 (≤850px) ======= */
 @media (max-width: 850px) {
     body {
-        padding-left: 0;
+        padding-left: 6rem;
     }
     
     .sidebar {
         width: 6rem;
-        position: relative;
+        position: fixed;
     }
 
     .sidebarLogo {
@@ -135,6 +135,10 @@
 
 /* ======= RESPONSIVO 2 (≤530px) ======= */
 @media (max-width: 530px) {
+    body {
+        padding-left: 0;
+    }
+
     .sidebar {
         width: 100%;
         height: 4.5rem;

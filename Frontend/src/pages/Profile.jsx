@@ -14,6 +14,8 @@ import Gato from "../assets/Animals/Gato.png";
 import Ourico from "../assets/Animals/Ourico.png";
 import Raposa from "../assets/Animals/Raposa.png";
 
+import Math from "../assets/Achievements/Math.png";
+
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -110,7 +112,40 @@ export function Profile() {
 
                                 <NavLink className="friend">
                                     <img src={Cobra} alt="Friend img" />
-                                    <span>Amigo5</span>
+                                    <span>Amigo6</span>
+                                </NavLink>
+                                
+                                <NavLink className="friend">
+                                    <img src={Cobra} alt="Friend img" />
+                                    <span>Amigo6</span>
+                                </NavLink>
+                                <NavLink className="friend">
+                                    <img src={Cobra} alt="Friend img" />
+                                    <span>Amigo6</span>
+                                </NavLink>
+                                <NavLink className="friend">
+                                    <img src={Cobra} alt="Friend img" />
+                                    <span>Amigo6</span>
+                                </NavLink>
+                                <NavLink className="friend">
+                                    <img src={Cobra} alt="Friend img" />
+                                    <span>Amigo6</span>
+                                </NavLink>
+                                <NavLink className="friend">
+                                    <img src={Cobra} alt="Friend img" />
+                                    <span>Amigo6</span>
+                                </NavLink>
+                                <NavLink className="friend">
+                                    <img src={Cobra} alt="Friend img" />
+                                    <span>Amigo6</span>
+                                </NavLink>
+                                <NavLink className="friend">
+                                    <img src={Cobra} alt="Friend img" />
+                                    <span>Amigo6</span>
+                                </NavLink>
+                                <NavLink className="friend">
+                                    <img src={Cobra} alt="Friend img" />
+                                    <span>Amigo6</span>
                                 </NavLink>
 
                             </div>
@@ -118,6 +153,77 @@ export function Profile() {
 
                         <div className="achievements">
                             <h1>Conquistas</h1>
+
+                            <div className="achievements-list">
+                                <div className="achievement">
+
+                                    <img src={Math} alt="" className="achievement-picture"/>
+
+                                    <div className="achievement-info">
+                                        <p className="achievement-title">
+                                            Iniciante
+                                        </p>
+
+                                        <p>Você criou seu primeiro conjunto de flashcards.</p>
+                                    </div>
+
+                                </div>
+
+                                <div className="achievement">
+
+                                    <img src={Math} alt="" className="achievement-picture"/>
+
+                                    <div className="achievement-info">
+                                        <p className="achievement-title">
+                                            Iniciante
+                                        </p>
+
+                                        <p>Você criou seu primeiro conjunto de flashcards.</p>
+                                    </div>
+
+                                </div>
+
+                                <div className="achievement">
+
+                                    <img src={Math} alt="" className="achievement-picture"/>
+
+                                    <div className="achievement-info">
+                                        <p className="achievement-title">
+                                            Iniciante
+                                        </p>
+
+                                        <p>Você criou seu primeiro conjunto de flashcards.</p>
+                                    </div>
+
+                                </div>
+
+                                <div className="achievement">
+
+                                    <img src={Math} alt="" className="achievement-picture"/>
+
+                                    <div className="achievement-info">
+                                        <p className="achievement-title">
+                                            Iniciante
+                                        </p>
+
+                                        <p>Você criou seu primeiro conjunto de flashcards.</p>
+                                    </div>
+                                </div>
+
+                                <div className="achievement">
+
+                                    <img src={Math} alt="" className="achievement-picture"/>
+
+                                    <div className="achievement-info">
+                                        <p className="achievement-title">
+                                            Iniciante
+                                        </p>
+
+                                        <p>Você criou seu primeiro conjunto de flashcards.</p>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
 
