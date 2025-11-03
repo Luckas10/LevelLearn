@@ -3,7 +3,7 @@ import StudyInteractiveCard from "./StudyInteractiveCard";
 import flashcardsimg from "../../assets/Flashcards-img.png";
 
 export default function StudyCollection() {
-  const containers = Array.from({ length: 18}); // 12 containers
+  const containers = Array.from({ length: 12 }); // 12 containers
 
   return (
     <div className="studyCollection-page">

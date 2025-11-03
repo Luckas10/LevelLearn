@@ -5,7 +5,7 @@ export default function StudyTabs() {
   const [selected, setSelected] = useState("COLEÇÃO");
 
   return (
-    <div style={{display: "flex", flexDirection: "column"}}>
+    <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
       <div className="studyTabs">
         <div
           className={`studyTabsSelect ${selected === "COLEÇÃO" ? "active" : ""}`}
