@@ -78,7 +78,7 @@
   font-size: clamp(1.5rem, 1vw + 0.4rem, 1.4rem);
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1600px) {
   .study-text > p {
     font-size: clamp(0.9rem, 0.9vw + 0.3rem, 1.2rem);
   }
