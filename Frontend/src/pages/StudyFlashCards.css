@@ -66,7 +66,7 @@
     margin-top: 2.5rem;
 }
 
-.createCollection-btn {
+.createCollectionButton {
     display: flex;
     gap: 8px;
     font-size: 0.95rem;
@@ -84,13 +84,78 @@
     transition: 0.3s;
 }
 
-.createCollection-btn p {
+.createCollectionButton p {
     margin: 0;
     white-space: nowrap;
 }
 
-.createCollection-btn:hover {
+.createCollectionButton:hover {
     background-color: #4346E6;
+}
+
+.createCollectionModal {
+    position: fixed;
+    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+    border-radius: 10px;
+    padding: 2rem;
+    background-color: #151737;
+    color: white;
+    width: 30%;
+    height: 50%;
+    border: 3px solid #4346E6;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+    font-size: larger;
+}
+
+.createCollectionModal::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+.collectionModalContent {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.collectionInput {
+    border: none;
+    outline: none;
+    color: white;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 100%;
+    background-color: #33335A;
+}
+
+.collectionInput::placeholder {
+    color: white;
+    font-size: medium;
+}
+
+.collectionCoverSelect {
+    display: flex;
+    justify-content: flex-start;
+    background-color: #33335A;
+    font-size: medium;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 100%;
+}
+
+.collectionButtonSave {
+    padding: 10px;
+    color: white;
+    border-radius: 10px;
+    width: 40%;
+    background-color: #33335A;
+    border: none;
+    cursor: pointer;
 }
 
 .studyCollection {
