@@ -43,14 +43,15 @@ export default function StudyCreateCollection() {
           <input className="collectionInput" type="text" placeholder="Nome: " />
           <input className="collectionInput" type="text" placeholder="Descrição: " />
           <div className="collectionCoverSelect">
-            <p>CAPA DA COLEÇÃO</p>
-            <div>
-              <div className="collectionCover"></div>
-              <div className="collectionCover"></div>
-              <div className="collectionCover"></div>
-              <div className="collectionCover"></div>
-              <div className="collectionCover"></div>
-              <div className="collectionCover"></div>
+            <p>CAPA DA COLEÇÃO:</p>
+            <div className="collectionCoverOptions">
+              <div className="collectionCoverOption"></div>
+              <div className="collectionCoverOption"></div>
+              <div className="collectionCoverOption"></div>
+              <div className="collectionCoverOption"></div>
+              <div className="collectionCoverOption"></div>
+              <div className="collectionCoverOption"></div>
+              <div className="collectionCoverOption"></div>
             </div>
           </div>
           <button className="collectionButtonSave">SALVAR</button>

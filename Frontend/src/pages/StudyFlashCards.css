@@ -121,6 +121,7 @@
     align-items: center;
     flex-direction: column;
     gap: 15px;
+    height: 100%;
 }
 
 .collectionInput {
@@ -140,13 +141,31 @@
 
 .collectionCoverSelect {
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
     background-color: #33335A;
     font-size: medium;
     border-radius: 10px;
     padding: 1rem;
     width: 100%;
+    height: 80%;
 }
+
+.collectionCoverOptions {
+    display: flex;
+    gap: 5px;
+    overflow: auto;
+    width: 90%;
+    height: 80%;
+}
+
+.collectionCoverOption {
+    background-color:#151737;
+    height: 100%;
+    width: 35%;
+    border-radius: 10px
+}
+
 
 .collectionButtonSave {
     padding: 10px;
