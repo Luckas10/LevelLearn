@@ -108,32 +108,32 @@ export function Store() {
     return (
         <div className="store-page">
             <Sidebar />
-            <section className="store">
+            <section className="store-section">
                 <Navbar />
 
-                <StoreHeader
-                    value={query}
-                    onChange={setQuery}
-                    placeholder="INSIRA O NOME DO ASSUNTO"
-                    buttonText="BUSCAR"
-                />
-
-                <StoreGrid
-                    items={filtered}
-                    onBuy={openBuy}
-                    emptyText={
-                        query
-                            ? "Nenhum item encontrado para sua busca."
-                            : "A loja está vazia por enquanto."
-                    }
-                />
-
-                <StoreModal
-                    open={!!selected}
-                    item={selected}
-                    onClose={closeModal}
-                    onConfirm={confirmBuy}
-                />
+                <div className="store">
+                    <StoreHeader
+                        value={query}
+                        onChange={setQuery}
+                        placeholder="INSIRA O NOME DO ASSUNTO"
+                        buttonText="BUSCAR"
+                    />
+                    <StoreGrid
+                        items={filtered}
+                        onBuy={openBuy}
+                        emptyText={
+                            query
+                                ? "Nenhum item encontrado para sua busca."
+                                : "A loja está vazia por enquanto."
+                        }
+                    />
+                    <StoreModal
+                        open={!!selected}
+                        item={selected}
+                        onClose={closeModal}
+                        onConfirm={confirmBuy}
+                    />
+                </div>
             </section>
         </div>
     );

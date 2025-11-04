@@ -24,12 +24,19 @@
     color: var(--text);
 }
 
-.store {
+.store-section {
     display: flex;
     flex-direction: column;
     gap: 24px;
     width: 85%;
-    padding: 16px 28px 40px;
+}
+
+.store {
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
 }
 
 /* -------------------------
@@ -361,7 +368,7 @@
 }
 
 /* -------------------------
-   Responsividade
+    Responsividade
 -------------------------- */
 @media (max-width: 1024px) {
     .store {

@@ -1,22 +1,417 @@
+:root {
+    --bg: #0b0c17;
+    --bg-soft: #0f1224;
+    --card: #11142a;
+    --card-2: #0e1330;
+    --stroke: rgba(255, 255, 255, .08);
+    --text: #E8ECFF;
+    --muted: #9aa4d1;
+    --brand: #3B45F2;
+    /* azul principal */
+    --brand-2: #6C6CF7;
+    /* azul claro p/ gradientes */
+    --accent: #49e3ff;
+    /* detalhes ciano */
+    --success: #4ade80;
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    background: radial-gradient(1200px 800px at 80% -10%, #1a1f43 0%, transparent 60%),
+        radial-gradient(900px 900px at -10% 110%, #11203d 0%, transparent 55%),
+        var(--bg);
+    color: var(--text);
+}
+
 .home-page {
     display: flex;
-    flex-direction: row;
-    width: 100vw;
-    color: #333;
+    min-height: 100vh;
+    width: 100%;
 }
 
-.home {
+.home-section {
     display: flex;
     flex-direction: column;
-    width: 85%;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
-@media (max-width: 530px) {
-    .home-page {
-        flex-direction: column;
+/* ===== Dashboard Grid ===== */
+.dashboard {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    grid-template-rows: auto 0.8fr;
+    grid-template-areas:
+        "status character"
+        "missions character";
+    gap: 1.2rem;
+    width: 100%;
+    margin-top: .5rem;
+    padding: 1.2rem clamp(1rem, 3vw, 2rem) 2rem;
+}
+
+.status-card {
+    grid-area: status;
+}
+
+.missions-card {
+    grid-area: missions;
+}
+
+.character-card {
+    grid-area: character;
+    position: relative;
+}
+
+/* ===== Cards (glass + neo) ===== */
+.card {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .02)),
+        radial-gradient(120% 160% at 0% 0%, rgba(72, 108, 255, .08), transparent 60%),
+        var(--card);
+    border: 1px solid var(--stroke);
+    border-radius: 22px;
+    padding: 1rem;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .35),
+        inset 0 1px 0 rgba(255, 255, 255, .06);
+    backdrop-filter: saturate(140%) blur(6px);
+}
+
+.card-title {
+    font-weight: 700;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    font-size: .95rem;
+    color: #fff;
+    padding: .75rem 1rem;
+    margin: -.25rem -.25rem 1rem;
+    border-radius: 16px;
+    background:
+        linear-gradient(90deg, var(--brand) 0%, var(--brand-2) 55%, var(--accent) 100%);
+    box-shadow: 0 6px 18px rgba(59, 69, 242, .35);
+}
+
+/* ===== Status ===== */
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.status-pill {
+    background: linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(0, 0, 0, .08)), var(--card-2);
+    border: 1px solid var(--stroke);
+    border-radius: 16px;
+    padding: .9rem;
+    display: flex;
+    flex-direction: column;
+    gap: .45rem;
+}
+
+.status-pill .label {
+    color: var(--muted);
+    font-size: .85rem
+}
+
+.status-pill .value {
+    font-weight: 700;
+    font-size: 1.05rem
+}
+
+.status-pill .bar {
+    height: 8px;
+    border-radius: 99px;
+    background: #1c2141;
+    overflow: hidden;
+    border: 1px solid var(--stroke);
+}
+
+.status-pill .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--brand), var(--accent));
+    border-radius: inherit;
+    box-shadow: 0 0 18px rgba(73, 227, 255, .35) inset;
+}
+
+/* ===== Missões ===== */
+.missions-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+}
+
+.missions-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .9rem 1rem;
+    border-radius: 14px;
+    border: 1px solid var(--stroke);
+    background: linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(0, 0, 0, .08)), var(--card-2);
+}
+
+.missions-list li span {
+    color: #dbe1ff;
+    font-size: .95rem;
+}
+
+.chip {
+    padding: .45rem .8rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: linear-gradient(90deg, var(--brand), var(--accent));
+    color: white;
+    font-weight: 700;
+    font-size: .85rem;
+    cursor: pointer;
+}
+
+.chip:hover {
+    filter: brightness(1.06)
+}
+
+.chip-outline {
+    background: transparent;
+    border-color: rgba(90, 100, 255, .6);
+    color: #cbd5ff;
+}
+
+.chip-outline:hover {
+    background: rgba(90, 100, 255, .12)
+}
+
+/* ===== Personagem (Gato flutuando) ===== */
+.character-wrap {
+    position: relative;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    aspect-ratio: 4/4;
+    overflow: hidden;
+    border-radius: 16px;
+    background:
+        radial-gradient(60% 80% at 50% 10%, rgba(59, 69, 242, .35), transparent 70%),
+        radial-gradient(70% 70% at 50% 120%, rgba(73, 227, 255, .20), transparent 70%),
+        linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(0, 0, 0, .12)), var(--bg-soft);
+    border: 1px solid var(--stroke);
+}
+
+.character-img {
+    width: min(70%, 320px);
+    max-height: 75%;
+    image-rendering: -webkit-optimize-contrast;
+    animation: floatY 4.8s ease-in-out infinite,
+        tilt 8s ease-in-out infinite;
+    transform-origin: 50% 85%;
+    z-index: 2;
+    filter: drop-shadow(0 22px 40px rgba(73, 227, 255, .25));
+}
+
+/* sombra “flutuante” */
+.floating-shadow {
+    position: absolute;
+    z-index: 1;
+    bottom: 8%;
+    width: 55%;
+    height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(0, 0, 0, .45), transparent 80%);
+    animation: shadowPulse 4.8s ease-in-out infinite;
+}
+
+/* brilho suave de fundo */
+.glow {
+    position: absolute;
+    inset: auto;
+    width: 85%;
+    height: 55%;
+    bottom: 10%;
+    background: radial-gradient(closest-side, rgba(59, 69, 242, .35), transparent 70%);
+    filter: blur(24px);
+}
+
+/* orbes orbitando */
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    opacity: .9;
+    z-index: 0
+}
+
+.orb-1 {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    top: 18%;
+    left: 18%;
+    animation: orbit 10s linear infinite
+}
+
+.orb-2 {
+    width: 10px;
+    height: 10px;
+    background: #7aa2ff;
+    top: 28%;
+    right: 18%;
+    animation: orbit 12s linear infinite reverse
+}
+
+.orb-3 {
+    width: 6px;
+    height: 6px;
+    background: #b8e1ff;
+    bottom: 22%;
+    left: 24%;
+    animation: orbit 8s linear infinite
+}
+
+.badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .6px;
+    padding: .35rem .6rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #1bbcf4, #6c7bff);
+    box-shadow: 0 6px 16px rgba(27, 188, 244, .35);
+}
+
+/* ações do personagem */
+.character-actions {
+    display: flex;
+    gap: .6rem;
+    justify-content: center;
+    margin-top: .9rem;
+}
+
+.btn-primary,
+.btn-ghost {
+    all: unset;
+    cursor: pointer;
+    padding: .7rem 1rem;
+    border-radius: 12px;
+    font-weight: 700;
+    border: 1px solid var(--stroke);
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, var(--brand), var(--accent));
+    color: #fff;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.06)
+}
+
+.btn-ghost {
+    color: #cdd5ff;
+    background: rgba(255, 255, 255, .02);
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, .06)
+}
+
+
+/* ===== Animations ===== */
+@keyframes floatY {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg)
     }
 
-    .home {
-        width: 100%;
+    50% {
+        transform: translateY(-14px) rotate(.5deg)
+    }
+}
+
+@keyframes tilt {
+
+    0%,
+    100% {
+        transform: rotate(-1deg)
+    }
+
+    50% {
+        transform: rotate(1deg)
+    }
+}
+
+@keyframes shadowPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: .55
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: .35
+    }
+}
+
+@keyframes orbit {
+    0% {
+        transform: rotate(0deg) translateX(18px) rotate(0)
+    }
+
+    100% {
+        transform: rotate(360deg) translateX(18px) rotate(-360deg)
+    }
+}
+
+
+/* ===== Responsividade ===== */
+@media (max-width: 1200px) {
+    .dashboard {
+        grid-template-columns: 1.4fr .9fr;
+    }
+}
+
+@media (max-width: 980px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "character"
+            "status"
+            "missions";
+    }
+
+    .character-wrap {
+        aspect-ratio: 16/9
+    }
+
+    .status-grid {
+        grid-template-columns: 1fr 1fr
+    }
+}
+
+@media (max-width: 560px) {
+    .status-grid {
+        grid-template-columns: 1fr
+    }
+
+    .missions-list li {
+        gap: .8rem;
+    }
+
+    .chip,
+    .chip-outline {
+        padding: .38rem .7rem
     }
 }
