@@ -30,6 +30,19 @@ export default function StudyCreateCollection() {
         dialogRef.current.showModal();
     };
 
+    useEffect(() => {
+      const container = document.querySelector(".collectionCoverOptions");
+  
+      if (container) {
+        container.addEventListener("wheel", (e) => {
+          if (e.deltaY !== 0) {
+            e.preventDefault(); // impede o scroll vertical padrão
+            container.scrollLeft += e.deltaY; // move horizontalmente
+          }
+        });
+      }
+    }, []);
+
   return (
     <div className="studyCreateCollection">
       <button className="createCollectionButton" onClick={openModal}>
@@ -45,6 +58,8 @@ export default function StudyCreateCollection() {
           <div className="collectionCoverSelect">
             <p>CAPA DA COLEÇÃO:</p>
             <div className="collectionCoverOptions">
+              <div className="collectionCoverOption"></div>
+              <div className="collectionCoverOption"></div>
               <div className="collectionCoverOption"></div>
               <div className="collectionCoverOption"></div>
               <div className="collectionCoverOption"></div>
