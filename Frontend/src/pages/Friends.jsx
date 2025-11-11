@@ -1,4 +1,7 @@
 import { useMemo, useState } from "react";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Tabs from "../components/Tabs"; // caminho conforme sua estrutura
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import "./Friends.css";
@@ -64,6 +67,18 @@ export function Friends() {
         setRequests((prev) => [...prev, user]);
     }
 
+    const tabOptions = [
+        { value: "friends", label: "MEUS AMIGOS" },
+        { value: "requests", label: "SOLICITAÇÕES", pill: requests.length },
+        { value: "add", label: "ADICIONAR AMIGOS" },
+    ];
+
+    function handleChangeTab(value) {
+        setQuery("");
+        setActiveTab(value);
+    }
+
+
     return (
         <div className="friends-page">
             <Sidebar />
@@ -71,45 +86,20 @@ export function Friends() {
                 <Navbar />
 
                 {/* Tabs */}
-                <div className="friendsTabs" role="tablist" aria-label="Gerenciar amigos">
-                    <button
-                        role="tab"
-                        aria-selected={activeTab === "friends"}
-                        className={`friendsTab ${activeTab === "friends" ? "active" : ""}`}
-                        onClick={() => {
-                            setQuery("");
-                            setActiveTab("friends");
-                        }}
-                    >
-                        Meus Amigos
-                    </button>
-                    <button
-                        role="tab"
-                        aria-selected={activeTab === "requests"}
-                        className={`friendsTab ${activeTab === "requests" ? "active" : ""}`}
-                        onClick={() => {
-                            setQuery("");
-                            setActiveTab("requests");
-                        }}
-                    >
-                        Solicitações <span className="pill">{requests.length}</span>
-                    </button>
-                    <button
-                        role="tab"
-                        aria-selected={activeTab === "add"}
-                        className={`friendsTab ${activeTab === "add" ? "active" : ""}`}
-                        onClick={() => {
-                            setQuery("");
-                            setActiveTab("add");
-                        }}
-                    >
-                        Adicionar Amigos
-                    </button>
-                </div>
+                <Tabs
+                    options={tabOptions}
+                    selected={activeTab}
+                    onChange={handleChangeTab}
+                    rootClassName="friendsTabs"
+                    tabClassName="friendsTab"
+                    activeClassName="active"
+                    ariaLabel="Gerenciar amigos"
+                />
+
 
                 {/* Search */}
                 <div className="friendsSearch">
-                    <i className="fa-regular fa-search searchIcon" aria-hidden="true"></i>
+                    <FontAwesomeIcon size="lg" icon={fas.faSearch} className="searchIcon" />
                     <input
                         className="searchInput"
                         placeholder={
@@ -184,7 +174,7 @@ function InitialsAvatar({ username }) {
         .map((s) => s[0]?.toUpperCase())
         .join("");
     return (
-        <div className="avatar" aria-hidden="true">
+        <div className="friends-avatar" aria-hidden="true">
             {initials || "LL"}
         </div>
     );
@@ -192,22 +182,15 @@ function InitialsAvatar({ username }) {
 
 function FriendCard({ username, level, achievements }) {
     return (
-        <article className="card" tabIndex={0}>
-            <div className="cardHeader">
+        <article className="friends-card" tabIndex={0}>
+            <div className="friends-cardHeader">
                 <InitialsAvatar username={username} />
-                <div className="userInfo">
-                    <h3 className="userName">{username}</h3>
-                    <p className="meta">LVL: {level} • Conquistas: {achievements}</p>
+                <div className="friends-userInfo">
+                    <h3 className="friends-userName">{username}</h3>
+                    <p className="friends-meta">
+                        LVL: {level} • Conquistas: {achievements}
+                    </p>
                 </div>
-            </div>
-
-            <div className="cardFooter">
-                <button className="btn ghost">
-                    <i className="fa-regular fa-message"></i> Mensagem
-                </button>
-                <button className="btn ghost">
-                    <i className="fa-regular fa-user-check"></i> Perfil
-                </button>
             </div>
         </article>
     );
@@ -215,50 +198,69 @@ function FriendCard({ username, level, achievements }) {
 
 function RequestCard({ username, level, achievements, onAccept, onDecline }) {
     return (
-        <article className="card" tabIndex={0}>
-            <div className="cardHeader">
+        <article className="friends-card" tabIndex={0}>
+            <div className="friends-cardHeader">
                 <InitialsAvatar username={username} />
-                <div className="userInfo">
-                    <h3 className="userName">{username}</h3>
-                    <p className="meta">LVL: {level} • Conquistas: {achievements}</p>
+                <div className="friends-userInfo">
+                    <h3 className="friends-userName">{username}</h3>
+                    <p className="friends-meta">
+                        LVL: {level} • Conquistas: {achievements}
+                    </p>
                 </div>
             </div>
 
-            <div className="cardFooter">
-                <button className="btn success" onClick={onAccept}>
-                    <i className="fa-regular fa-check"></i> Aceitar
+            <div className="friends-cardFooter">
+                <button
+                    className="friends-btn friends-btn--success"
+                    onClick={onAccept}
+                >
+                    <FontAwesomeIcon icon={fas.faCheck} className="btnIcon" />
+                    <span>Aceitar</span>
                 </button>
-                <button className="btn danger" onClick={onDecline}>
-                    <i className="fa-regular fa-xmark"></i> Recusar
+                <button
+                    className="friends-btn friends-btn--danger"
+                    onClick={onDecline}
+                >
+                    <FontAwesomeIcon icon={fas.faXmark} className="btnIcon" />
+                    <span>Recusar</span>
                 </button>
             </div>
         </article>
     );
 }
+
 
 function AddCard({ username, level, achievements, onAdd }) {
     return (
-        <article className="card" tabIndex={0}>
-            <div className="cardHeader">
+        <article className="friends-card" tabIndex={0}>
+            <div className="friends-cardHeader">
                 <InitialsAvatar username={username} />
-                <div className="userInfo">
-                    <h3 className="userName">{username}</h3>
-                    <p className="meta">LVL: {level} • Conquistas: {achievements}</p>
+                <div className="friends-userInfo">
+                    <h3 className="friends-userName">{username}</h3>
+                    <p className="friends-meta">
+                        LVL: {level} • Conquistas: {achievements}
+                    </p>
                 </div>
             </div>
 
-            <div className="cardFooter">
-                <button className="btn primary" onClick={onAdd}>
-                    <i className="fa-regular fa-user-plus"></i> Enviar solicitação
+            <div className="friends-cardFooter">
+                <button
+                    className="friends-btn friends-btn--primary"
+                    onClick={onAdd}
+                >
+                    <FontAwesomeIcon icon={fas.faUserPlus} className="btnIcon" />
+                    <span>Enviar solicitação</span>
                 </button>
             </div>
         </article>
     );
 }
 
+
 function CardsGrid({ data, renderItem, emptyText }) {
     if (!data?.length) {
-        return <p className="emptyState">{emptyText}</p>;
+        return <p className="friends-emptyState">{emptyText}</p>;
     }
-    return <div className="grid">{data.map(renderItem)}</div>;
+    return <div className="friends-grid">{data.map(renderItem)}</div>;
 }
+
