@@ -1,8 +1,12 @@
 import { useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import fisica from "../../assets/CoverImages/fisica.svg"
+import matematica from "../../assets/CoverImages/matematica.svg"
+
 
 export default function StudyCreateCollection() {
+
     const dialogRef = useRef(null);
 
     useEffect(() => {
@@ -58,15 +62,15 @@ export default function StudyCreateCollection() {
           <div className="collectionCoverSelect">
             <p>CAPA DA COLEÇÃO:</p>
             <div className="collectionCoverOptions">
-              <div className="collectionCoverOption"></div>
-              <div className="collectionCoverOption"></div>
-              <div className="collectionCoverOption"></div>
-              <div className="collectionCoverOption"></div>
-              <div className="collectionCoverOption"></div>
-              <div className="collectionCoverOption"></div>
-              <div className="collectionCoverOption"></div>
-              <div className="collectionCoverOption"></div>
-              <div className="collectionCoverOption"></div>
+              <div className="collectionCoverOption"><img src={fisica} style={{width: "100px", height: "100px"}}/></div>
+              <div className="collectionCoverOption"><img src={matematica} style={{width: "100px", height: "100px"}}/></div>
+              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
+              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
+              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
+              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
+              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
+              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
+              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
             </div>
           </div>
           <button className="collectionButtonSave">SALVAR</button>
