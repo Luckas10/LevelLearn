@@ -109,29 +109,24 @@ export function StudyPomodore() {
           {/* 🎯 Botões */}
           <div className="pomodore-buttons">
             <div className="timer-buttons">
-              <button onClick={handleStart} className="btn start">
+              <button onClick={handleStart} className="btnPomodore start">
                 {isRunning ? "PAUSAR" : "COMEÇAR"}
               </button>
-              <button
-                onClick={() => handleReset(25 * 60, "pomodoro")}
-                className="btn"
-              >
+              <button onClick={() => handleReset(25 * 60, "pomodoro")}
+                className="btnPomodore">
                 POMODORO
               </button>
-              <button
-                onClick={() => handleReset(5 * 60, "short")}
-                className="btn"
-              >
+              <button onClick={() => handleReset(5 * 60, "short")}
+                className="btnPomodore">
                 PAUSA CURTA
               </button>
-              <button
-                onClick={() => handleReset(15 * 60, "long")}
-                className="btn"
-              >
+              <button onClick={() => handleReset(15 * 60, "long")}
+                className="btnPomodore">
                 PAUSA LONGA
               </button>
-              <button className="btn">MISSÕES</button>
-              <button className="btn">CONFIGURAÇÕES</button>
+
+              <button className="btnPomodore">MISSÕES</button>
+              <button className="btnPomodore">CONFIGURAÇÕES</button>
             </div>
           </div>
         </div>

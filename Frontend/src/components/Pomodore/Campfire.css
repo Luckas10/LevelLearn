@@ -1,34 +1,21 @@
 
-.campfire {
+.stage {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  transform: translateX(-50px);
 }
 
-
-.logs {
-  width: 100%;
-  height: 100%;
+.campfire {
+  position: relative;
+  
+  width: 600px;
+  height: 800px;
+  transform-origin: center center;
+  transform: scale(0.75);
 }
-
-.streaks {
-  width: 100%;
-  height: 100%;
-}
-
-.sparks {
-  width: 100%;
-  height: 100%;
-}
-
-.fire {
-  width: 100%;
-  height: 100%;
-}
-
-
 .log {
   position: absolute;
   width: 238px;
@@ -36,7 +23,7 @@
   border-radius: 32px;
   background: #781e20;
   overflow: hidden;
-  opacity: 0.9;
+  opacity: 0.99;
 }
 
 .log:before {
@@ -220,7 +207,7 @@
 .fire .flame {
   position: absolute;
   transform-origin: bottom center;
-  opacity: 0.5;
+  opacity: 0.9;
 }
 .fire__red .flame {
   width: 48px;
@@ -538,6 +525,12 @@
   50% {
     transform: scaleY(0.6);
   }
+  70% {
+    transform: scaleY(0.95);
+  }
+  82% {
+    transform: scaleY(0.58);
+  }
   100% {
     transform: scaleY(1);
   }
@@ -545,68 +538,88 @@
 @-moz-keyframes spark {
   0%, 35% {
     transform: scaleY(0) translateY(0);
+    opacity: 0;
   }
   50% {
     transform: scaleY(1) translateY(0);
+    opacity: 1;
   }
   70% {
     transform: scaleY(1) translateY(-10px);
+    opacity: 1;
   }
   75% {
     transform: scaleY(1) translateY(-10px);
+    opacity: 0;
   }
   100% {
     transform: scaleY(0) translateY(0);
+    opacity: 0;
   }
 }
 @-webkit-keyframes spark {
   0%, 35% {
     transform: scaleY(0) translateY(0);
+    opacity: 0;
   }
   50% {
     transform: scaleY(1) translateY(0);
+    opacity: 1;
   }
   70% {
     transform: scaleY(1) translateY(-10px);
+    opacity: 1;
   }
   75% {
     transform: scaleY(1) translateY(-10px);
+    opacity: 0;
   }
   100% {
     transform: scaleY(0) translateY(0);
+    opacity: 0;
   }
 }
 @-o-keyframes spark {
   0%, 35% {
     transform: scaleY(0) translateY(0);
+    opacity: 0;
   }
   50% {
     transform: scaleY(1) translateY(0);
+    opacity: 1;
   }
   70% {
     transform: scaleY(1) translateY(-10px);
+    opacity: 1;
   }
   75% {
     transform: scaleY(1) translateY(-10px);
+    opacity: 0;
   }
   100% {
     transform: scaleY(0) translateY(0);
+    opacity: 0;
   }
 }
 @keyframes spark {
   0%, 35% {
     transform: scaleY(0) translateY(0);
+    opacity: 0;
   }
   50% {
     transform: scaleY(1) translateY(0);
+    opacity: 1;
   }
   70% {
     transform: scaleY(1) translateY(-10px);
+    opacity: 1;
   }
   75% {
     transform: scaleY(1) translateY(-10px);
+    opacity: 0;
   }
   100% {
     transform: scaleY(0) translateY(0);
+    opacity: 0;
   }
 }
