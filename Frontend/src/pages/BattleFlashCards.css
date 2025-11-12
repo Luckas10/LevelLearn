@@ -1,0 +1,195 @@
+/* ===== Prefixo exclusivo: .blf- ===== */
+
+.blf-page {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #0b0c17;
+}
+
+.blf-section {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    height: 100%;
+}
+
+.blf-content {
+    flex: 1;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.2rem 1.6rem 1.8rem;
+    /* chave: tudo em rem -> tornamos o rem responsivo */
+    font-size: clamp(12px, 0.9vw + 8px, 18px);
+}
+
+/* ===== Header ===== */
+.blf-battle-header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 0.2rem;
+}
+
+.blf-battle-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem;
+    border: 0.12rem solid #3b45f2;
+    border-radius: 0.75rem;
+    background: rgba(14, 17, 43, 0.65);
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: 0 0 0 0.12rem rgba(59, 69, 242, 0.15) inset;
+}
+
+.blf-divider {
+    width: 0.12rem;
+    height: 1rem;
+    background: rgba(255, 255, 255, .35);
+    border-radius: 0.12rem;
+}
+
+.blf-difficulty {
+    color: #ff3b3b;
+    font-weight: 700;
+}
+
+/* ===== Arena ===== */
+.blf-arena {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    max-width: 68rem;
+    /* centralizado como no mock */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    justify-items: center;
+    gap: 1.4rem;
+    margin-top: 0.8rem;
+}
+
+/* Cada ator ocupa uma "caixa" vertical */
+.blf-actor {
+    position: relative;
+    width: 100%;
+    height: 20rem;
+    /* espaço útil para barra + sprite */
+}
+
+/* Profundidade e posicionamento (mock) */
+.blf-player {
+    z-index: 3;
+    transform: translateX(-0.3rem);
+}
+
+.blf-enemy {
+    z-index: 2;
+    transform: translate(0.6rem, -0.4rem) scale(0.98);
+}
+
+/* ===== Sprites (com moita integrada) ===== */
+/* Defino um tamanho base em rem para manter proporção e ser responsivo */
+.blf-sprite {
+    position: absolute;
+    bottom: 0;
+    /* a moita “encosta” no chão da arena */
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+.blf-sprite-player {
+    width: clamp(16rem, 18vw, 22rem);
+    /* maior e responsivo */
+    left: 4.5rem;
+}
+
+.blf-sprite-enemy {
+    width: clamp(18rem, 21vw, 26rem);
+    /* vilão maior */
+    right: 3.8rem;
+}
+
+/* ===== Barras de HP (acima dos personagens) ===== */
+.blf-hp-wrap {
+    position: absolute;
+    top: 1.2rem;
+    width: clamp(16rem, 24vw, 26rem);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.blf-hp-left {
+    left: 4.5rem;
+}
+
+.blf-hp-right {
+    right: 3.8rem;
+}
+
+.blf-hp-rail {
+    flex: 1;
+    height: 1rem;
+    background: #ffffff;
+    border-radius: 0.6rem;
+    overflow: hidden;
+    box-shadow: 0 0.12rem 0 rgba(0, 0, 0, .35) inset, 0 0 0.6rem rgba(0, 0, 0, .25);
+}
+
+.blf-hp-green {
+    height: 100%;
+    background: #2ecc71;
+    border-radius: 0.6rem 0 0 0.6rem;
+}
+
+.blf-hp-num {
+    font-weight: 700;
+    font-size: 1rem;
+    text-shadow: 0 0.12rem 0.25rem rgba(0, 0, 0, .8);
+}
+
+/* ===== Caixa de ação ===== */
+.blf-action-box {
+    margin-top: 0.6rem;
+    align-self: center;
+    background: rgba(13, 15, 35, 0.92);
+    border: 0.12rem solid #3b45f2;
+    border-radius: 0.75rem;
+    padding: 1rem 1.6rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    font-weight: 700;
+    box-shadow: 0 0 0.9rem rgba(59, 69, 242, .35);
+}
+
+/* ===== pequenos ajustes em telas menores ===== */
+@media (max-width: 900px) {
+    .blf-arena {
+        max-width: 60rem;
+    }
+
+    .blf-sprite-player {
+        left: 2.6rem;
+    }
+
+    .blf-sprite-enemy {
+        right: 2.4rem;
+    }
+
+    .blf-hp-left {
+        left: 2.6rem;
+    }
+
+    .blf-hp-right {
+        right: 2.4rem;
+    }
+}
