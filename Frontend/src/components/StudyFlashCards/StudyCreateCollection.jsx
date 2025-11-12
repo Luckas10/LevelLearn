@@ -3,7 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import fisica from "../../assets/CoverImages/fisica.svg"
 import matematica from "../../assets/CoverImages/matematica.svg"
-
+import portugues from "../../assets/CoverImages/portugues.svg"
+import edfisica from "../../assets/CoverImages/edfisica.svg"
+import quimica from "../../assets/CoverImages/quimica.svg"
+import historia from "../../assets/CoverImages/historia.svg"
+import geografia from "../../assets/CoverImages/geografia.svg"
+import ingles from "../../assets/CoverImages/ingles.svg"
+import biologia from "../../assets/CoverImages/biologia.svg"
 
 export default function StudyCreateCollection() {
 
@@ -62,15 +68,15 @@ export default function StudyCreateCollection() {
           <div className="collectionCoverSelect">
             <p>CAPA DA COLEÇÃO:</p>
             <div className="collectionCoverOptions">
-              <div className="collectionCoverOption"><img src={fisica} style={{width: "100px", height: "100px"}}/></div>
-              <div className="collectionCoverOption"><img src={matematica} style={{width: "100px", height: "100px"}}/></div>
-              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
-              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
-              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
-              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
-              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
-              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
-              <div className="collectionCoverOption"><img src={fisica} style={{width: "50px", height: "50px"}}/></div>
+              <div className="collectionCoverOption"><img src={fisica} style={{width: "8.5rem", height: "8.5rem"}}/></div>
+              <div className="collectionCoverOption"><img src={matematica} style={{width: "8.5rem", height: "8.5rem"}}/></div>
+              <div className="collectionCoverOption"><img src={portugues} style={{width: "8.5rem", height: "8.5rem"}}/></div>
+              <div className="collectionCoverOption"><img src={historia} style={{width: "8.5rem", height: "8.5rem"}}/></div>
+              <div className="collectionCoverOption"><img src={edfisica} style={{width: "8.5rem", height: "8.5rem"}}/></div>
+              <div className="collectionCoverOption"><img src={ingles} style={{width: "8.5rem", height: "8.5rem"}}/></div>
+              <div className="collectionCoverOption"><img src={geografia} style={{width: "8.5rem", height: "8.5rem"}}/></div>
+              <div className="collectionCoverOption"><img src={quimica} style={{width: "8.5rem", height: "8.5rem"}}/></div>
+              <div className="collectionCoverOption"><img src={biologia} style={{width: "8.5rem", height: "8.5rem"}}/></div>
             </div>
           </div>
           <button className="collectionButtonSave">SALVAR</button>

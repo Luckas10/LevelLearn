@@ -16,7 +16,7 @@ import Raposa from "../assets/Animals/Raposa.png";
 
 import Math from "../assets/Achievements/Math.png";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 export function Profile() {
@@ -34,6 +34,28 @@ export function Profile() {
         if (length <= 24) return "clamp(10pt, 2vw, 26pt)";
         return "clamp(8pt, 1.5vw, 22pt)";
     };
+
+    useEffect(() => {
+        const scrollables = document.querySelectorAll('.friend-list, .achievements-list');
+
+        scrollables.forEach((el) => {
+            el.addEventListener('wheel', (e) => {
+            const isHorizontal = el.scrollWidth > el.clientWidth;
+            const isVertical = el.scrollHeight > el.clientHeight;
+
+            if (isHorizontal && !isVertical) {
+                e.preventDefault();
+                el.scrollLeft += e.deltaY;
+            }
+            }, { passive: false });
+        });
+
+        return () => {
+            scrollables.forEach((el) => {
+            el.replaceWith(el.cloneNode(true));
+            });
+        };
+    }, []);
 
     return (
         <div className="profile-page">
@@ -63,15 +85,15 @@ export function Profile() {
                         </div>
                         
                         <div className="user-badges">
-                            <div className="badge">
+                            <div className="badgeProfile">
                                 <img src={TrophyIcon} alt="Trophy Icon" className="trophy-icon" />
                                 <p>CONQUISTAS: XX</p>
                             </div>
-                            <div className="badge">
+                            <div className="badgeProfile">
                                 <img src={DecksIcon} alt="Decks Icon" className="decks-icon" />
                                 <p>DECKS: XX</p>
                             </div>
-                            <div className="badge">
+                            <div className="badgeProfile">
                                 <img src={ClockIcon} alt="Clock Icon" className="clock-icon" />
                                 <p>HORAS DE ESTUDO: XX</p>
                             </div>

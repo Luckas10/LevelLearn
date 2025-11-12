@@ -69,6 +69,9 @@
 }
 
 .btnPomodore {
+  display: flex;
+  align-items: center;
+  padding-inline: 10px;
   background: rgba(30, 30, 60, 0.8);
   border: 2px solid #4f46e5;
   color: white;
@@ -77,9 +80,10 @@
   font-size: 1.4rem;
   font-weight: 600;
   height: 50px;
-  width: 220px;
+  width: 280px;
   transition: 0.3s;
 }
+
 
 .btnPomodore:hover {
   background: rgba(60, 60, 120, 0.8);
@@ -89,6 +93,12 @@
 .btnPomodore.start {
   background: #4f46e5;
   box-shadow: 0 0 20px #4f46e5a0;
+}
+
+.btnPomodore img {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 10px;
 }
 
 @media (max-width: 700px) {

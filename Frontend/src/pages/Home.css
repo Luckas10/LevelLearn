@@ -22,7 +22,7 @@
 html,
 body,
 #root {
-    height: 100%;
+    height: auto;
     background: radial-gradient(1200px 800px at 80% -10%, #1a1f43 0%, transparent 60%),
         radial-gradient(900px 900px at -10% 110%, #11203d 0%, transparent 55%),
         var(--bg);
