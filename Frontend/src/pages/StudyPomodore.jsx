@@ -4,21 +4,26 @@ import Navbar from "../components/Navbar";
 import { Campfire } from "../components/Pomodore/Campfire";
 import "./StudyPomodore.css";
 
+// Imagens dos botões
+import Sword from "../assets/Pomodore/sword.svg";
+import Pomodore from "../assets/Pomodore/pomodore.svg";
+import TimerCurto from "../assets/Pomodore/timercurto.svg";
+import TimerLongo from "../assets/Pomodore/timerlongo.svg";
+import Settings from "../assets/Pomodore/settings.svg";
+import Missions from "../assets/Pomodore/missions.svg";
+
 export function StudyPomodore() {
   const [time, setTime] = useState(25 * 60); // tempo atual em segundos
   const [isRunning, setIsRunning] = useState(false);
   const [initialTime, setInitialTime] = useState(25 * 60);
   const [mode, setMode] = useState("pomodoro"); // "pomodoro" | "short" | "long"
 
-  // 🔄 Contagem regressiva
   useEffect(() => {
     let timer;
     if (isRunning && time > 0) {
       timer = setInterval(() => setTime((t) => t - 1), 1000);
     } else if (time === 0) {
-      // ⏰ Quando o tempo acaba:
       if (mode === "short" || mode === "long") {
-        // Se for uma pausa, volta pro pomodoro automaticamente
         setMode("pomodoro");
         setTime(25 * 60);
         setInitialTime(25 * 60);
@@ -110,23 +115,36 @@ export function StudyPomodore() {
           <div className="pomodore-buttons">
             <div className="timer-buttons">
               <button onClick={handleStart} className="btnPomodore start">
+                <img src={Sword} alt="" />
                 {isRunning ? "PAUSAR" : "COMEÇAR"}
               </button>
               <button onClick={() => handleReset(25 * 60, "pomodoro")}
-                className="btnPomodore">
+                className="btnPomodore pomo">
+                <img src={Pomodore} alt="" />
+
                 POMODORO
               </button>
               <button onClick={() => handleReset(5 * 60, "short")}
                 className="btnPomodore">
+                <img src={TimerCurto} alt="" />
+                  
                 PAUSA CURTA
               </button>
               <button onClick={() => handleReset(15 * 60, "long")}
                 className="btnPomodore">
+                <img src={TimerLongo} alt="" />
+
                 PAUSA LONGA
               </button>
 
-              <button className="btnPomodore">MISSÕES</button>
-              <button className="btnPomodore">CONFIGURAÇÕES</button>
+              <button className="btnPomodore">
+                <img src={Missions} alt="" />
+
+                MISSÕES</button>
+              <button className="btnPomodore">
+                <img src={Settings} alt="" />
+
+                CONFIGURAÇÕES</button>
             </div>
           </div>
         </div>
