@@ -1,0 +1,239 @@
+.settings-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  border: none;
+  border-radius: 20px;
+  background: #0d0f2b;
+  padding: 2.5rem 3rem;
+  width: 480px;
+  color: white;
+  box-shadow: 0 0 20px rgba(80, 112, 255, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s ease;
+  text-align: center;
+}
+
+/* Ativo, mas invisível */
+.settings-dialog.showing {
+  pointer-events: auto;
+}
+
+/* Quando realmente visível */
+.settings-dialog.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.settings-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  transition: 0.25s ease;
+}
+
+/* ------ RESTANTE DO SEU CSS ORIGINAL AQUI ------ */
+
+.modal-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  text-align: center;
+  font-weight: 600;
+  margin: 20px 0 10px;
+  opacity: 0.9;
+  letter-spacing: 1px;
+}
+
+.duration-grid {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.duration-block {
+  display: flex;
+  flex-direction: column;
+  width: 28%;
+}
+
+.duration-block label {
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+  opacity: 0.8;
+}
+
+.duration-block input {
+  padding: 10px;
+  border-radius: 10px;
+  background: #101332;
+  border: 2px solid #4f46e5;
+  color: white;
+  outline: none;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* AUTOMATICO */
+.auto-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  font-size: 0.9rem;
+}
+
+.auto-container input {
+  width: 70px;
+  padding: 8px;
+  border-radius: 10px;
+  border: 2px solid #4f46e5;
+  background: #101332;
+  color: white;
+  text-align: center;
+}
+
+.select-container { 
+  text-align: left; 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px; 
+} 
+
+.select-container select { 
+  padding: 10px; 
+  background: #101332; 
+  color: white; 
+  border: 2px solid #4f46e5; 
+  border-radius: 10px; 
+}
+
+/* SWITCH */
+.switch-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 14px 0;
+  font-size: 1rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #303355;
+  border-radius: 34px;
+  transition: 0.3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  top: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.switch input:checked + .slider {
+  background-color: #4f46e5;
+  box-shadow: 0 0 12px #6b63f8;
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+.slider:active:before {
+  transform: scale(1.15);
+}
+
+/* BOTÃO */
+.close-btn {
+  margin-top: 22px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  background: #4f46e5;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.close-btn:hover {
+  background: #6b63f8;
+}
+
+
+/* Input number padrão, sem remover as setinhas */
+.settings-dialog input[type="number"] {
+  appearance: textfield;
+  -webkit-appearance: none;
+
+  border-radius: 12px;
+  border: 2px solid #4f46e5;
+  background: #101332;
+  color: white;
+
+  text-align: center;
+  padding: 10px 12px;
+  font-size: 1rem;
+
+  outline: none;
+  transition: 0.2s;
+  
+}
+
+/* ===== HOVER E FOCUS ===== */
+.settings-dialog input[type="number"]:hover {
+  border-color: #7c6df8;
+  box-shadow: 0 0 10px #6b63f855;
+}
+
+.settings-dialog input[type="number"]:focus {
+  border-color: #a78bfa;
+  box-shadow: 0 0 15px #8b5cf67c;
+}
+
+
+input[type=number]::-webkit-inner-spin-button { 
+  border: solid 5px black;
+}
+
+.settings-dialog::-webkit-scrollbar {
+    width: 4px;
+    height: 6px;
+}
+
+.settings-dialog::-webkit-scrollbar-thumb {
+    background: #4346E6;;
+    border-radius: 4px;
+}
+
+.settings-dialog::-webkit-scrollbar-thumb:hover {
+    background: #5356f1;;
+}

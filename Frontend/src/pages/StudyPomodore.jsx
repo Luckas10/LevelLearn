@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import { Campfire } from "../components/Pomodore/Campfire";
+import { Campfire } from "../components/StudyPomodore/Campfire";
+import { ModalSettings } from "../components/StudyPomodore/ModalSettings";
+
 import "./StudyPomodore.css";
 
 // Imagens dos botões
@@ -17,6 +19,8 @@ export function StudyPomodore() {
   const [isRunning, setIsRunning] = useState(false);
   const [initialTime, setInitialTime] = useState(25 * 60);
   const [mode, setMode] = useState("pomodoro"); // "pomodoro" | "short" | "long"
+
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     let timer;
@@ -68,10 +72,11 @@ export function StudyPomodore() {
     <div className="studyPomodore-page">
       <Sidebar />
       <section className="studyPomodore">
+
         <Navbar />
         <div className="pomodoretimer-container">
           
-          {/* 🕒 Timer */}
+          {/* Timer */}
           <div className="pomodore-timer">
             <div className="timer-circle">
               <svg className="progress-ring" width="500" height="500">
@@ -103,14 +108,14 @@ export function StudyPomodore() {
                 {minutes}:{seconds}
               </div>
 
-              {/* 🔥 Fogueira */}
+              {/* Fogueira */}
               <div className="campfire-wrapper">
                 <Campfire />
               </div>
             </div>
           </div>
 
-          {/* 🎯 Botões */}
+          {/* Botões */}
           <div className="pomodore-buttons">
             <div className="timer-buttons">
               <button onClick={handleStart} className="btnPomodore start">
@@ -120,33 +125,36 @@ export function StudyPomodore() {
               <button onClick={() => handleReset(25 * 60, "pomodoro")}
                 className="btnPomodore pomo">
                 <img src={Pomodore} alt="" />
-
                 POMODORO
               </button>
+
               <button onClick={() => handleReset(5 * 60, "short")}
                 className="btnPomodore">
                 <img src={TimerCurto} alt="" />
-                  
                 PAUSA CURTA
               </button>
+
               <button onClick={() => handleReset(15 * 60, "long")}
                 className="btnPomodore">
                 <img src={TimerLongo} alt="" />
-
                 PAUSA LONGA
               </button>
 
               <button className="btnPomodore">
                 <img src={Missions} alt="" />
+                MISSÕES
+              </button>
 
-                MISSÕES</button>
-              <button className="btnPomodore">
+              <button className="btnPomodore" onClick={() => setShowSettings(true)}>
                 <img src={Settings} alt="" />
+                CONFIGURAÇÕES
+              </button>
 
-                CONFIGURAÇÕES</button>
             </div>
           </div>
         </div>
+
+        <ModalSettings open={showSettings} onClose={() => setShowSettings(false)} />
       </section>
     </div>
   );
