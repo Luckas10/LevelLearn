@@ -42,6 +42,14 @@ export default function Sidebar() {
                     </NavLink>
                 </li>
             </ul>
+            <ul className="logout">
+                <li>
+                    <NavLink to="/logout">
+                        <FontAwesomeIcon size="lg" icon={fas.faRightFromBracket} />
+                        <span>SAIR</span>
+                    </NavLink>
+                </li>
+            </ul>
         </nav>
     );
 }
