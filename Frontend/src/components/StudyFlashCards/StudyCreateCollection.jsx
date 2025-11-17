@@ -11,7 +11,7 @@ import geografia from "../../assets/CoverImages/geografia.svg"
 import ingles from "../../assets/CoverImages/ingles.svg"
 import biologia from "../../assets/CoverImages/biologia.svg"
 
-export default function StudyCreateCollection() {
+export default function StudyCreateCollection({ onClose }) {
 
     const dialogRef = useRef(null);
 
@@ -53,6 +53,8 @@ export default function StudyCreateCollection() {
       }
     }, []);
 
+    
+
   return (
     <div className="studyCreateCollection">
       <button className="createCollectionButton" onClick={openModal}>
@@ -60,13 +62,13 @@ export default function StudyCreateCollection() {
         <p>CRIAR COLEÇÃO</p>
       </button>
 
-      <dialog className="createCollectionModal" ref={dialogRef}>
+      <dialog className="createCollectionModal" ref={dialogRef} onCancel={onClose}>
         <div className="collectionModalContent">
-          <p>CRIAR COLEÇÃO</p>
+          <p style={{fontWeight: "bold", fontSize: "larger"}}>CRIAR COLEÇÃO</p>
           <input className="collectionInput" type="text" placeholder="Nome: " />
           <input className="collectionInput" type="text" placeholder="Descrição: " />
           <div className="collectionCoverSelect">
-            <p>CAPA DA COLEÇÃO:</p>
+            <p style={{fontSize: "larger"}}>CAPA DA COLEÇÃO:</p>
             <div className="collectionCoverOptions">
               <div className="collectionCoverOption"><img src={fisica} style={{width: "8.5rem", height: "8.5rem"}}/></div>
               <div className="collectionCoverOption"><img src={matematica} style={{width: "8.5rem", height: "8.5rem"}}/></div>

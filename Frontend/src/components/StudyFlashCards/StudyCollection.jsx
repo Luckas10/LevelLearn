@@ -4,7 +4,7 @@ import flashcardsimg from "../../assets/CoverImages/fisica.svg";
 import { NavLink } from "react-router-dom";
 
 export default function StudyCollection() {
-  const containers = Array.from({ length: 12 }); // 12 containers
+  const containers = Array.from({ length: 14 }); // 12 containers
 
   return (
     <div className="studyCollection-page">
