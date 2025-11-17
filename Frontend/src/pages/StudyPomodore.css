@@ -101,6 +101,10 @@
   margin-right: 10px;
 }
 
+.btnPomodore.pomo img {
+  padding: 3px;
+}
+
 @media (max-width: 700px) {
   .pomodoretimer-container {
     flex-direction: column;

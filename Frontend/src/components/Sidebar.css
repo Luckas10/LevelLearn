@@ -16,6 +16,14 @@
     z-index: 10000; /* garante que fique acima do conteúdo */
 }
 
+.sidebarLinks {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 70%;
+    padding: 10%;
+}
+
 .sidebarLogo {
     text-align: center;
     padding: 1em 0;
@@ -25,7 +33,7 @@
     justify-content: center;
     font-weight: bold;
     margin-top: 0.2em;
-    margin-bottom: 4em;
+    margin-bottom: 0;
 }
 
 .sidebarLogo img {
@@ -152,6 +160,10 @@
         align-items: center;
         background-color: #0C0B1A;
         z-index: 10000; /* consistente com desktop */
+    }
+
+    .sidebarLinks {
+        flex-direction: row;
     }
 
     .sidebarLogo {

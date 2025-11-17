@@ -85,8 +85,7 @@ export function StudyPomodore() {
                   cy="250"
                   style={{
                     strokeDasharray: circumference,
-                    strokeDashoffset:
-                      circumference * (1 - progress / 100),
+                    strokeDashoffset: circumference * (1 - progress / 100),
                     transition: "stroke-dashoffset 0.5s linear",
                     transform: "rotate(-90deg)",
                     transformOrigin: "50% 50%",
