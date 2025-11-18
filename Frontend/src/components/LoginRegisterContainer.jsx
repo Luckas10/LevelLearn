@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import "./LoginRegisterContainer.css";
 import ButtonDarkMode from "./ButtonDarkMode";
 
-export default function LoginRegisterContainer({ isNight, onToggleTheme }) {
+export default function LoginRegisterContainer({ isNight, onToggleTheme, onLogin, onRegister }) {
     const mainRef = useRef(null);        // <main>
     const scopeRef = useRef(null);       // wrapper para escopar querySelector
 
@@ -65,13 +65,32 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme }) {
         };
     }, []);
 
+    const handleSignIn = async (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.currentTarget);
+        const email = fd.get("email")?.toString().trim();
+        const password = fd.get("password")?.toString();
+        if (onLogin) await onLogin({ email, password });
+    };
+
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.currentTarget);
+        const username = fd.get("username")?.toString().trim();
+        const email = fd.get("email")?.toString().trim();
+        const password = fd.get("password")?.toString();
+        if (onRegister) await onRegister({ username, email, password });
+    };
+
     return (
         <main ref={mainRef}>
             {/* escopo para os querySelectors */}
             <div ref={scopeRef} className="box">
                 <div className="inner-box">
                     <div className="forms-wrap">
-                        <form action="index.html" autoComplete="off" className="sign-in-form">
+
+                        {/* LOGIN */}
+                        <form action="index.html" autoComplete="off" className="sign-in-form" onSubmit={handleSignIn}>
                             <div className="logo">
                                 <div className="brand">
                                     <img src="/img/LogoSVG.svg" alt="LevelLearn" />
@@ -90,6 +109,7 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme }) {
                             <div className="actual-form">
                                 <div className="input-wrap">
                                     <input
+                                        name="email"
                                         type="email"
                                         minLength={4}
                                         className="input-field"
@@ -101,6 +121,7 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme }) {
 
                                 <div className="input-wrap">
                                     <input
+                                        name="password"
                                         type="password"
                                         minLength={4}
                                         className="input-field"
@@ -119,7 +140,8 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme }) {
                             </div>
                         </form>
 
-                        <form action="index.html" autoComplete="off" className="sign-up-form">
+                        {/* REGISTER */}
+                        <form action="index.html" autoComplete="off" className="sign-up-form" onSubmit={handleSignUp}>
                             <div className="logo">
                                 <div className="brand">
                                     <img src="/img/LogoSVG.svg" alt="LevelLearn" />
@@ -138,6 +160,7 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme }) {
                             <div className="actual-form">
                                 <div className="input-wrap">
                                     <input
+                                        name="username"
                                         type="text"
                                         minLength={4}
                                         className="input-field"
@@ -149,6 +172,7 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme }) {
 
                                 <div className="input-wrap">
                                     <input
+                                        name="email"
                                         type="email"
                                         className="input-field"
                                         autoComplete="off"
@@ -159,6 +183,7 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme }) {
 
                                 <div className="input-wrap">
                                     <input
+                                        name="password"
                                         type="password"
                                         minLength={4}
                                         className="input-field"
