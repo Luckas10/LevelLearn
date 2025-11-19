@@ -1,6 +1,6 @@
 // StudyTabs.jsx
 import { useState } from "react";
-import Tabs from "../Tabs"; // ajuste o caminho conforme sua estrutura
+import Tabs from "../../General/Tabs"; // ajuste o caminho conforme sua estrutura
 import StudyCollection from "./StudyCollection";
 // import StudyLibrary from "./StudyLibrary"; // quando existir
 

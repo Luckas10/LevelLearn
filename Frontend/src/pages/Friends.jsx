@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Tabs from "../components/Tabs"; // caminho conforme sua estrutura
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
+import Tabs from "../components/General/Tabs"; // caminho conforme sua estrutura
+import Sidebar from "../components/General/Sidebar";
+import Navbar from "../components/General/Navbar";
 import "./Friends.css";
 
 const MOCK_FRIENDS = [

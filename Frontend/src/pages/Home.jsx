@@ -1,5 +1,5 @@
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
+import Sidebar from "../components/General/Sidebar";
+import Navbar from "../components/General/Navbar";
 import Gato from "../assets/Animals/Gato.png";
 import "./Home.css";
 
