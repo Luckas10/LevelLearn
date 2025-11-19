@@ -1,7 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from sqlmodel import select
 from typing import List
-from models import ShopItem
+from models import ShopItem, User
 from database import SessionDep
 
 from routers.auth import get_current_user
@@ -9,18 +9,18 @@ from routers.auth import get_current_user
 router = APIRouter(prefix="/shop", tags=["Loja"])
 
 @router.get("")
-def listar_itens(session: SessionDep) -> List[ShopItem]:
+def listar_itens(session: SessionDep, current_user: User = Depends(get_current_user)) -> List[ShopItem]:
     return session.exec(select(ShopItem)).all()
 
 @router.post("")
-def cadastrar_item(session: SessionDep, item: ShopItem) -> ShopItem:
+def cadastrar_item(session: SessionDep, item: ShopItem, current_user: User = Depends(get_current_user)) -> ShopItem:
     session.add(item)
     session.commit()
     session.refresh(item)
     return item
 
 @router.delete("/{id}")
-def deletar_item(session: SessionDep, id: int) -> str:
+def deletar_item(session: SessionDep, id: int, current_user: User = Depends(get_current_user)) -> str:
     item = session.exec(select(ShopItem).where(ShopItem.id == id)).one()
     session.delete(item)
     session.commit()

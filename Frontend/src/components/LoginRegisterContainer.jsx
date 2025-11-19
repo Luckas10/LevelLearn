@@ -110,13 +110,12 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme, onLogin
                                 <div className="input-wrap">
                                     <input
                                         name="email"
-                                        type="email"
                                         minLength={4}
                                         className="input-field"
                                         autoComplete="off"
                                         required
                                     />
-                                    <label className="labelLoginContainer">E-mail</label>
+                                    <label className="labelLoginContainer">E-mail ou Apelido</label>
                                 </div>
 
                                 <div className="input-wrap">
@@ -161,13 +160,14 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme, onLogin
                                 <div className="input-wrap">
                                     <input
                                         name="username"
+                                        pattern="\S*"
                                         type="text"
                                         minLength={4}
                                         className="input-field"
                                         autoComplete="off"
                                         required
                                     />
-                                    <label className="labelLoginContainer">Nome</label>
+                                    <label className="labelLoginContainer">Apelido</label>
                                 </div>
 
                                 <div className="input-wrap">
