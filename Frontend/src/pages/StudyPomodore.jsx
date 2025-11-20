@@ -94,6 +94,7 @@ export function StudyPomodore() {
                     transition: "stroke-dashoffset 0.5s linear",
                     transform: "rotate(-90deg)",
                     transformOrigin: "50% 50%",
+                    filter: `drop-shadow(0 0 20px ${startColor})`
                   }}
                 />
                 <defs>
@@ -110,7 +111,7 @@ export function StudyPomodore() {
 
               {/* Fogueira */}
               <div className="campfire-wrapper">
-                <Campfire />
+                <Campfire isActive={isRunning}/>
               </div>
             </div>
           </div>
