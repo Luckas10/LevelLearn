@@ -9,7 +9,6 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme, onLogin
     useEffect(() => {
         const root = scopeRef.current;
         const main = mainRef.current;
-        document.body.style.paddingLeft = "0";
 
         // Seletores escopados ao componente
         const inputs = root.querySelectorAll(".input-field");

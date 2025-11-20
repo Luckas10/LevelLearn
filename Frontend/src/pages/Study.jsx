@@ -7,7 +7,7 @@ export function Study() {
     return (
         <div className="study-page">
             <Sidebar />
-            <section className="content">
+            <section className="content page-full-content">
                 <Navbar />
                 <StudyHeader />
                 <StudyCardsContainer />

@@ -80,7 +80,7 @@ export function Friends() {
 
 
     return (
-        <div className="friends-page">
+        <div className="friends-page page-full-content">
             <Sidebar />
             <section className="friends">
                 <Navbar />

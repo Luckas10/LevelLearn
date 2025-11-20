@@ -16,6 +16,10 @@
     z-index: 10000; /* garante que fique acima do conteúdo */
 }
 
+.page-full-content {
+    padding-left: 15vw;
+}
+
 .sidebarLinks {
     display: flex;
     flex-direction: column;
@@ -105,7 +109,7 @@
 
 /* ======= RESPONSIVO 1 (≤850px) ======= */
 @media (max-width: 850px) {
-    body {
+    .page-full-content {
         padding-left: 6rem;
     }
 

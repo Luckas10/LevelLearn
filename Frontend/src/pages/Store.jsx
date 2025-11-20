@@ -108,7 +108,7 @@ export function Store() {
     return (
         <div className="store-page">
             <Sidebar />
-            <section className="store-section">
+            <section className="store-section page-full-content">
                 <Navbar />
 
                 <div className="store">

@@ -71,7 +71,7 @@ export function StudyPomodore() {
   return (
     <div className="studyPomodore-page">
       <Sidebar />
-      <section className="studyPomodore">
+      <section className="studyPomodore page-full-content">
 
         <Navbar />
         <div className="pomodoretimer-container">

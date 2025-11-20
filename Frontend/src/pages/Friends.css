@@ -11,7 +11,7 @@
 .friends {
     display: flex;
     flex-direction: column;
-    width: 85%;
+    width: 100%;
     height: 100%;
 }
 

@@ -60,8 +60,8 @@ html {
 
 
 
-body {
-    padding-left: 15%;
+page-content {
+    padding-left: 15vw;
 }
 
 body::-webkit-scrollbar {
