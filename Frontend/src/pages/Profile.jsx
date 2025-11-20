@@ -18,12 +18,15 @@ import Math from "../assets/Achievements/Math.png";
 
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { getDataUser } from "../services/auth";
 
 export function Profile() {
     const [userName, setUserName] = useState("USERNAME");
-    const [userLevel, setUserLevel] = useState(25);
-    const [userXP, setUserXP] = useState(1500);
-    const [friendCount, setFriendCount] = useState(5);
+    const [userLevel, setUserLevel] = useState(1);
+    const [userXP, setUserXP] = useState(0);
+    const [userCoins, setUserCoins] = useState(0);
+    const [userCombo, setUserCombo] = useState(0);
+    const [friendCount, setFriendCount] = useState(14);
 
     // Calcula o tamanho da fonte conforme o número de caracteres
     const getFontSize = (name) => {
@@ -40,22 +43,42 @@ export function Profile() {
 
         scrollables.forEach((el) => {
             el.addEventListener('wheel', (e) => {
-            const isHorizontal = el.scrollWidth > el.clientWidth;
-            const isVertical = el.scrollHeight > el.clientHeight;
+                const isHorizontal = el.scrollWidth > el.clientWidth;
+                const isVertical = el.scrollHeight > el.clientHeight;
 
-            if (isHorizontal && !isVertical) {
-                e.preventDefault();
-                el.scrollLeft += e.deltaY;
-            }
+                if (isHorizontal && !isVertical) {
+                    e.preventDefault();
+                    el.scrollLeft += e.deltaY;
+                }
             }, { passive: false });
         });
 
         return () => {
             scrollables.forEach((el) => {
-            el.replaceWith(el.cloneNode(true));
+                el.replaceWith(el.cloneNode(true));
             });
         };
     }, []);
+
+    useEffect(() => {
+    async function loadUser() {
+        try {
+            const user = await getDataUser();
+
+            setUserName(user.username);
+            setUserLevel(user.level);
+            setUserXP(user.xp);
+            setUserCoins(user.coins);
+            setUserCombo(user.combo);
+
+        } catch (err) {
+            console.error("Erro ao carregar dados do usuário:", err);
+        }
+    }
+
+    loadUser();
+}, []);
+
 
     return (
         <div className="profile-page">
@@ -83,7 +106,7 @@ export function Profile() {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="user-badges">
                             <div className="badgeProfile">
                                 <img src={TrophyIcon} alt="Trophy Icon" className="trophy-icon" />
@@ -136,7 +159,7 @@ export function Profile() {
                                     <img src={Cobra} alt="Friend img" />
                                     <span>Amigo6</span>
                                 </NavLink>
-                                
+
                                 <NavLink className="friend">
                                     <img src={Cobra} alt="Friend img" />
                                     <span>Amigo6</span>
@@ -179,7 +202,7 @@ export function Profile() {
                             <div className="achievements-list">
                                 <div className="achievement">
 
-                                    <img src={Math} alt="" className="achievement-picture"/>
+                                    <img src={Math} alt="" className="achievement-picture" />
 
                                     <div className="achievement-info">
                                         <p className="achievement-title">
@@ -193,7 +216,7 @@ export function Profile() {
 
                                 <div className="achievement">
 
-                                    <img src={Math} alt="" className="achievement-picture"/>
+                                    <img src={Math} alt="" className="achievement-picture" />
 
                                     <div className="achievement-info">
                                         <p className="achievement-title">
@@ -207,7 +230,7 @@ export function Profile() {
 
                                 <div className="achievement">
 
-                                    <img src={Math} alt="" className="achievement-picture"/>
+                                    <img src={Math} alt="" className="achievement-picture" />
 
                                     <div className="achievement-info">
                                         <p className="achievement-title">
@@ -221,7 +244,7 @@ export function Profile() {
 
                                 <div className="achievement">
 
-                                    <img src={Math} alt="" className="achievement-picture"/>
+                                    <img src={Math} alt="" className="achievement-picture" />
 
                                     <div className="achievement-info">
                                         <p className="achievement-title">
@@ -234,7 +257,7 @@ export function Profile() {
 
                                 <div className="achievement">
 
-                                    <img src={Math} alt="" className="achievement-picture"/>
+                                    <img src={Math} alt="" className="achievement-picture" />
 
                                     <div className="achievement-info">
                                         <p className="achievement-title">

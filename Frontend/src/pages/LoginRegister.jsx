@@ -5,6 +5,7 @@ import Background from "../components/LoginAndRegister/Background";
 import LoginRegisterContainer from "../components/LoginAndRegister/Container";
 import { loginWithPassword, registerUser } from "../services/auth";
 import "../style.css";
+import "./LoginRegister.css";
 
 export function LoginRegister() {
     const [isNight, setIsNight] = useState(false);
@@ -24,13 +25,28 @@ export function LoginRegister() {
         try {
             const { access_token } = await loginWithPassword({ email, password });
             localStorage.setItem("token", access_token);
-            await Swal.fire({
+
+            navigate("/");  // primeiro redireciona pro dashboard
+
+            Swal.fire({
                 icon: "success",
-                title: "Login realizado!",
-                text: "Bem-vindo de volta 👋",
-                confirmButtonText: "Continuar",
+                title: "Bem-vindo 👋",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3200,              // ⏳ um pouco mais demorado
+                timerProgressBar: true,
+                showClass: {
+                    popup: "swal2-animate-toast-in",   // animação de entrada
+                },
+                hideClass: {
+                    popup: "swal2-animate-toast-out",  // animação de saída
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
             });
-            navigate("/");
         } catch (err) {
             const msg =
                 err?.response?.data?.detail ||
@@ -42,6 +58,9 @@ export function LoginRegister() {
             });
         }
     };
+
+
+
 
     const handleRegister = async ({ username, email, password }) => {
         try {

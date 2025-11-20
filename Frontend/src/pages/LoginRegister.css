@@ -1,0 +1,162 @@
+/* ===========================
+   SWEETALERT2 – BASE POPUP
+   =========================== */
+.swal2-popup {
+    background: radial-gradient(circle at top, #132045 0, #050713 55%);
+    border-radius: 18px;
+    border: 1px solid #243b72;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75);
+    padding: 1.8rem 2.4rem;
+    color: #e4e7ff;
+    font-family: "Inter", sans-serif;
+}
+
+/* TÍTULO */
+.swal2-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* TEXTO */
+.swal2-html-container {
+    font-size: 0.95rem;
+    color: #c7ccff;
+}
+
+/* BACKDROP (FUNDO ESCURECIDO) */
+.swal2-backdrop-show {
+    background: rgba(4, 6, 15, 0.78);
+}
+
+
+/* ===========================
+   AÇÕES E BOTÕES
+   =========================== */
+
+/* CONTAINER DOS BOTÕES */
+.swal2-actions {
+    gap: 0.75rem;
+    margin-top: 1.6rem;
+}
+
+/* ESTILO BASE DOS BOTÕES */
+.swal2-confirm,
+.swal2-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 130px;
+    font-size: 0.9rem;
+    border-radius: 999px;
+    padding: 0.65rem 1.9rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    transition:
+        transform 0.14s ease,
+        box-shadow 0.18s ease,
+        background-color 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease;
+}
+
+/* BOTÃO PRINCIPAL (CONFIRMAR) */
+.swal2-confirm {
+    background: linear-gradient(135deg, #4a4dff, #6276ff);
+    border: none;
+    color: #ffffff;
+    box-shadow: 0 12px 28px rgba(74, 77, 255, 0.55);
+}
+
+.swal2-confirm:hover {
+    filter: brightness(1.06);
+    transform: translateY(-1px) scale(1.01);
+}
+
+/* BOTÃO CANCELAR */
+.swal2-cancel {
+    background: #18192f;
+    color: #d3d6ff;
+    border: 1px solid #343866;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+.swal2-cancel:hover {
+    background: #202342;
+    border-color: #4a4dff;
+    transform: translateY(-1px);
+}
+
+/* FOCUS BONITO / ACESSIBILIDADE */
+.swal2-confirm:focus-visible,
+.swal2-cancel:focus-visible {
+    outline: 2px solid #6b6eff;
+    outline-offset: 2px;
+}
+
+
+/* ===========================
+   TOAST / LOGIN “BEM-VINDO”
+   =========================== */
+
+.swal2-toast {
+    border-radius: 999px;
+    background: #111632;
+    border: 1px solid #273568;
+    color: #e4e7ff;
+}
+
+/* BARRA DE TEMPO DO TOAST */
+.swal2-timer-progress-bar {
+    background: linear-gradient(90deg, #4A4DFF, #6A7CFF);
+    height: 4px !important;
+    border-radius: 10px;
+}
+
+/* ANIMAÇÕES DE ENTRADA/SAÍDA DO TOAST */
+@keyframes toast-in {
+    from {
+        opacity: 0;
+        transform: translateY(-12px) translateX(8px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) translateX(0) scale(1);
+    }
+}
+
+@keyframes toast-out {
+    from {
+        opacity: 1;
+        transform: translateY(0) translateX(0) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-8px) translateX(6px) scale(0.97);
+    }
+}
+
+.swal2-animate-toast-in {
+    animation: toast-in 0.35s ease-out both;
+}
+
+.swal2-animate-toast-out {
+    animation: toast-out 0.28s ease-in both;
+}
+
+
+/* ===========================
+VARIAÇÃO POR TEMA (LIGHT/DARK)
+=========================== */
+
+:root[data-theme="light"] .swal2-popup {
+    background: #f5f7ff;
+    color: #101225;
+}
+
+:root[data-theme="dark"] .swal2-popup {
+    background: radial-gradient(circle at top, #132045 0, #050713 55%);
+    color: #e4e7ff;
+}
