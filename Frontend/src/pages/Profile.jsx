@@ -83,7 +83,7 @@ export function Profile() {
     return (
         <div className="profile-page">
             <Sidebar />
-            <section className="profile page-full-content">
+            <section className="profile">
                 <Navbar />
                 <div className="profile-container">
 

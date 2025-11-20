@@ -16,7 +16,7 @@
     z-index: 10000; /* garante que fique acima do conteúdo */
 }
 
-.page-full-content {
+section {
     padding-left: 15vw;
 }
 
@@ -109,7 +109,7 @@
 
 /* ======= RESPONSIVO 1 (≤850px) ======= */
 @media (max-width: 850px) {
-    .page-full-content {
+    section {
         padding-left: 6rem;
     }
 
@@ -146,9 +146,8 @@
 
 /* ======= RESPONSIVO 2 (≤530px) ======= */
 @media (max-width: 530px) {
-    body {
-        padding-left: 0;
-        padding-bottom: 4.5rem; /* evita que o conteúdo fique escondido atrás da barra */
+    section {
+        padding-left: 0 !important;
     }
 
     .sidebar {

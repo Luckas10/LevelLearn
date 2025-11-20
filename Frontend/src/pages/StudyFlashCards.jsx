@@ -7,7 +7,7 @@ export function StudyFlashCards() {
     return (
         <div className="studyFlashCards-page">
             <Sidebar />
-            <section className="studyFlashCards page-full-content">
+            <section className="studyFlashCards">
                 <Navbar />
                 <StudyTabs />
             </section>

@@ -5,7 +5,7 @@ import "./Home.css";
 
 export function Home() {
     return (
-        <div className="home-page page-full-content">
+        <div className="home-page">
             <Sidebar />
 
             <section className="home-section">
