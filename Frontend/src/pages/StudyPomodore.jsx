@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../components/General/Sidebar";
 import Navbar from "../components/General/Navbar";
-import { Campfire } from "../components/Study/StudyPomodore/Campfire";
-import { ModalSettings } from "../components/Study/StudyPomodore/ModalSettings";
+import { Campfire } from "../components/Study/Pomodore/Campfire";
+import { ModalSettings } from "../components/Study/Pomodore/ModalSettings";
 
 import "./StudyPomodore.css";
 
@@ -75,7 +75,7 @@ export function StudyPomodore() {
 
         <Navbar />
         <div className="pomodoretimer-container">
-          
+
           {/* Timer */}
           <div className="pomodore-timer">
             <div className="timer-circle">
@@ -111,7 +111,7 @@ export function StudyPomodore() {
 
               {/* Fogueira */}
               <div className="campfire-wrapper">
-                <Campfire isActive={isRunning}/>
+                <Campfire isActive={isRunning} />
               </div>
             </div>
           </div>

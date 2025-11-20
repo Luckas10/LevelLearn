@@ -1,5 +1,5 @@
-import StudyCreateCollection from "./StudyCreateCollection";
-import StudyInteractiveCard from "./StudyInteractiveCard";
+import StudyCreateCollection from "./CreateCollection";
+import StudyInteractiveCard from "./InteractiveCard";
 import flashcardsimg from "/CoverImages/fisica.svg";
 import { NavLink } from "react-router-dom";
 
