@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
+import Sidebar from "../components/General/Sidebar";
+import Navbar from "../components/General/Navbar";
 import StoreHeader from "../components/Store/StoreHeader";
 import StoreGrid from "../components/Store/StoreGrid";
 import StoreModal from "../components/Store/StoreModal";

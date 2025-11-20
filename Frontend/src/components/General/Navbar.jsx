@@ -1,6 +1,6 @@
-import FireIcon from "../assets/Fire.png";
-import CoinIcon from "../assets/Coin.png";
-import UserIcon from "../assets/User.png";
+import FireIcon from "../../assets/Fire.png";
+import CoinIcon from "../../assets/Coin.png";
+import UserIcon from "../../assets/User.png";
 import "./Navbar.css";
 
 export default function Navbar() {

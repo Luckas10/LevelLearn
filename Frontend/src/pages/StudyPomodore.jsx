@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
-import { Campfire } from "../components/StudyPomodore/Campfire";
-import { ModalSettings } from "../components/StudyPomodore/ModalSettings";
+import Sidebar from "../components/General/Sidebar";
+import Navbar from "../components/General/Navbar";
+import { Campfire } from "../components/Study/StudyPomodore/Campfire";
+import { ModalSettings } from "../components/Study/StudyPomodore/ModalSettings";
 
 import "./StudyPomodore.css";
 
