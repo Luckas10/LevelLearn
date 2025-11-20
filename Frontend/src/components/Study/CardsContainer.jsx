@@ -1,6 +1,6 @@
 import flashcardsimg from "../../assets/Flashcards-img.png";
 import pomodoreimg from "../../assets/Pomodore-img.png";
-import { StudyCard } from "./StudyCard";
+import { StudyCard } from "./Card";
 
 export function StudyCardsContainer() {
     return (

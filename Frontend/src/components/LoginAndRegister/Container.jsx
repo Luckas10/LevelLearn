@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import "./LoginRegisterContainer.css";
-import ButtonDarkMode from "./ButtonDarkMode";
+import "./Container.css";
+import ButtonDarkMode from "../General/ButtonDarkMode";
 
 export default function LoginRegisterContainer({ isNight, onToggleTheme, onLogin, onRegister }) {
     const mainRef = useRef(null);        // <main>

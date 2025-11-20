@@ -1,4 +1,4 @@
-import StoreItem from "./StoreItem";
+import StoreItem from "./Item";
 
 export default function StoreGrid({ items = [], onBuy, emptyText }) {
     if (!items.length) return <p className="store-empty">{emptyText}</p>;

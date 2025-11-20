@@ -23,3 +23,8 @@ export async function registerUser({ username, email, password }) {
     });
     return data;
 }
+
+export async function getDataUser() {
+    const { data } = await api.get("/users/me");
+    return data; // ex.: { id, username, email, ... }
+}
