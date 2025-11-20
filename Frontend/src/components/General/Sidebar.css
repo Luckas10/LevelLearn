@@ -73,6 +73,7 @@
         border-color 180ms ease,
         transform 140ms ease,
         box-shadow 180ms ease;
+    cursor: pointer;
 }
 
 .sidebar a:hover {

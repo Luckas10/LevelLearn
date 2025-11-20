@@ -1,15 +1,47 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import "./Sidebar.css";
 
 export default function Sidebar() {
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        const confirm = await Swal.fire({
+            title: "Deseja sair?",
+            text: "Você será desconectado da sua conta.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sim, sair",
+            cancelButtonText: "Cancelar",
+        });
+
+        if (confirm.isConfirmed) {
+            localStorage.removeItem("token");
+
+            await Swal.fire({
+                icon: "success",
+                title: "Sessão encerrada",
+                text: "Você saiu da conta com sucesso.",
+                timer: 1800,
+                showConfirmButton: false,
+            });
+
+            navigate("/login");
+        }
+    };
+
     return (
         <nav className="sidebar">
             <div className="sidebarLogo">
                 <img src="/img/LogoSVG.svg" alt="Logo" />
                 <span>LevelLearn</span>
             </div>
+
             <ul className="sidebarLinks">
                 <li>
                     <NavLink to="/" end>
@@ -42,14 +74,16 @@ export default function Sidebar() {
                     </NavLink>
                 </li>
             </ul>
-            <ul className="logout">
+
+            <ul className="">
                 <li>
-                    <NavLink to="/logout">
+                    <a onClick={handleLogout} className="logoutButton">
                         <FontAwesomeIcon size="lg" icon={fas.faRightFromBracket} />
                         <span>SAIR</span>
-                    </NavLink>
+                    </a>
                 </li>
             </ul>
-        </nav>
+
+        </nav >
     );
 }
