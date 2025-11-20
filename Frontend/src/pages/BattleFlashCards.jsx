@@ -1,5 +1,5 @@
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
+import Sidebar from "../components/General/Sidebar";
+import Navbar from "../components/General/Navbar";
 import "./BattleFlashCards.css";
 
 // Fundo e sprites (USAR OS SVGs da imagem 3)

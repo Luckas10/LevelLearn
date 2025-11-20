@@ -1,15 +1,15 @@
 import { useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import fisica from "../../assets/CoverImages/fisica.svg"
-import matematica from "../../assets/CoverImages/matematica.svg"
-import portugues from "../../assets/CoverImages/portugues.svg"
-import edfisica from "../../assets/CoverImages/edfisica.svg"
-import quimica from "../../assets/CoverImages/quimica.svg"
-import historia from "../../assets/CoverImages/historia.svg"
-import geografia from "../../assets/CoverImages/geografia.svg"
-import ingles from "../../assets/CoverImages/ingles.svg"
-import biologia from "../../assets/CoverImages/biologia.svg"
+import fisica from "/CoverImages/fisica.svg"
+import matematica from "/CoverImages/matematica.svg"
+import portugues from "/CoverImages/portugues.svg"
+import edfisica from "/CoverImages/edfisica.svg"
+import quimica from "/CoverImages/quimica.svg"
+import historia from "/CoverImages/historia.svg"
+import geografia from "/CoverImages/geografia.svg"
+import ingles from "/CoverImages/ingles.svg"
+import biologia from "/CoverImages/biologia.svg"
 
 export default function StudyCreateCollection({ onClose }) {
 

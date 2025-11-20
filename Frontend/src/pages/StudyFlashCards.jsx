@@ -1,6 +1,6 @@
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
-import StudyTabs from "../components/StudyFlashCards/StudyTabs";
+import Sidebar from "../components/General/Sidebar";
+import Navbar from "../components/General/Navbar";
+import StudyTabs from "../components/Study/FlashCards/Tabs";
 import "./StudyFlashCards.css";
 
 export function StudyFlashCards() {

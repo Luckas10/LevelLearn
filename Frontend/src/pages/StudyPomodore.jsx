@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
-import { Campfire } from "../components/StudyPomodore/Campfire";
-import { ModalSettings } from "../components/StudyPomodore/ModalSettings";
+import Sidebar from "../components/General/Sidebar";
+import Navbar from "../components/General/Navbar";
+import { Campfire } from "../components/Study/Pomodore/Campfire";
+import { ModalSettings } from "../components/Study/Pomodore/ModalSettings";
 
 import "./StudyPomodore.css";
 
@@ -75,7 +75,7 @@ export function StudyPomodore() {
 
         <Navbar />
         <div className="pomodoretimer-container">
-          
+
           {/* Timer */}
           <div className="pomodore-timer">
             <div className="timer-circle">
@@ -94,6 +94,7 @@ export function StudyPomodore() {
                     transition: "stroke-dashoffset 0.5s linear",
                     transform: "rotate(-90deg)",
                     transformOrigin: "50% 50%",
+                    filter: `drop-shadow(0 0 20px ${startColor})`
                   }}
                 />
                 <defs>
@@ -110,7 +111,7 @@ export function StudyPomodore() {
 
               {/* Fogueira */}
               <div className="campfire-wrapper">
-                <Campfire />
+                <Campfire isActive={isRunning} />
               </div>
             </div>
           </div>

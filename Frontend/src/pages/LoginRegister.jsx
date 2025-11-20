@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import Background from "../components/Background";
-import LoginRegisterContainer from "../components/LoginRegisterContainer";
+import Background from "../components/LoginAndRegister/Background";
+import LoginRegisterContainer from "../components/LoginAndRegister/Container";
 import { loginWithPassword, registerUser } from "../services/auth";
 import "../style.css";
 

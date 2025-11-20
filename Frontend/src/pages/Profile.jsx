@@ -1,5 +1,5 @@
-import Sidebar from "../components/Sidebar";
-import Navbar from "../components/Navbar";
+import Sidebar from "../components/General/Sidebar";
+import Navbar from "../components/General/Navbar";
 import UserIcon from "../assets/Animals/Raposa.png";
 import TrophyIcon from "../assets/Trophy.png";
 import ClockIcon from "../assets/Clock.png";
