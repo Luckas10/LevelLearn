@@ -1,6 +1,15 @@
 from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship
 
+# Usuários e Conquistas
+
+class UserAchievementLink(SQLModel, table=True):
+    __tablename__ = "user_achievement_link"
+
+    user_id: int = Field(foreign_key="user.id", primary_key=True)
+    achievement_id: int = Field(foreign_key="achievement.id", primary_key=True)
+
+
 # Usuário
 
 class User(SQLModel, table=True):
@@ -15,8 +24,14 @@ class User(SQLModel, table=True):
     combo: int = Field(default=0)
 
     # Relacionamentos
-    achievements: List["Achievement"] = Relationship(back_populates="user")
-    friends: List["Friendship"] = Relationship(back_populates="user", sa_relationship_kwargs={"foreign_keys": "[Friendship.user_id]"})
+    achievements: List["Achievement"] = Relationship(
+        back_populates="users",
+        link_model=UserAchievementLink
+    )
+    friends: List["Friendship"] = Relationship(
+        back_populates="user",
+        sa_relationship_kwargs={"foreign_keys": "[Friendship.user_id]"}
+    )
     decks: List["Deck"] = Relationship(back_populates="owner")
 
 # Conquistas
@@ -25,8 +40,14 @@ class Achievement(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     description: str
-    user_id: int = Field(foreign_key="user.id")
-    user: Optional[User] = Relationship(back_populates="achievements")
+    image_path: str  # ou pathimage, como preferir
+
+    # usuários que possuem essa conquista
+    users: List[User] = Relationship(
+        back_populates="achievements",
+        link_model=UserAchievementLink
+    )
+
 
 
 # Amizades
