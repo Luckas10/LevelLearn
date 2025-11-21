@@ -1,24 +1,53 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX, faPencil } from "@fortawesome/free-solid-svg-icons";
 import "./ModalSettings.css";
 
-export function ModalSettings({ open, onClose }) {
+export function ModalSettings({ open, onClose, settings, onSave }) {
   const dialogRef = useRef(null);
 
+  // estados locais (edição antes de salvar)
+  const [localSettings, setLocalSettings] = useState(settings);
+
+  // sincroniza ao abrir
+  useEffect(() => {
+    if (open) setLocalSettings(settings);
+  }, [open, settings]);
+
+  // abrir/fechar modal com animação
   useEffect(() => {
     const dialog = dialogRef.current;
+    if (!dialog) return;
 
     if (open) {
-      // abre invisível, aplica animação depois
       dialog.showModal();
       dialog.classList.add("showing");
 
       requestAnimationFrame(() => {
         dialog.classList.add("visible");
       });
+
+      // clicar fora do modal fecha sem salvar
+        
+      const handleClickOutside = (event) => {
+        const dialogDimensions = dialog.getBoundingClientRect();
+        if (
+            event.clientX < dialogDimensions.left ||
+            event.clientX > dialogDimensions.right ||
+            event.clientY < dialogDimensions.top ||
+            event.clientY > dialogDimensions.bottom
+        ) {
+            handleCloseWithoutSaving();
+        }
+      };
+
+      dialog.addEventListener("click", handleClickOutside);
+
+      return () => dialog.removeEventListener("click", handleClickOutside);
+
     } else {
       if (dialog.open) {
         dialog.classList.remove("visible");
-
         setTimeout(() => {
           dialog.classList.remove("showing");
           dialog.close();
@@ -27,8 +56,30 @@ export function ModalSettings({ open, onClose }) {
     }
   }, [open]);
 
+  const handleCloseWithoutSaving = () => {
+    onClose();
+  };
+
+  const handleSave = () => {
+    onSave(localSettings);
+  };
+
+  const updateField = (field, value) => {
+    setLocalSettings((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
   return (
-    <dialog ref={dialogRef} className="settings-dialog" onCancel={onClose}>
+    <dialog ref={dialogRef} className="settings-dialog" onCancel={handleCloseWithoutSaving}>
+
+      {/* Botão X */}
+      <button className="close-x" onClick={handleCloseWithoutSaving}>
+        <FontAwesomeIcon size="sm" icon={faX} />
+      </button>
+      
+
       <h2 className="modal-title">CONFIGURAÇÕES</h2>
 
       {/* DURAÇÃO */}
@@ -37,15 +88,27 @@ export function ModalSettings({ open, onClose }) {
       <div className="duration-grid">
         <div className="duration-block">
           <label>FOCO</label>
-          <input type="number" defaultValue="25" />
+          <input
+            type="number"
+            value={localSettings.pomodoro}
+            onChange={(e) => updateField("pomodoro", Number(e.target.value))}
+          />
         </div>
         <div className="duration-block">
           <label>PAUSA CURTA</label>
-          <input type="number" defaultValue="5" />
+          <input
+            type="number"
+            value={localSettings.short}
+            onChange={(e) => updateField("short", Number(e.target.value))}
+          />
         </div>
         <div className="duration-block">
           <label>PAUSA LONGA</label>
-          <input type="number" defaultValue="15" />
+          <input
+            type="number"
+            value={localSettings.long}
+            onChange={(e) => updateField("long", Number(e.target.value))}
+          />
         </div>
       </div>
 
@@ -54,18 +117,34 @@ export function ModalSettings({ open, onClose }) {
 
       <div className="auto-container">
         <span>Intervalo para pausa longa</span>
-        <input type="number" defaultValue="4" />
+        <input
+          type="number"
+          value={localSettings.autoLongBreakInterval}
+          onChange={(e) =>
+            updateField("autoLongBreakInterval", Number(e.target.value))
+          }
+        />
       </div>
 
       <div className="auto-container">
         <span>Repetições</span>
-        <input type="number" defaultValue="15" />
+        <input
+          type="number"
+          value={localSettings.autoRepeats}
+          onChange={(e) =>
+            updateField("autoRepeats", Number(e.target.value))
+          }
+        />
       </div>
 
       <label className="switch-row">
         Habilitar automático
         <label className="switch">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            checked={localSettings.autoEnabled}
+            onChange={(e) => updateField("autoEnabled", e.target.checked)}
+          />
           <span className="slider"></span>
         </label>
       </label>
@@ -78,14 +157,23 @@ export function ModalSettings({ open, onClose }) {
       <label className="switch-row">
         Permitir alarme
         <label className="switch">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            checked={localSettings.alarmEnabled}
+            onChange={(e) =>
+              updateField("alarmEnabled", e.target.checked)
+            }
+          />
           <span className="slider"></span>
         </label>
       </label>
 
       <div className="select-container">
         <label>Escolha seu alarme</label>
-        <select>
+        <select
+          value={localSettings.alarmSound}
+          onChange={(e) => updateField("alarmSound", e.target.value)}
+        >
           <option>ALARME 1</option>
           <option>ALARME 2</option>
           <option>ALARME 3</option>
@@ -94,8 +182,9 @@ export function ModalSettings({ open, onClose }) {
         </select>
       </div>
 
-      <button className="close-btn" onClick={onClose}>
-        Fechar
+      {/* BOTÃO DE SALVAR */}
+      <button className="close-btn" onClick={handleSave}>
+        Salvar
       </button>
     </dialog>
   );
