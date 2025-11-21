@@ -42,6 +42,8 @@ class TokenResponse(BaseModel):
 # ==============================
 # Endpoints
 # ==============================
+from sqlmodel import or_
+
 @router.post("", response_model=TokenResponse)
 def login(
     session: SessionDep, 
@@ -49,7 +51,12 @@ def login(
     password: Annotated[str, Form()],
     grant_type: Annotated[str, Form()] = 'password' 
 ):
-    user = session.exec(select(User).where(User.username == username)).first()
+    login_value = username
+    user = session.exec(
+        select(User).where(
+            or_(User.username == login_value, User.email == login_value)
+        )).first()
+    
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, 
@@ -71,7 +78,7 @@ def login(
 # Dependência para proteger rotas
 # ==============================
 from fastapi import Header
-
+ 
 def get_current_user(token: Annotated[str, Depends(oauth2_bearer)], session: SessionDep):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])

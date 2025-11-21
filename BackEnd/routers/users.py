@@ -17,11 +17,23 @@ class UserCreate(BaseModel):
     username: str
     email: str
     password: str
+    
+class UserRead(BaseModel):
+    id: int
+    username: str
+    email: str
+    xp: int
+    combo: int
+    level: int
+    coins: int
+
+    class Config:
+        orm_mode = True   # permite retornar o objeto User direto
 
 router = APIRouter(prefix="/users", tags=["Usuários"])
 
-@router.get("")
-def listar_users(session: SessionDep, current_user: User = Depends(get_current_user)) -> List[User]:
+@router.get("", response_model=List[UserRead])
+def listar_users(session: SessionDep, current_user: User = Depends(get_current_user)):
     return session.exec(select(User)).all()
 
 @router.post("", status_code=status.HTTP_201_CREATED)
@@ -62,6 +74,9 @@ def deletar_user(session: SessionDep, id: int, current_user: User = Depends(get_
     session.commit()
     return "Usuário excluído com sucesso."
 
-@router.get("/me")
+@router.get("/me", response_model=UserRead)
 def get_me(current_user: User = Depends(get_current_user)):
-    return {"id": current_user.id, "username": current_user.username}
+    # current_user é um User completo (id, username, email, xp, combo, level, coins, password_hash...)
+    # o FastAPI vai convertê-lo para UserRead automaticamente (sem password_hash)
+    return current_user
+
