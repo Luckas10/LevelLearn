@@ -1,0 +1,85 @@
+.collectionSelected-page {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100vh;
+    color: #333;
+    font-family: "Poppins", sans-serif;
+}
+
+.collectionSelected {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    height: 100%;
+}
+
+.infoPanel {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    height: 100%;
+    color: white;
+}
+
+.infoPanelContainer {
+    display: flex;
+    width: 100%;
+    height: 50%;
+}
+
+.startButtonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 100%;
+}
+
+.startButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 600;
+    border: none;
+    gap: 1rem;
+    border-radius: 1rem;
+    font-family: "Poppins", sans-serif;
+    background-color: #342FCF;
+    width: 25rem;
+    height: 7rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.startButton:hover {
+    background-color: #4346E6;
+}
+
+.cover {
+    display: flex;
+    flex-direction: column;
+    margin-left: 4rem;
+    justify-content: center;
+    align-items: center;
+    width: 28%;
+    height: 80%;
+    background-color: #151838;
+    border-radius: 1rem;
+}
+
+.descriptionCollectionContainer {
+    width: 100%;
+    height: 50%;
+}
+
+.descriptionCollection {
+    margin-left: 4rem;
+    width: 36rem;
+}
+
+.collectionTitle {
+    font-size: 3rem;
+}
