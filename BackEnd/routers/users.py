@@ -18,6 +18,15 @@ class UserCreate(BaseModel):
     email: str
     password: str
     
+class UserAchievementRead(BaseModel):
+    id: int
+    name: str
+    description: str
+    image_path: str
+
+    class Config:
+        from_attributes = True
+
 class UserRead(BaseModel):
     id: int
     username: str
@@ -26,9 +35,10 @@ class UserRead(BaseModel):
     combo: int
     level: int
     coins: int
+    achievements: List[UserAchievementRead] = []
 
     class Config:
-        orm_mode = True   # permite retornar o objeto User direto
+        from_attributes = True
 
 router = APIRouter(prefix="/users", tags=["Usuários"])
 
