@@ -19,6 +19,7 @@ import Math from "../assets/Achievements/Math.png";
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { getDataUser } from "../services/auth";
+import { getAchievementsUser } from "../services/achievements";
 
 export function Profile() {
     const [userName, setUserName] = useState("USERNAME");
@@ -27,6 +28,8 @@ export function Profile() {
     const [userCoins, setUserCoins] = useState(0);
     const [userCombo, setUserCombo] = useState(0);
     const [friendCount, setFriendCount] = useState(14);
+
+    const [achievements, setAchievements] = useState([]);
 
     // Calcula o tamanho da fonte conforme o número de caracteres
     const getFontSize = (name) => {
@@ -61,23 +64,38 @@ export function Profile() {
     }, []);
 
     useEffect(() => {
-    async function loadUser() {
-        try {
-            const user = await getDataUser();
+        async function loadUser() {
+            try {
+                const user = await getDataUser();
 
-            setUserName(user.username);
-            setUserLevel(user.level);
-            setUserXP(user.xp);
-            setUserCoins(user.coins);
-            setUserCombo(user.combo);
+                setUserName(user.username);
+                setUserLevel(user.level);
+                setUserXP(user.xp);
+                setUserCoins(user.coins);
+                setUserCombo(user.combo);
 
-        } catch (err) {
-            console.error("Erro ao carregar dados do usuário:", err);
+            } catch (err) {
+                console.error("Erro ao carregar dados do usuário:", err);
+            }
         }
-    }
 
-    loadUser();
-}, []);
+        loadUser();
+    }, []);
+
+    useEffect(() => {
+        async function loadAchievements() {
+            try {
+                const achievements = await getAchievementsUser();
+                // Aqui você pode usar os dados de conquistas conforme necessário
+                console.log("Conquistas do usuário:", achievements);
+                setAchievements(achievements);
+            } catch (err) {
+                console.error("Erro ao carregar conquistas do usuário:", err);
+            }
+        }
+
+        loadAchievements();
+    }, []);
 
 
     return (
@@ -200,75 +218,26 @@ export function Profile() {
                             <h1>Conquistas</h1>
 
                             <div className="achievements-list">
-                                <div className="achievement">
+                                {achievements.length === 0 ? (
+                                    <p className="no-achievements">Você ainda não possui conquistas.</p>
+                                ) : (
+                                    achievements.map((achievement) => (
+                                        <div className="achievement" key={achievement.id}>
+                                            <img
+                                                src={achievement.image_path || Math}
+                                                alt={achievement.name}
+                                                className="achievement-picture"
+                                            />
 
-                                    <img src={Math} alt="" className="achievement-picture" />
-
-                                    <div className="achievement-info">
-                                        <p className="achievement-title">
-                                            Iniciante
-                                        </p>
-
-                                        <p>Você criou seu primeiro conjunto de flashcards.</p>
-                                    </div>
-
-                                </div>
-
-                                <div className="achievement">
-
-                                    <img src={Math} alt="" className="achievement-picture" />
-
-                                    <div className="achievement-info">
-                                        <p className="achievement-title">
-                                            Iniciante
-                                        </p>
-
-                                        <p>Você criou seu primeiro conjunto de flashcards.</p>
-                                    </div>
-
-                                </div>
-
-                                <div className="achievement">
-
-                                    <img src={Math} alt="" className="achievement-picture" />
-
-                                    <div className="achievement-info">
-                                        <p className="achievement-title">
-                                            Iniciante
-                                        </p>
-
-                                        <p>Você criou seu primeiro conjunto de flashcards.</p>
-                                    </div>
-
-                                </div>
-
-                                <div className="achievement">
-
-                                    <img src={Math} alt="" className="achievement-picture" />
-
-                                    <div className="achievement-info">
-                                        <p className="achievement-title">
-                                            Iniciante
-                                        </p>
-
-                                        <p>Você criou seu primeiro conjunto de flashcards.</p>
-                                    </div>
-                                </div>
-
-                                <div className="achievement">
-
-                                    <img src={Math} alt="" className="achievement-picture" />
-
-                                    <div className="achievement-info">
-                                        <p className="achievement-title">
-                                            Iniciante
-                                        </p>
-
-                                        <p>Você criou seu primeiro conjunto de flashcards.</p>
-                                    </div>
-                                </div>
-
+                                            <div className="achievement-info">
+                                                <p className="achievement-title">{achievement.name}</p>
+                                                <p>{achievement.description}</p>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
                             </div>
+
                         </div>
                     </div>
 
