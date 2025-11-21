@@ -42,26 +42,33 @@ export function Profile() {
     };
 
     useEffect(() => {
+        // Função para tratar o evento de scroll
+        const handleWheel = (e) => {
+            const el = e.currentTarget;
+            const isHorizontal = el.scrollWidth > el.clientWidth;
+            const isVertical = el.scrollHeight > el.clientHeight;
+
+            if (isHorizontal && !isVertical) {
+                e.preventDefault();
+                el.scrollLeft += e.deltaY;
+            }
+        };
+
+        // Seleciona os elementos
         const scrollables = document.querySelectorAll('.friend-list, .achievements-list');
 
+        // Adiciona o listener
         scrollables.forEach((el) => {
-            el.addEventListener('wheel', (e) => {
-                const isHorizontal = el.scrollWidth > el.clientWidth;
-                const isVertical = el.scrollHeight > el.clientHeight;
-
-                if (isHorizontal && !isVertical) {
-                    e.preventDefault();
-                    el.scrollLeft += e.deltaY;
-                }
-            }, { passive: false });
+            el.addEventListener('wheel', handleWheel, { passive: false });
         });
 
+        // Limpeza CORRETA: Apenas remove o listener
         return () => {
             scrollables.forEach((el) => {
-                el.replaceWith(el.cloneNode(true));
+                el.removeEventListener('wheel', handleWheel);
             });
         };
-    }, []);
+    }, []); // Array de dependências vazio está ok aqui, mas idealmente seria useRef
 
     useEffect(() => {
         async function loadUser() {
@@ -78,22 +85,19 @@ export function Profile() {
                 console.error("Erro ao carregar dados do usuário:", err);
             }
         }
-
         loadUser();
     }, []);
 
     useEffect(() => {
         async function loadAchievements() {
             try {
-                const achievements = await getAchievementsUser();
-                // Aqui você pode usar os dados de conquistas conforme necessário
-                console.log("Conquistas do usuário:", achievements);
-                setAchievements(achievements);
+                const response = await getAchievementsUser(); // <- nome diferente
+                setAchievements(response);
             } catch (err) {
                 console.error("Erro ao carregar conquistas do usuário:", err);
+                setAchievements([]); // garante estado consistente
             }
         }
-
         loadAchievements();
     }, []);
 
@@ -218,11 +222,10 @@ export function Profile() {
                             <h1>Conquistas</h1>
 
                             <div className="achievements-list">
-                                {achievements.length === 0 ? (
-                                    <p className="no-achievements">Você ainda não possui conquistas.</p>
-                                ) : (
+                                {achievements.length > 0 ? (
                                     achievements.map((achievement) => (
                                         <div className="achievement" key={achievement.id}>
+
                                             <img
                                                 src={achievement.image_path || Math}
                                                 alt={achievement.name}
@@ -235,10 +238,15 @@ export function Profile() {
                                             </div>
                                         </div>
                                     ))
+                                ) : (
+                                    <p className="no-achievements">
+                                        Você ainda não possui conquistas.
+                                    </p>
                                 )}
                             </div>
 
                         </div>
+
                     </div>
 
                 </div>

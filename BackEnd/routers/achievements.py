@@ -74,10 +74,11 @@ def desbloquear_conquista(
 
 @router.get("/me", response_model=List[AchievementRead])
 def minhas_conquistas(
+    session: SessionDep,
     current_user: User = Depends(get_current_user)
 ):
-    # current_user já vem carregado, mas se quiser garantir:
-    return current_user.achievements
+    session.refresh(current_user)  # 🔥 CARREGA AS RELAÇÕES
+    return current_user.achievements or []
 
 @router.get("/user/{user_id}", response_model=List[AchievementRead])
 def conquistas_por_usuario(
@@ -88,4 +89,6 @@ def conquistas_por_usuario(
     user = session.get(User, user_id)
     if not user:
         raise HTTPException(status_code=404, detail="Usuário não encontrado.")
-    return user.achievements
+
+    session.refresh(user)  # 🔥 OBRIGATÓRIO
+    return user.achievements or []
