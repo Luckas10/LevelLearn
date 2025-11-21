@@ -5,6 +5,7 @@ import { LoginRegister } from "./pages/LoginRegister";
 import { Study } from "./pages/Study";
 import { StudyFlashCards } from "./pages/StudyFlashCards";
 import { StudyPomodore } from "./pages/StudyPomodore";
+import { CollectionSelected } from "./pages/CollectionSelected";
 import { Profile } from "./pages/Profile";
 import { Store } from "./pages/Store";
 import { Friends } from "./pages/Friends";
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/study" element={<Study />} />
         <Route path="/study/flashcards" element={<StudyFlashCards />} />
         <Route path="/study/pomodore" element={<StudyPomodore />} />
+        <Route path="/study/flashcards/selected/" element={<CollectionSelected />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/store" element={<Store />} />
         <Route path="/friends" element={<Friends />} />
