@@ -1,23 +1,30 @@
+import { useEffect, useState } from "react";
 import StudyCreateCollection from "./CreateCollection";
 import StudyInteractiveCard from "./InteractiveCard";
-import flashcardsimg from "/CoverImages/fisica.svg";
-import { NavLink } from "react-router-dom";
+import { getCollections } from "../../../services/collection";
 
 export default function StudyCollection() {
-  const containers = Array.from({ length: 1 }); // 12 containers
+
+  const [collections, setCollections] = useState([]);
+
+  const loadCollections = async () => {
+    const data = await getCollections();
+    setCollections(data);
+  };
+
+  useEffect(() => {
+    loadCollections();
+  }, []);
 
   return (
     <div className="studyCollection-page">
-      <StudyCreateCollection />
+      <StudyCreateCollection onSave={loadCollections} />
 
-      <NavLink to="/study/flashcards/selected" end>
-        <div className="studyCollection">
-          {containers.map((_, index) => (
-            <StudyInteractiveCard key={index} image={flashcardsimg} />
-          ))}
-        </div>
-      </NavLink>
+      <div className="studyCollection">
+        {collections.map((c, i) => (
+          <StudyInteractiveCard key={i} image={c.cover} />
+        ))}
+      </div>
     </div>
   );
 }
-

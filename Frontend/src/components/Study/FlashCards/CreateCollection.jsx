@@ -1,59 +1,74 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import fisica from "/CoverImages/fisica.svg"
-import matematica from "/CoverImages/matematica.svg"
-import portugues from "/CoverImages/portugues.svg"
-import edfisica from "/CoverImages/edfisica.svg"
-import quimica from "/CoverImages/quimica.svg"
-import historia from "/CoverImages/historia.svg"
-import geografia from "/CoverImages/geografia.svg"
-import ingles from "/CoverImages/ingles.svg"
-import biologia from "/CoverImages/biologia.svg"
 
-export default function StudyCreateCollection({ onClose }) {
+import { createCollection } from "../../../services/collection"; // IMPORTA O SERVICE
 
-    const dialogRef = useRef(null);
+// Import das imagens
+import fisica from "/CoverImages/fisica.svg";
+import matematica from "/CoverImages/matematica.svg";
+import portugues from "/CoverImages/portugues.svg";
+import edfisica from "/CoverImages/edfisica.svg";
+import quimica from "/CoverImages/quimica.svg";
+import historia from "/CoverImages/historia.svg";
+import geografia from "/CoverImages/geografia.svg";
+import ingles from "/CoverImages/ingles.svg";
+import biologia from "/CoverImages/biologia.svg";
 
-    useEffect(() => {
-        const dialog = dialogRef.current;
+export default function StudyCreateCollection({ onSave }) {
 
-        // Fecha ao clicar fora do conteúdo
-        const handleClickOutside = (event) => {
-        const dialogDimensions = dialog.getBoundingClientRect();
-        if (
-            event.clientX < dialogDimensions.left ||
-            event.clientX > dialogDimensions.right ||
-            event.clientY < dialogDimensions.top ||
-            event.clientY > dialogDimensions.bottom
-        ) {
-            dialog.close();
-        }
-        };
+  const dialogRef = useRef(null);
 
-        dialog.addEventListener("click", handleClickOutside);
+  // Estados dos inputs
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [cover, setCover] = useState(null);
 
-        return () => dialog.removeEventListener("click", handleClickOutside);
-    }, []);
+  // Lista de capas
+  const covers = [
+    fisica, matematica, portugues, historia,
+    edfisica, ingles, geografia, quimica, biologia
+  ];
 
-    const openModal = () => {
-        dialogRef.current.showModal();
+  const openModal = () => {
+    dialogRef.current.showModal();
+  };
+
+  const closeModal = () => {
+    dialogRef.current.close();
+  };
+
+  // SALVAR A COLEÇÃO
+  const handleSave = async () => {
+    if (!name || !cover) {
+      alert("Dê um nome e escolha uma capa.");
+      return;
+    }
+
+    const newCollection = {
+      name,
+      description,
+      cover
     };
 
-    useEffect(() => {
-      const container = document.querySelector(".collectionCoverOptions");
-  
-      if (container) {
-        container.addEventListener("wheel", (e) => {
-          if (e.deltaY !== 0) {
-            e.preventDefault(); // impede o scroll vertical padrão
-            container.scrollLeft += e.deltaY; // move horizontalmente
-          }
-        });
-      }
-    }, []);
+    try {
+      await createCollection(newCollection);
+      alert("Coleção criada com sucesso!");
 
-    
+      // limpar inputs
+      setName("");
+      setDescription("");
+      setCover(null);
+
+      closeModal();
+
+      // avisa o componente pai (Collection.jsx)
+      if (onSave) onSave();
+
+    } catch {
+      alert("Erro ao criar coleção");
+    }
+  };
 
   return (
     <div className="studyCreateCollection">
@@ -62,26 +77,44 @@ export default function StudyCreateCollection({ onClose }) {
         <p>CRIAR COLEÇÃO</p>
       </button>
 
-      <dialog className="createCollectionModal" ref={dialogRef} onCancel={onClose}>
+      <dialog className="createCollectionModal" ref={dialogRef}>
         <div className="collectionModalContent">
-          <p style={{fontWeight: "bold", fontSize: "larger"}}>CRIAR COLEÇÃO</p>
-          <input className="collectionInput" type="text" placeholder="Nome: " />
-          <input className="collectionInput" type="text" placeholder="Descrição: " />
-          <div className="collectionCoverSelect">
-            <p style={{fontSize: "larger"}}>CAPA DA COLEÇÃO:</p>
-            <div className="collectionCoverOptions">
-              <div className="collectionCoverOption"><img src={fisica} style={{width: "8.5rem", height: "8.5rem"}}/></div>
-              <div className="collectionCoverOption"><img src={matematica} style={{width: "8.5rem", height: "8.5rem"}}/></div>
-              <div className="collectionCoverOption"><img src={portugues} style={{width: "8.5rem", height: "8.5rem"}}/></div>
-              <div className="collectionCoverOption"><img src={historia} style={{width: "8.5rem", height: "8.5rem"}}/></div>
-              <div className="collectionCoverOption"><img src={edfisica} style={{width: "8.5rem", height: "8.5rem"}}/></div>
-              <div className="collectionCoverOption"><img src={ingles} style={{width: "8.5rem", height: "8.5rem"}}/></div>
-              <div className="collectionCoverOption"><img src={geografia} style={{width: "8.5rem", height: "8.5rem"}}/></div>
-              <div className="collectionCoverOption"><img src={quimica} style={{width: "8.5rem", height: "8.5rem"}}/></div>
-              <div className="collectionCoverOption"><img src={biologia} style={{width: "8.5rem", height: "8.5rem"}}/></div>
-            </div>
+
+          <p style={{ fontWeight: "bold", fontSize: "larger" }}>CRIAR COLEÇÃO</p>
+
+          <input
+            className="collectionInput"
+            type="text"
+            placeholder="Nome:"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <input
+            className="collectionInput"
+            type="text"
+            placeholder="Descrição:"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+
+          <p style={{ fontSize: "larger" }}>CAPA DA COLEÇÃO:</p>
+
+          <div className="collectionCoverOptions">
+            {covers.map((img, i) => (
+              <div
+                key={i}
+                className={`collectionCoverOption ${cover === img ? "selectedCover" : ""}`}
+                onClick={() => setCover(img)}
+              >
+                <img src={img} style={{ width: "8.5rem", height: "8.5rem" }} />
+              </div>
+            ))}
           </div>
-          <button className="collectionButtonSave">SALVAR</button>
+
+          <button className="collectionButtonSave" onClick={handleSave}>
+            SALVAR
+          </button>
         </div>
       </dialog>
     </div>
