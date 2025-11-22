@@ -31,7 +31,6 @@ export function Profile() {
 
     const [achievements, setAchievements] = useState([]);
 
-    // Calcula o tamanho da fonte conforme o número de caracteres
     const getFontSize = (name) => {
         const length = name.length;
         if (length <= 8) return "clamp(16pt, 4vw, 50pt)";
@@ -42,7 +41,6 @@ export function Profile() {
     };
 
     useEffect(() => {
-        // Função para tratar o evento de scroll
         const handleWheel = (e) => {
             const el = e.currentTarget;
             const isHorizontal = el.scrollWidth > el.clientWidth;
@@ -54,15 +52,12 @@ export function Profile() {
             }
         };
 
-        // Seleciona os elementos
         const scrollables = document.querySelectorAll('.friend-list, .achievements-list');
 
-        // Adiciona o listener
         scrollables.forEach((el) => {
             el.addEventListener('wheel', handleWheel, { passive: false });
         });
 
-        // Limpeza CORRETA: Apenas remove o listener
         return () => {
             scrollables.forEach((el) => {
                 el.removeEventListener('wheel', handleWheel);

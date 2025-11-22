@@ -27,8 +27,8 @@ export function StudyPomodore() {
     pomodoro: 25,
     short: 5,
     long: 15,
-    autoLongBreakInterval: 4,
-    autoRepeats: 3,
+    autoLongBreakInterval: 3,
+    autoRepeats: 6,
     autoEnabled: false,
     alarmEnabled: true,
     alarmSound: "ALARME 1",
@@ -37,6 +37,16 @@ export function StudyPomodore() {
   const [autoActive, setAutoActive] = useState(false);
   const [pomodorosSinceLong, setPomodorosSinceLong] = useState(0);
   const [completedPomodoros, setCompletedPomodoros] = useState(0);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("pomodoroSettings");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setSettings(parsed);
+      setTime(parsed.pomodoro * 60);
+      setInitialTime(parsed.pomodoro * 60);
+    }
+  }, []);
 
   const applySettings = (newSettings) => {
     setSettings(newSettings);

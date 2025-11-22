@@ -8,9 +8,25 @@ export function ModalToDoList({ open, onClose }) {
   const dialogRef = useRef(null);
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
-  const [filter, setFilter] = useState("all"); // all | done | active
+  const [filter, setFilter] = useState("all");
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState("");
+
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("todolist-data");
+    if (saved) {
+      setTasks(JSON.parse(saved));
+    }
+    setLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (loaded) {
+      localStorage.setItem("todolist-data", JSON.stringify(tasks));
+    }
+  }, [tasks, loaded]);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -24,17 +40,15 @@ export function ModalToDoList({ open, onClose }) {
         dialog.classList.add("visible");
       });
 
-      // clicar fora do modal fecha sem salvar
-        
       const handleClickOutside = (event) => {
         const dialogDimensions = dialog.getBoundingClientRect();
         if (
-            event.clientX < dialogDimensions.left ||
-            event.clientX > dialogDimensions.right ||
-            event.clientY < dialogDimensions.top ||
-            event.clientY > dialogDimensions.bottom
+          event.clientX < dialogDimensions.left ||
+          event.clientX > dialogDimensions.right ||
+          event.clientY < dialogDimensions.top ||
+          event.clientY > dialogDimensions.bottom
         ) {
-            handleCloseWithoutSaving();
+          handleCloseWithoutSaving();
         }
       };
 
@@ -67,7 +81,7 @@ export function ModalToDoList({ open, onClose }) {
     setTasks(prev =>
       prev
         .map(t => (t.id === id ? { ...t, done: !t.done } : t))
-        .sort((a, b) => a.done - b.done) // concluidos vão pro fim
+        .sort((a, b) => a.done - b.done)
     );
   };
 
@@ -100,14 +114,12 @@ export function ModalToDoList({ open, onClose }) {
 
   return (
     <dialog ref={dialogRef} className="todolist-dialog" onCancel={onClose}>
-
       <button className="close-x" onClick={handleCloseWithoutSaving}>
         <FontAwesomeIcon size="sm" icon={faX} />
       </button>
 
       <h2 className="modal-title">TAREFAS</h2>
 
-      {/* INPUT DE CRIAR */}
       <div className="todo-input-row">
         <input
           type="text"
@@ -119,7 +131,6 @@ export function ModalToDoList({ open, onClose }) {
         <button className="add-btn" onClick={addTask}>+</button>
       </div>
 
-      {/* FILTROS */}
       <div className="todo-filter">
         <button
           className={filter === "all" ? "active" : ""}
@@ -141,7 +152,6 @@ export function ModalToDoList({ open, onClose }) {
         </button>
       </div>
 
-      {/* LISTA */}
       <ul className="todo-list">
         {filteredTasks.map((t) => (
           <li key={t.id} className="todo-item">
@@ -172,7 +182,6 @@ export function ModalToDoList({ open, onClose }) {
               </span>
             )}
 
-            {/* BOTÕES AGRUPADOS */}
             <div className="actions">
               {editingId !== t.id && (
                 <button className="rename-btn" onClick={() => startEditing(t)}>
