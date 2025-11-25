@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
-export default function InteractiveCard({ image }) {
+export default function InteractiveCard({ to, image }) {
   const [style, setStyle] = useState({});
 
   const handleMouseMove = (e) => {
@@ -34,13 +35,16 @@ export default function InteractiveCard({ image }) {
   };
 
   return (
-    <div
-      className="collectionContainer"
-      style={style}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <img src={image} className="cardImg" />
-    </div>
+    <NavLink to={to}>
+      <div
+        className="collectionContainer"
+        style={style}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        <img src={image} className="cardImg" />
+      
+      </div>
+    </NavLink>
   );
 }

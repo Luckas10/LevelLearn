@@ -29,7 +29,7 @@ export default function App() {
           <Route path="/study" element={<Study />} />
           <Route path="/study/flashcards" element={<StudyFlashCards />} />
           <Route path="/study/pomodore" element={<StudyPomodore />} />
-          <Route path="/study/flashcards/selected/" element={<CollectionSelected />} />
+          <Route path="/study/flashcards/selected/:id" element={<CollectionSelected />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/store" element={<Store />} />
           <Route path="/friends" element={<Friends />} />

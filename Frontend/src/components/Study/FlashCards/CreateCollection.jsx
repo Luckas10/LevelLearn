@@ -4,6 +4,8 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { createCollection } from "../../../services/collection"; // IMPORTA O SERVICE
 
+import { getDataUser } from "../../../services/auth"; // IMPORTA O SERVICE 
+
 // Import das imagens
 import fisica from "/CoverImages/fisica.svg";
 import matematica from "/CoverImages/matematica.svg";
@@ -16,6 +18,7 @@ import ingles from "/CoverImages/ingles.svg";
 import biologia from "/CoverImages/biologia.svg";
 
 export default function StudyCreateCollection({ onSave }) {
+  const [userId, setUserId] = useState(0)
 
   const dialogRef = useRef(null);
 
@@ -38,6 +41,21 @@ export default function StudyCreateCollection({ onSave }) {
     dialogRef.current.close();
   };
 
+  useEffect(() => {
+        async function loadUser() {
+            try {
+                const user = await getDataUser();
+
+                setUserId(user.id)
+
+            } catch (err) {
+                console.error("Erro ao carregar dados do usuário:", err);
+            }
+        }
+
+        loadUser();
+    }, []);
+
   // SALVAR A COLEÇÃO
   const handleSave = async () => {
     if (!name || !cover) {
@@ -46,9 +64,10 @@ export default function StudyCreateCollection({ onSave }) {
     }
 
     const newCollection = {
-      name,
-      description,
-      cover
+      name: name,
+      description: description,
+      cover_name: cover,
+      owner_id: userId
     };
 
     try {
@@ -58,7 +77,7 @@ export default function StudyCreateCollection({ onSave }) {
       // limpar inputs
       setName("");
       setDescription("");
-      setCover(null);
+      setCover(null); 
 
       closeModal();
 
