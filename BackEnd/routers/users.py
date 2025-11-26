@@ -105,3 +105,13 @@ def get_me(current_user: User = Depends(get_current_user)):
     # o FastAPI vai convertê-lo para UserRead automaticamente (sem password_hash)
     return current_user
 
+@router.get("/{id}", response_model=UserRead)
+def buscar_user_por_id(
+    id: int,
+    session: SessionDep,
+    current_user: User = Depends(get_current_user)
+):
+    user = session.exec(select(User).where(User.id == id)).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado.")
+    return user

@@ -122,7 +122,8 @@ body,
 
 .status-pill .value {
     font-weight: 700;
-    font-size: 1.05rem
+    font-size: 1.05rem;
+    color: white;
 }
 
 .status-pill .bar {
