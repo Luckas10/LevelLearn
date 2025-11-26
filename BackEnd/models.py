@@ -28,11 +28,23 @@ class User(SQLModel, table=True):
         back_populates="users",
         link_model=UserAchievementLink
     )
-    friends: List["Friendship"] = Relationship(
-        back_populates="user",
-        sa_relationship_kwargs={"foreign_keys": "[Friendship.user_id]"}
+
+    sent_requests: List["Friendship"] = Relationship(
+        back_populates="requester",
+        sa_relationship_kwargs={
+            "foreign_keys": "[Friendship.user_id]"
+        }
     )
+
+    received_requests: List["Friendship"] = Relationship(
+        back_populates="receiver",
+        sa_relationship_kwargs={
+            "foreign_keys": "[Friendship.friend_id]"
+        }
+    )
+
     decks: List["Deck"] = Relationship(back_populates="owner")
+
 
 # Conquistas
 
@@ -40,29 +52,38 @@ class Achievement(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     description: str
-    image_path: str  # ou pathimage, como preferir
+    image_path: str
 
-    # usuários que possuem essa conquista
     users: List[User] = Relationship(
         back_populates="achievements",
         link_model=UserAchievementLink
     )
 
 
-
-# Amizades
+# Amizades (CORRIGIDO)
 
 class Friendship(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    user_id: int = Field(foreign_key="user.id")
-    friend_id: int = Field(foreign_key="user.id")
+    user_id: int = Field(foreign_key="user.id")      # quem enviou
+    friend_id: int = Field(foreign_key="user.id")    # quem recebeu
+    accepted: bool = Field(default=False)
 
-    # Relacionamentos
-    user: Optional[User] = Relationship(back_populates="friends", sa_relationship_kwargs={"foreign_keys": "[Friendship.user_id]"})
-    friend: Optional[User] = Relationship(sa_relationship_kwargs={"foreign_keys": "[Friendship.friend_id]"})
+    requester: Optional[User] = Relationship(
+        back_populates="sent_requests",
+        sa_relationship_kwargs={
+            "foreign_keys": "[Friendship.user_id]"
+        }
+    )
+
+    receiver: Optional[User] = Relationship(
+        back_populates="received_requests",
+        sa_relationship_kwargs={
+            "foreign_keys": "[Friendship.friend_id]"
+        }
+    )
 
 
-# Loja / Cosméticos
+# Loja
 
 class ShopItem(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -72,7 +93,7 @@ class ShopItem(SQLModel, table=True):
     owner_id: Optional[int] = Field(default=None, foreign_key="user.id")
 
 
-# Flashcards (Decks e Cartas)
+# Decks
 
 class Deck(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)

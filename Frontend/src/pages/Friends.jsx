@@ -1,266 +1,298 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Tabs from "../components/General/Tabs"; // caminho conforme sua estrutura
+import Tabs from "../components/General/Tabs";
 import Sidebar from "../components/General/Sidebar";
 import Navbar from "../components/General/Navbar";
 import "./Friends.css";
 
-const MOCK_FRIENDS = [
-    { id: 1, username: "alice_dev", level: 21, achievements: 36 },
-    { id: 2, username: "mat_pomodoro", level: 17, achievements: 22 },
-    { id: 3, username: "renecode", level: 34, achievements: 58 },
-    { id: 4, username: "nath_js", level: 12, achievements: 11 },
-    { id: 5, username: "andre.sql", level: 27, achievements: 41 },
-    { id: 6, username: "gabi.ui", level: 9, achievements: 6 },
-];
+import api from "../services/api";
 
-const MOCK_REQUESTS = [
-    { id: 101, username: "julio.full", level: 7, achievements: 5 },
-    { id: 102, username: "mateus.table", level: 15, achievements: 18 },
-];
-
-const MOCK_USERS = [
-    ...MOCK_FRIENDS,
-    ...MOCK_REQUESTS,
-    { id: 201, username: "pixel.cat", level: 5, achievements: 3 },
-    { id: 202, username: "ifrn.caico", level: 40, achievements: 72 },
-    { id: 203, username: "vue3.tails", level: 19, achievements: 24 },
-];
+import {
+  sendFriendRequest,
+  acceptFriendRequest,
+  rejectFriendRequest,
+  getReceivedRequests,
+  getSentRequests,
+  getMyFriends,
+  removeFriend
+} from "../services/friends";
 
 export function Friends() {
-    const [activeTab, setActiveTab] = useState("friends"); // 'friends' | 'requests' | 'add'
-    const [query, setQuery] = useState("");
-    const [friends, setFriends] = useState(MOCK_FRIENDS);
-    const [requests, setRequests] = useState(MOCK_REQUESTS);
+  const [activeTab, setActiveTab] = useState("friends");
+  const [query, setQuery] = useState("");
 
-    const filteredFriends = useMemo(() => {
-        if (!query.trim()) return friends;
-        const q = query.toLowerCase();
-        return friends.filter((f) => f.username.toLowerCase().includes(q));
-    }, [friends, query]);
+  const [friends, setFriends] = useState([]);
+  const [receivedRequests, setReceivedRequests] = useState([]);
+  const [sentRequests, setSentRequests] = useState([]);
+  const [users, setUsers] = useState([]);
 
-    const addableUsers = useMemo(() => {
-        const notAlready =
-            MOCK_USERS.filter(
-                (u) => !friends.some((f) => f.id === u.id) && !requests.some((r) => r.id === u.id)
-            );
-        if (!query.trim()) return notAlready;
-        const q = query.toLowerCase();
-        return notAlready.filter((u) => u.username.toLowerCase().includes(q));
-    }, [friends, requests, query]);
+  // -----------------------------
+  // LOAD DATA
+  // -----------------------------
+  useEffect(() => {
+    loadFriends();
+    loadRequests();
+  }, []);
 
-    function acceptRequest(id) {
-        const req = requests.find((r) => r.id === id);
-        if (!req) return;
-        setRequests((prev) => prev.filter((r) => r.id !== id));
-        setFriends((prev) => [...prev, req]);
+  async function loadFriends() {
+    const data = await getMyFriends();
+    setFriends(data || []);
+  }
+
+  async function loadRequests() {
+    const rec = await getReceivedRequests();
+    const sent = await getSentRequests();
+    setReceivedRequests(rec || []);
+    setSentRequests(sent || []);
+  }
+
+  async function loadAllUsers() {
+    try {
+      // ESTE ENDPOINT JÁ REMOVE O USUÁRIO LOGADO
+      const res = await api.get("/users/search");
+      setUsers(res.data || []);
+    } catch (error) {
+      console.error("Erro ao carregar usuários:", error);
     }
+  }
 
-    function declineRequest(id) {
-        setRequests((prev) => prev.filter((r) => r.id !== id));
+  useEffect(() => {
+    if (activeTab === "add") {
+      loadAllUsers();
+      loadRequests();
+      loadFriends();
     }
+  }, [activeTab]);
 
-    function sendRequest(id) {
-        const user = MOCK_USERS.find((u) => u.id === id);
-        if (!user) return;
-        setRequests((prev) => [...prev, user]);
-    }
+  // -----------------------------
+  // ACTIONS
+  // -----------------------------
+  async function handleSendRequest(id) {
+    await sendFriendRequest(id);
+    await loadRequests();
+  }
 
-    const tabOptions = [
-        { value: "friends", label: "MEUS AMIGOS" },
-        { value: "requests", label: "SOLICITAÇÕES", pill: requests.length },
-        { value: "add", label: "ADICIONAR AMIGOS" },
-    ];
+  async function handleAcceptRequest(requestId) {
+    await acceptFriendRequest(requestId);
+    await loadFriends();
+    await loadRequests();
+  }
 
-    function handleChangeTab(value) {
-        setQuery("");
-        setActiveTab(value);
-    }
+  async function handleDeclineRequest(requestId) {
+    await rejectFriendRequest(requestId);
+    await loadRequests();
+  }
 
+  async function handleRemoveFriend(id) {
+    await removeFriend(id);
+    setFriends(prev => prev.filter(f => f.id !== id));
+  }
 
-    return (
-        <div className="friends-page">
-            <Sidebar />
-            <section className="friends">
-                <Navbar />
+  // -----------------------------
+  // FILTERS
+  // -----------------------------
+  const filteredFriends = useMemo(() => {
+    if (!query.trim()) return friends;
+    const q = query.toLowerCase();
+    return friends.filter(f => f.username.toLowerCase().includes(q));
+  }, [friends, query]);
 
-                {/* Tabs */}
-                <Tabs
-                    options={tabOptions}
-                    selected={activeTab}
-                    onChange={handleChangeTab}
-                    rootClassName="friendsTabs"
-                    tabClassName="friendsTab"
-                    activeClassName="active"
-                    ariaLabel="Gerenciar amigos"
-                />
+  const addableUsers = useMemo(() => {
+    const notAllowedIds = new Set();
 
+    friends.forEach(f => notAllowedIds.add(f.id));
+    receivedRequests.forEach(r => notAllowedIds.add(r.id));
+    sentRequests.forEach(s => notAllowedIds.add(s.friend_id));
 
-                {/* Search */}
-                <div className="friendsSearch">
-                    <FontAwesomeIcon size="lg" icon={fas.faSearch} className="searchIcon" />
-                    <input
-                        className="searchInput"
-                        placeholder={
-                            activeTab === "friends"
-                                ? "Buscar amigos..."
-                                : activeTab === "requests"
-                                    ? "Filtrar solicitações..."
-                                    : "Buscar usuários..."
-                        }
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                    />
-                </div>
+    const filtered = users.filter(u => !notAllowedIds.has(u.id));
 
-                {/* Content */}
-                <div className="friendsContent">
-                    {activeTab === "friends" && (
-                        <CardsGrid
-                            emptyText="Você ainda não tem amigos por aqui."
-                            data={filteredFriends}
-                            renderItem={(f) => (
-                                <FriendCard key={f.id} username={f.username} level={f.level} achievements={f.achievements} />
-                            )}
-                        />
-                    )}
+    if (!query.trim()) return filtered;
+    const q = query.toLowerCase();
+    return filtered.filter(u => u.username.toLowerCase().includes(q));
+  }, [users, friends, receivedRequests, sentRequests, query]);
 
-                    {activeTab === "requests" && (
-                        <CardsGrid
-                            emptyText="Sem novas solicitações no momento."
-                            data={requests.filter((r) =>
-                                r.username.toLowerCase().includes(query.toLowerCase())
-                            )}
-                            renderItem={(r) => (
-                                <RequestCard
-                                    key={r.id}
-                                    username={r.username}
-                                    level={r.level}
-                                    achievements={r.achievements}
-                                    onAccept={() => acceptRequest(r.id)}
-                                    onDecline={() => declineRequest(r.id)}
-                                />
-                            )}
-                        />
-                    )}
+  const tabOptions = [
+    { value: "friends", label: "MEUS AMIGOS" },
+    { value: "requests", label: "SOLICITAÇÕES", pill: receivedRequests.length },
+    { value: "add", label: "ADICIONAR AMIGOS" }
+  ];
 
-                    {activeTab === "add" && (
-                        <CardsGrid
-                            emptyText="Nenhum usuário encontrado."
-                            data={addableUsers}
-                            renderItem={(u) => (
-                                <AddCard
-                                    key={u.id}
-                                    username={u.username}
-                                    level={u.level}
-                                    achievements={u.achievements}
-                                    onAdd={() => sendRequest(u.id)}
-                                />
-                            )}
-                        />
-                    )}
-                </div>
-            </section>
+  function handleChangeTab(value) {
+    setQuery("");
+    setActiveTab(value);
+  }
+
+  return (
+    <div className="friends-page">
+      <Sidebar />
+      <section className="friends">
+        <Navbar />
+
+        <Tabs
+          options={tabOptions}
+          selected={activeTab}
+          onChange={handleChangeTab}
+          rootClassName="friendsTabs"
+          tabClassName="friendsTab"
+          activeClassName="active"
+          ariaLabel="Gerenciar amigos"
+        />
+
+        {/* Search */}
+        <div className="friendsSearch">
+          <FontAwesomeIcon size="lg" icon={fas.faSearch} className="searchIcon" />
+          <input
+            className="searchInput"
+            placeholder={
+              activeTab === "friends"
+                ? "Buscar amigos..."
+                : activeTab === "requests"
+                ? "Filtrar solicitações..."
+                : "Buscar usuários..."
+            }
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+          />
         </div>
-    );
+
+        {/* Content */}
+        <div className="friendsContent">
+          {activeTab === "friends" && (
+            <CardsGrid
+              emptyText="Você ainda não tem amigos."
+              data={filteredFriends}
+              renderItem={f => (
+                <FriendCard
+                  key={f.id}
+                  username={f.username}
+                  level={f.level}
+                  achievements={f.achievements}
+                  onRemove={() => handleRemoveFriend(f.id)}
+                />
+              )}
+            />
+          )}
+
+          {activeTab === "requests" && (
+            <CardsGrid
+              emptyText="Nenhuma solicitação."
+              data={receivedRequests}
+              renderItem={r => (
+                <RequestCard
+                  key={r.request_id}
+                  username={r.username}
+                  level={r.level}
+                  achievements={r.achievements}
+                  onAccept={() => handleAcceptRequest(r.request_id)}
+                  onDecline={() => handleDeclineRequest(r.request_id)}
+                />
+              )}
+            />
+          )}
+
+          {activeTab === "add" && (
+            <CardsGrid
+              emptyText="Nenhum usuário disponível."
+              data={addableUsers}
+              renderItem={u => (
+                <AddCard
+                  key={u.id}
+                  username={u.username}
+                  level={u.level}
+                  achievements={u.achievements}
+                  onAdd={() => handleSendRequest(u.id)}
+                />
+              )}
+            />
+          )}
+        </div>
+      </section>
+    </div>
+  );
 }
 
 function InitialsAvatar({ username }) {
-    const initials = username
-        .split(/[^a-zA-Z0-9]+/)
-        .filter(Boolean)
-        .slice(0, 2)
-        .map((s) => s[0]?.toUpperCase())
-        .join("");
-    return (
-        <div className="friends-avatar" aria-hidden="true">
-            {initials || "LL"}
-        </div>
-    );
+  const initials = username
+    ?.split(/[^a-zA-Z0-9]+/)
+    ?.filter(Boolean)
+    ?.slice(0, 2)
+    ?.map(s => s[0]?.toUpperCase())
+    ?.join("");
+
+  return <div className="friends-avatar">{initials || "?"}</div>;
 }
 
-function FriendCard({ username, level, achievements }) {
-    return (
-        <article className="friends-card" tabIndex={0}>
-            <div className="friends-cardHeader">
-                <InitialsAvatar username={username} />
-                <div className="friends-userInfo">
-                    <h3 className="friends-userName">{username}</h3>
-                    <p className="friends-meta">
-                        LVL: {level} • Conquistas: {achievements}
-                    </p>
-                </div>
-            </div>
-        </article>
-    );
+function FriendCard({ username, level, achievements, onRemove }) {
+  return (
+    <article className="friends-card">
+      <div className="friends-cardHeader">
+        <InitialsAvatar username={username} />
+        <div className="friends-userInfo">
+          <h3>{username}</h3>
+          <p>LVL: {level} • Conquistas: {achievements}</p>
+        </div>
+      </div>
+
+      <div className="friends-cardFooter">
+        <button className="friends-btn friends-btn--danger" onClick={onRemove}>
+          <FontAwesomeIcon icon={fas.faUserMinus} className="btnIcon" />
+          Remover
+        </button>
+      </div>
+    </article>
+  );
 }
 
 function RequestCard({ username, level, achievements, onAccept, onDecline }) {
-    return (
-        <article className="friends-card" tabIndex={0}>
-            <div className="friends-cardHeader">
-                <InitialsAvatar username={username} />
-                <div className="friends-userInfo">
-                    <h3 className="friends-userName">{username}</h3>
-                    <p className="friends-meta">
-                        LVL: {level} • Conquistas: {achievements}
-                    </p>
-                </div>
-            </div>
+  return (
+    <article className="friends-card">
+      <div className="friends-cardHeader">
+        <InitialsAvatar username={username} />
+        <div className="friends-userInfo">
+          <h3>{username}</h3>
+          <p>LVL: {level} • Conquistas: {achievements}</p>
+        </div>
+      </div>
 
-            <div className="friends-cardFooter">
-                <button
-                    className="friends-btn friends-btn--success"
-                    onClick={onAccept}
-                >
-                    <FontAwesomeIcon icon={fas.faCheck} className="btnIcon" />
-                    <span>Aceitar</span>
-                </button>
-                <button
-                    className="friends-btn friends-btn--danger"
-                    onClick={onDecline}
-                >
-                    <FontAwesomeIcon icon={fas.faXmark} className="btnIcon" />
-                    <span>Recusar</span>
-                </button>
-            </div>
-        </article>
-    );
+      <div className="friends-cardFooter">
+        <button className="friends-btn friends-btn--success" onClick={onAccept}>
+          <FontAwesomeIcon icon={fas.faCheck} className="btnIcon" />
+          Aceitar
+        </button>
+        <button className="friends-btn friends-btn--danger" onClick={onDecline}>
+          <FontAwesomeIcon icon={fas.faXmark} className="btnIcon" />
+          Recusar
+        </button>
+      </div>
+    </article>
+  );
 }
-
 
 function AddCard({ username, level, achievements, onAdd }) {
-    return (
-        <article className="friends-card" tabIndex={0}>
-            <div className="friends-cardHeader">
-                <InitialsAvatar username={username} />
-                <div className="friends-userInfo">
-                    <h3 className="friends-userName">{username}</h3>
-                    <p className="friends-meta">
-                        LVL: {level} • Conquistas: {achievements}
-                    </p>
-                </div>
-            </div>
+  return (
+    <article className="friends-card">
+      <div className="friends-cardHeader">
+        <InitialsAvatar username={username} />
+        <div className="friends-userInfo">
+          <h3>{username}</h3>
+          <p>LVL: {level} • Conquistas: {achievements}</p>
+        </div>
+      </div>
 
-            <div className="friends-cardFooter">
-                <button
-                    className="friends-btn friends-btn--primary"
-                    onClick={onAdd}
-                >
-                    <FontAwesomeIcon icon={fas.faUserPlus} className="btnIcon" />
-                    <span>Enviar solicitação</span>
-                </button>
-            </div>
-        </article>
-    );
+      <div className="friends-cardFooter">
+        <button className="friends-btn friends-btn--primary" onClick={onAdd}>
+          <FontAwesomeIcon icon={fas.faUserPlus} className="btnIcon" />
+          Enviar solicitação
+        </button>
+      </div>
+    </article>
+  );
 }
-
 
 function CardsGrid({ data, renderItem, emptyText }) {
-    if (!data?.length) {
-        return <p className="friends-emptyState">{emptyText}</p>;
-    }
-    return <div className="friends-grid">{data.map(renderItem)}</div>;
+  if (!data || !data.length) {
+    return <p className="friends-emptyState">{emptyText}</p>;
+  }
+  return <div className="friends-grid">{data.map(renderItem)}</div>;
 }
-

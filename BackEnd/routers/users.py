@@ -84,6 +84,21 @@ def deletar_user(session: SessionDep, id: int, current_user: User = Depends(get_
     session.commit()
     return "Usuário excluído com sucesso."
 
+@router.get("/search", response_model=List[UserRead])
+def buscar_usuarios(
+    session: SessionDep,
+    username: str = "",
+    current_user: User = Depends(get_current_user)
+):
+    query = select(User)
+    query = query.where(User.id != current_user.id)
+    # filtro textual
+    if username:
+        query = query.where(User.username.ilike(f"%{username}%"))
+
+    users = session.exec(query).all()
+    return users
+
 @router.get("/me", response_model=UserRead)
 def get_me(current_user: User = Depends(get_current_user)):
     # current_user é um User completo (id, username, email, xp, combo, level, coins, password_hash...)
