@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import { createCollection } from "../../../services/collection"; // IMPORTA O SERVICE
-
-import { getDataUser } from "../../../services/auth"; // IMPORTA O SERVICE 
+import { createCollection } from "../../../services/collection";
+import { getDataUser } from "../../../services/auth";
 
 // Import das imagens
 import fisica from "/CoverImages/fisica.svg";
@@ -18,8 +17,7 @@ import ingles from "/CoverImages/ingles.svg";
 import biologia from "/CoverImages/biologia.svg";
 
 export default function StudyCreateCollection({ onSave }) {
-  const [userId, setUserId] = useState(0)
-
+  const [userId, setUserId] = useState(0);
   const dialogRef = useRef(null);
 
   // Estados dos inputs
@@ -27,36 +25,80 @@ export default function StudyCreateCollection({ onSave }) {
   const [description, setDescription] = useState("");
   const [cover, setCover] = useState(null);
 
-  // Lista de capas
+  // Controle do modal com animação
+  const [open, setOpen] = useState(false);
+
   const covers = [
     fisica, matematica, portugues, historia,
     edfisica, ingles, geografia, quimica, biologia
   ];
 
-  const openModal = () => {
-    dialogRef.current.showModal();
+  // ---------- ABRIR E FECHAR ----------
+  const openModal = () => setOpen(true);
+
+  const closeModal = () => setOpen(false);
+
+  const handleCloseWithoutSaving = () => {
+    setName("");
+    setDescription("");
+    setCover(null);
+    setOpen(false);
   };
 
-  const closeModal = () => {
-    dialogRef.current.close();
-  };
-
+  // ---------- CARREGAR USER ----------
   useEffect(() => {
-        async function loadUser() {
-            try {
-                const user = await getDataUser();
+    async function loadUser() {
+      try {
+        const user = await getDataUser();
+        setUserId(user.id);
+      } catch (err) {
+        console.error("Erro ao carregar dados do usuário:", err);
+      }
+    }
+    loadUser();
+  }, []);
 
-                setUserId(user.id)
+  // ---------- USEEFFECT DO MODAL COM ANIMAÇÃO ----------
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
 
-            } catch (err) {
-                console.error("Erro ao carregar dados do usuário:", err);
-            }
+    if (open) {
+      dialog.showModal();
+      dialog.classList.add("showing");
+
+      requestAnimationFrame(() => {
+        dialog.classList.add("visible");
+      });
+
+      const handleClickOutside = (event) => {
+        const rect = dialog.getBoundingClientRect();
+        if (
+          event.clientX < rect.left ||
+          event.clientX > rect.right ||
+          event.clientY < rect.top ||
+          event.clientY > rect.bottom
+        ) {
+          handleCloseWithoutSaving();
         }
+      };
 
-        loadUser();
-    }, []);
+      dialog.addEventListener("click", handleClickOutside);
 
-  // SALVAR A COLEÇÃO
+      return () => dialog.removeEventListener("click", handleClickOutside);
+
+    } else {
+      if (dialog.open) {
+        dialog.classList.remove("visible");
+        setTimeout(() => {
+          dialog.classList.remove("showing");
+          dialog.close();
+        }, 200);
+      }
+    }
+  }, [open]);
+
+  // ---------- SALVAR ----------
   const handleSave = async () => {
     if (!name || !cover) {
       alert("Dê um nome e escolha uma capa.");
@@ -64,8 +106,8 @@ export default function StudyCreateCollection({ onSave }) {
     }
 
     const newCollection = {
-      name: name,
-      description: description,
+      name,
+      description,
       cover_name: cover,
       owner_id: userId
     };
@@ -74,16 +116,12 @@ export default function StudyCreateCollection({ onSave }) {
       await createCollection(newCollection);
       alert("Coleção criada com sucesso!");
 
-      // limpar inputs
       setName("");
       setDescription("");
-      setCover(null); 
-
+      setCover(null);
       closeModal();
 
-      // avisa o componente pai (Collection.jsx)
       if (onSave) onSave();
-
     } catch {
       alert("Erro ao criar coleção");
     }
@@ -98,7 +136,6 @@ export default function StudyCreateCollection({ onSave }) {
 
       <dialog className="createCollectionModal" ref={dialogRef}>
         <div className="collectionModalContent">
-
           <p style={{ fontWeight: "bold", fontSize: "larger" }}>CRIAR COLEÇÃO</p>
 
           <input
