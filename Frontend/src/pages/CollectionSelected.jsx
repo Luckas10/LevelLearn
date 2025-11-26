@@ -23,6 +23,8 @@ export function CollectionSelected() {
         return <div className="collectionSelected-page">Carregando...</div>
     }
 
+    console.log("COVER:", collection.cover_name);
+
     return (
         <div className="collectionSelected-page">
             <Sidebar />
@@ -31,7 +33,7 @@ export function CollectionSelected() {
                     <InfoPanel 
                         name={collection.name} 
                         description={collection.description} 
-                        cover={`/CoverImages/${collection.cover_name}`} 
+                        cover={collection.cover_name} 
                     />
                 </section>
         </div>
