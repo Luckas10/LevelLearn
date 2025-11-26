@@ -193,3 +193,35 @@ def unavailable_friend_ids(
         blocked_ids.add(f.friend_id)
 
     return list(blocked_ids)
+
+@router.get("/user/{user_id}")
+def friends_of_user(
+    user_id: int,
+    session: SessionDep,
+    current_user: User = Depends(get_current_user)
+):
+    # Verifica se o usuário existe
+    user = session.exec(select(User).where(User.id == user_id)).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado.")
+
+    # Procura todas as amizades aceitas onde o usuário é user_id ou friend_id
+    friendships = session.exec(
+        select(Friendship).where(
+            (Friendship.accepted == True) & (
+                (Friendship.user_id == user_id) |
+                (Friendship.friend_id == user_id)
+            )
+        )
+    ).all()
+
+    friends_list = []
+
+    for fr in friendships:
+        # Se o user consultado for quem enviou, o amigo é o receiver
+        if fr.user_id == user_id:
+            friends_list.append(fr.receiver)
+        else:
+            friends_list.append(fr.requester)
+
+    return friends_list

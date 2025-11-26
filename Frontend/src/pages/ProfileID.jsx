@@ -19,11 +19,14 @@ import Raposa from "../assets/Animals/Raposa.png";
 import Math from "../assets/Achievements/Math.png";
 
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { getDataUser } from "../services/auth";
 import { getAchievementsUser } from "../services/achievements";
 
 export function Profile() {
+
+    const { id } = useParams();
+
     const [userName, setUserName] = useState("USERNAME");
     const [userLevel, setUserLevel] = useState(1);
     const [userXP, setUserXP] = useState(0);

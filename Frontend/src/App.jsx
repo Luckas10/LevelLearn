@@ -31,6 +31,7 @@ export default function App() {
           <Route path="/study/pomodore" element={<StudyPomodore />} />
           <Route path="/study/flashcards/selected/:id" element={<CollectionSelected />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<Profile />} />
           <Route path="/store" element={<Store />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/battleflashcards" element={<BattleFlashCards />} />
