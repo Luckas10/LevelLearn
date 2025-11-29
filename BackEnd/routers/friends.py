@@ -196,8 +196,8 @@ def unavailable_friend_ids(
 
 @router.get("/user/{user_id}")
 def friends_of_user(
-    user_id: int,
     session: SessionDep,
+    user_id: int, 
     current_user: User = Depends(get_current_user)
 ):
     # Verifica se o usuário existe

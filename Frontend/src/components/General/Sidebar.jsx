@@ -5,8 +5,28 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./Sidebar.css";
 
+import { useState, useEffect } from "react";
+import { getDataUser } from "../../services/auth";
+
 export default function Sidebar() {
     const navigate = useNavigate();
+
+    const [userID, setUserID] = useState(0)
+
+    useEffect(() => {
+        async function loadUser() {
+            try {
+                const user = await getDataUser();
+
+                setUserID(user.id);
+
+            } catch (err) {
+                console.error("Erro ao carregar ID:", err);
+            }
+        }
+
+        loadUser();
+    }, []);
 
     const handleLogout = async () => {
         const confirm = await Swal.fire({
@@ -68,7 +88,7 @@ export default function Sidebar() {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/profile">
+                    <NavLink to={`/profile/${userID}`}>
                         <FontAwesomeIcon size="lg" icon={fas.faUser} />
                         <span>MEU PERFIL</span>
                     </NavLink>

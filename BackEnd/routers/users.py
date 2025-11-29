@@ -107,8 +107,8 @@ def get_me(current_user: User = Depends(get_current_user)):
 
 @router.get("/{id}", response_model=UserRead)
 def buscar_user_por_id(
-    id: int,
     session: SessionDep,
+    id: int,
     current_user: User = Depends(get_current_user)
 ):
     user = session.exec(select(User).where(User.id == id)).first()

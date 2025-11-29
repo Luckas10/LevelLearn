@@ -7,6 +7,7 @@ import { StudyFlashCards } from "./pages/StudyFlashCards";
 import { StudyPomodore } from "./pages/StudyPomodore";
 import { CollectionSelected } from "./pages/CollectionSelected";
 import { Profile } from "./pages/Profile";
+import { ProfileID } from "./pages/ProfileID";
 import { Store } from "./pages/Store";
 import { Friends } from "./pages/Friends";
 import { BattleFlashCards } from "./pages/BattleFlashCards";
@@ -31,7 +32,7 @@ export default function App() {
           <Route path="/study/pomodore" element={<StudyPomodore />} />
           <Route path="/study/flashcards/selected/:id" element={<CollectionSelected />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/profile/:id" element={<ProfileID />} />
           <Route path="/store" element={<Store />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/battleflashcards" element={<BattleFlashCards />} />

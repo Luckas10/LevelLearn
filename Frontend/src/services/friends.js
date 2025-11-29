@@ -60,6 +60,16 @@ export async function getMyFriends() {
     }
 }
 
+export async function getFriendsOfUser(user_id) {
+    try {
+        const res = await api.get(`/friends/user/${user_id}`);
+        return res.data;
+    } catch (error) {
+        console.error("Erro ao carregar lista de amigos:", error);
+        throw error;
+    }
+}
+
 export async function removeFriend(friendId) {
     try {
         const res = await api.delete(`/friends/remove/${friendId}`);
@@ -70,13 +80,8 @@ export async function removeFriend(friendId) {
     }
 }
 
-/**
- * 🚫 IDs que NÃO podem aparecer na aba de adicionar amigos:
- * - Você mesmo
- * - Quem você já é amigo
- * - Quem você já mandou solicitação
- * - Quem te mandou solicitação
- */
+// IDS para não aparecer nas abas da página de adicionar amigos
+// O proprio usuario, usuarios já adicionados, usuários a quem enviou/recebeu solicitação
 export async function getUnavailableFriendIds() {
     try {
         const res = await api.get("/friends/unavailable_ids");

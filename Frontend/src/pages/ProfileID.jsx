@@ -7,7 +7,7 @@ import DecksIcon from "../assets/Decks.png";
 import ProgressBar from "../components/Profile/ProgressBar";
 import "./Profile.css";
 
-import { getMyFriends } from "../services/friends";
+import { getUserByID } from "../services/profile";
 
 import Cobra from "../assets/Animals/Cobra.png";
 import Dragao from "../assets/Animals/Dragao.png";
@@ -20,10 +20,10 @@ import Math from "../assets/Achievements/Math.png";
 
 import { useState, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import { getDataUser } from "../services/auth";
-import { getAchievementsUser } from "../services/achievements";
+import { getAchievementsByUserID } from "../services/achievements";
+import { getFriendsOfUser } from "../services/friends";
 
-export function Profile() {
+export function ProfileID() {
 
     const { id } = useParams();
 
@@ -75,7 +75,7 @@ export function Profile() {
     useEffect(() => {
         async function loadUser() {
             try {
-                const user = await getDataUser();
+                const user = await getUserByID(id);
 
                 setUserName(user.username);
                 setUserLevel(user.level);
@@ -87,13 +87,15 @@ export function Profile() {
                 console.error("Erro ao carregar dados do usuário:", err);
             }
         }
-        loadUser();
-    }, []);
+
+        if (id) loadUser();
+    }, [id]);
+
 
     useEffect(() => {
         async function loadFriends() {
             try {
-                const response = await getMyFriends();
+                const response = await getFriendsOfUser(id);
                 setFriends(response);
                 setFriendCount(response.length); // atualiza o contador
             } catch (err) {
@@ -102,13 +104,13 @@ export function Profile() {
             }
         }
         loadFriends();
-    }, []);
+    }, [id]);
 
 
     useEffect(() => {
         async function loadAchievements() {
             try {
-                const response = await getAchievementsUser(); // <- nome diferente
+                const response = await getAchievementsByUserID(id); // <- nome diferente
                 setAchievements(response);
             } catch (err) {
                 console.error("Erro ao carregar conquistas do usuário:", err);
@@ -167,18 +169,16 @@ export function Profile() {
                     <div className="achievements-friends">
                         <div className="friends-container">
                             <h1>Amigos ({friendCount})</h1>
-
+                            {friends.length > 0 ? "" : (<p>Usuário ainda não tem amigos</p>)}
                             <div className="friend-list">
-                                {friends.length > 0 ? (
-                                    friends.map((friend) => (
-                                        <NavLink key={friend.id} className="friend">
-                                            <img src={friend.avatar || Raposa} alt="Friend img" />
-                                            <span>{friend.username}</span>
-                                        </NavLink>
-                                    ))
-                                ) : (
-                                    <p className="no-friends">Você ainda não tem amigos.</p>
-                                )}
+
+                                {friends.map((friend) => (
+                                    <NavLink to={`/profile/${friend.id}`} key={friend.id} className="friend">
+                                        <img src={friend.avatar || Raposa} alt="Friend img" />
+                                        <span>{friend.username}</span>
+                                    </NavLink>
+                                ))}
+                                
                             </div>
                         </div>
 
