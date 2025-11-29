@@ -296,6 +296,17 @@
     padding: 24px 8px;
 }
 
+.friends-cardHeader,
+.friends-cardHeader:link,
+.friends-cardHeader:visited,
+.friends-cardHeader:hover,
+.friends-cardHeader:active,
+.friends-cardHeader.active,
+.friends-cardHeader:focus {
+  text-decoration: none;   /* tira sublinhado */
+  color: inherit;          /* não muda a cor */
+}
+
 /* RESPONSIVO */
 @media (max-width: 1200px) {
     .friends-grid {

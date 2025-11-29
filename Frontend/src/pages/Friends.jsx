@@ -17,6 +17,7 @@ import {
   getMyFriends,
   removeFriend
 } from "../services/friends";
+import { NavLink } from "react-router-dom";
 
 export function Friends() {
   const [activeTab, setActiveTab] = useState("friends");
@@ -169,6 +170,7 @@ export function Friends() {
                   level={f.level}
                   achievements={f.achievements}
                   onRemove={() => handleRemoveFriend(f.id)}
+                  to={`/profile/${f.id}`}
                 />
               )}
             />
@@ -186,6 +188,7 @@ export function Friends() {
                   achievements={r.achievements}
                   onAccept={() => handleAcceptRequest(r.request_id)}
                   onDecline={() => handleDeclineRequest(r.request_id)}
+                  to={`/profile/${r.id}`}
                 />
               )}
             />
@@ -202,6 +205,7 @@ export function Friends() {
                   level={u.level}
                   achievements={u.achievements}
                   onAdd={() => handleSendRequest(u.id)}
+                  to={`/profile/${u.id}`}
                 />
               )}
             />
@@ -212,7 +216,7 @@ export function Friends() {
   );
 }
 
-function InitialsAvatar({ username }) {
+function InitialsAvatar({ username, to }) {
   const initials = username
     ?.split(/[^a-zA-Z0-9]+/)
     ?.filter(Boolean)
@@ -220,19 +224,19 @@ function InitialsAvatar({ username }) {
     ?.map(s => s[0]?.toUpperCase())
     ?.join("");
 
-  return <div className="friends-avatar">{initials || "?"}</div>;
+  return <div className="friends-avatar" to={to}>{initials || "?"}</div>;
 }
 
-function FriendCard({ username, level, achievements, onRemove }) {
+function FriendCard({ username, level, achievements, onRemove, to }) {
   return (
     <article className="friends-card">
-      <div className="friends-cardHeader">
+      <NavLink className="friends-cardHeader" to={to}>
         <InitialsAvatar username={username} />
         <div className="friends-userInfo">
           <h3>{username}</h3>
           <p>LVL: {level} • Conquistas: {achievements}</p>
         </div>
-      </div>
+      </NavLink>
 
       <div className="friends-cardFooter">
         <button className="friends-btn friends-btn--danger" onClick={onRemove}>
@@ -244,16 +248,16 @@ function FriendCard({ username, level, achievements, onRemove }) {
   );
 }
 
-function RequestCard({ username, level, achievements, onAccept, onDecline }) {
+function RequestCard({ username, level, achievements, onAccept, onDecline, to }) {
   return (
     <article className="friends-card">
-      <div className="friends-cardHeader">
+      <NavLink className="friends-cardHeader" to={to}>
         <InitialsAvatar username={username} />
         <div className="friends-userInfo">
           <h3>{username}</h3>
           <p>LVL: {level} • Conquistas: {achievements}</p>
         </div>
-      </div>
+      </NavLink>
 
       <div className="friends-cardFooter">
         <button className="friends-btn friends-btn--success" onClick={onAccept}>
@@ -269,16 +273,16 @@ function RequestCard({ username, level, achievements, onAccept, onDecline }) {
   );
 }
 
-function AddCard({ username, level, achievements, onAdd }) {
+function AddCard({ username, level, achievements, onAdd, to }) {
   return (
     <article className="friends-card">
-      <div className="friends-cardHeader">
+      <NavLink className="friends-cardHeader" to={to}>
         <InitialsAvatar username={username} />
         <div className="friends-userInfo">
           <h3>{username}</h3>
           <p>LVL: {level} • Conquistas: {achievements}</p>
         </div>
-      </div>
+      </NavLink>
 
       <div className="friends-cardFooter">
         <button className="friends-btn friends-btn--primary" onClick={onAdd}>
