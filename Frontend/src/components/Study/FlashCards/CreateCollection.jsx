@@ -46,6 +46,7 @@ export default function StudyCreateCollection({ onSave }) {
   };
 
   // ---------- CARREGAR USER ----------
+  
   useEffect(() => {
     async function loadUser() {
       try {
@@ -59,6 +60,7 @@ export default function StudyCreateCollection({ onSave }) {
   }, []);
 
   // ---------- USEEFFECT DO MODAL COM ANIMAÇÃO ----------
+
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
@@ -142,6 +144,7 @@ export default function StudyCreateCollection({ onSave }) {
             className="collectionInput"
             type="text"
             placeholder="Nome:"
+            maxLength="30"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -150,6 +153,7 @@ export default function StudyCreateCollection({ onSave }) {
             className="collectionInput"
             type="text"
             placeholder="Descrição:"
+            maxLength="30"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />

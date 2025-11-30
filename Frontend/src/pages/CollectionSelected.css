@@ -12,6 +12,35 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
+    overflow: auto;
+}
+
+.collectionSelected::-webkit-scrollbar {
+    width: 8px;
+    height: 6px;
+}
+
+.collectionSelected::-webkit-scrollbar-track {
+    background-color:#151737;
+    width: 8px;
+    height: 6px;
+    border-radius: 4px;
+}
+.collectionSelected::-webkit-scrollbar-thumb {
+    background: #4346E6;;
+    border-radius: 4px;
+}
+.collectionSelected::-webkit-scrollbar-thumb:hover {
+    background: #5356f1;;
+}
+
+
+/* InfoPanel */
+
+.infoPanelContainer {
+    display: flex;
+    width: 100%;
+    height: 50%;
 }
 
 .infoPanel {
@@ -20,12 +49,6 @@
     width: 80%;
     height: 100%;
     color: white;
-}
-
-.infoPanelContainer {
-    display: flex;
-    width: 100%;
-    height: 50%;
 }
 
 .startButtonContainer {
@@ -64,8 +87,8 @@
     margin-left: 4rem;
     justify-content: center;
     align-items: center;
-    width: 28%;
-    height: 80%;
+    width: 20rem;
+    height: 23rem;
     background-color: #151838;
     border-radius: 1rem;
 }
@@ -82,4 +105,162 @@
 
 .collectionTitle {
     font-size: 3rem;
+}
+
+/* CreateCard */
+
+.createCardContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+    color: white;
+}
+
+.createCard {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    width: 14rem;
+    height: 18rem;
+    margin: 1rem;
+    background-color: #151838;
+    border-radius: 1rem;
+    border: none ;
+    cursor: pointer;
+}
+
+.cards {
+    width: 100%;
+    display: flex;
+
+}
+
+.createCardModal {
+    position: fixed;
+    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+    border-radius: 10px;
+    padding: 2rem;
+    background-color: #0d0f2b;
+    color: white;
+    width: 46rem;
+    height: 19rem;
+    box-shadow: 0 0 20px rgba(80, 112, 255, 0.7);
+    transition: 0.25s;
+    font-size: larger;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.createCardModal.showing {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92);
+}
+
+.createCardModal.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.createCardModal {
+    transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.createCardModal::backdrop {
+    background: rgba(0, 0, 0, 0);
+    transition: background 220ms ease;
+}
+
+.createCardModal.visible::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.createCardModal::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+.cardModalContent {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%;
+    overflow: auto;
+    padding-inline: 10px;
+}
+
+.cardModalInput {
+    border: none;
+    outline: none;
+    color: white;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 100%;
+    background-color: #33335A;
+    border: 2px solid #4346E6;
+}
+
+.cardModalInput::placeholder {
+    color: white;
+    font-size: medium;
+}
+
+.cardModalInput:hover {
+    border-color: #7c6df8;
+    box-shadow: 0 0 10px #6b63f855;
+}
+
+.cardModalInput:focus {
+    border-color: #a78bfa;
+    box-shadow: 0 0 15px #8b5cf67c;
+}
+
+.cardsButtonSave {
+    padding: 10px;
+    color: white;
+    font-size: larger;
+    border-radius: 20px;
+    width: 40%;
+    height: 20%;
+    background-color: #4346E6;
+    border: none;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.cardsButtonSave:hover {
+    background-color: #5356f1;
+}
+
+.flashCardContainer {
+    width: 14rem;
+    height: 18rem;
+    margin: 1rem;
+    background-color: #151838;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    color: white;
+}
+
+.createdCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 2rem;
+    width: 90%;
+    margin-top: 1rem;
+    justify-items: center; /* centraliza cada item dentro da coluna */
+    align-items: start;
+    margin-left: 5rem;
 }

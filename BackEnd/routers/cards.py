@@ -25,3 +25,7 @@ def deletar_card(session: SessionDep, id: int, current_user: User = Depends(get_
     session.delete(card)
     session.commit()
     return "Carta excluída com sucesso."
+
+@router.get("/{deck_id}")
+def listar_cards(deck_id: int, session: SessionDep, current_user: User = Depends(get_current_user)):
+    return session.exec(select(Card).where(Card.deck_id == deck_id)).all()

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-export default function InteractiveCard({ to, image }) {
+export default function InteractiveCard({ className = "", to, image, children, ...props }) {
   const [style, setStyle] = useState({});
 
   const handleMouseMove = (e) => {
@@ -35,15 +35,18 @@ export default function InteractiveCard({ to, image }) {
   };
 
   return (
-    <NavLink to={to}>
+    <NavLink style={{textDecoration: "none"}} to={to}>
       <div
-        className="collectionContainer"
+        className={`interactiveCardBase ${className}`} {...props}
         style={style}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
-        <img src={image} className="cardImg" />
-      
+        {/* Se imagem existir, mostra ela */}
+        {image && <img src={image} className="cardImg" />}
+
+        {/* Se tiver children, mostra dentro do card */}
+        {children}
       </div>
     </NavLink>
   );

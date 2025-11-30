@@ -1,7 +1,7 @@
 import { PlayButton } from "./StartButton.jsx";
 
 
-export default function InfoPanel({ description, name, cover,  }) {
+export default function InfoPanel({ description, name, cover }) {
 
     return (
         <div className="infoPanelContainer">
