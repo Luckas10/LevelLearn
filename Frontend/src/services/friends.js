@@ -5,7 +5,6 @@ export async function sendFriendRequest(friendId) {
         const res = await api.post(`/friends/request/${friendId}`);
         return res.data;
     } catch (error) {
-        console.error("Erro ao enviar solicitação de amizade:", error);
         throw error;
     }
 }
@@ -15,7 +14,6 @@ export async function acceptFriendRequest(requestId) {
         const res = await api.post(`/friends/accept/${requestId}`);
         return res.data;
     } catch (error) {
-        console.error("Erro ao aceitar solicitação:", error);
         throw error;
     }
 }
@@ -25,7 +23,6 @@ export async function rejectFriendRequest(requestId) {
         const res = await api.delete(`/friends/reject/${requestId}`);
         return res.data;
     } catch (error) {
-        console.error("Erro ao recusar solicitação:", error);
         throw error;
     }
 }
@@ -35,7 +32,6 @@ export async function getReceivedRequests() {
         const res = await api.get("/friends/requests/received");
         return res.data;
     } catch (error) {
-        console.error("Erro ao carregar solicitações recebidas:", error);
         throw error;
     }
 }
@@ -45,7 +41,6 @@ export async function getSentRequests() {
         const res = await api.get("/friends/requests/sent");
         return res.data;
     } catch (error) {
-        console.error("Erro ao carregar solicitações enviadas:", error);
         throw error;
     }
 }
@@ -55,7 +50,6 @@ export async function getMyFriends() {
         const res = await api.get("/friends/my_friends");
         return res.data;
     } catch (error) {
-        console.error("Erro ao carregar lista de amigos:", error);
         throw error;
     }
 }
@@ -65,7 +59,6 @@ export async function getFriendsOfUser(user_id) {
         const res = await api.get(`/friends/user/${user_id}`);
         return res.data;
     } catch (error) {
-        console.error("Erro ao carregar lista de amigos:", error);
         throw error;
     }
 }
@@ -75,7 +68,6 @@ export async function removeFriend(friendId) {
         const res = await api.delete(`/friends/remove/${friendId}`);
         return res.data;
     } catch (error) {
-        console.error("Erro ao remover amigo:", error);
         throw error;
     }
 }
@@ -87,7 +79,6 @@ export async function getUnavailableFriendIds() {
         const res = await api.get("/friends/unavailable_ids");
         return res.data; // array de IDs bloqueados
     } catch (error) {
-        console.error("Erro ao buscar usuários indisponíveis:", error);
         throw error;
     }
 }
