@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import StudyCreateCollection from "./CreateCollection";
 import StudyInteractiveCard from "./InteractiveCard";
-import { getCollections } from "../../../services/collection";
+import { getCollectionByOwnerId } from "../../../services/collection";
 
 export default function StudyCollection() {
   const [collections, setCollections] = useState([]);
 
   const loadCollections = async () => {
-    const data = await getCollections();
+    const data = await getCollectionByOwnerId();
     setCollections(data);
+    console.log(data);
   };
 
   useEffect(() => {
