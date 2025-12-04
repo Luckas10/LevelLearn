@@ -93,17 +93,18 @@ export default function Sidebar() {
                         <span>MEU PERFIL</span>
                     </NavLink>
                 </li>
-            </ul>
 
-            <ul className="">
                 <li>
-                    <a onClick={handleLogout} className="logoutButton">
+                    <a
+                        type="button"
+                        onClick={handleLogout}
+                        className="logoutButton"
+                    >
                         <FontAwesomeIcon size="lg" icon={fas.faRightFromBracket} />
                         <span>SAIR</span>
                     </a>
                 </li>
             </ul>
-
-        </nav >
+        </nav>
     );
 }

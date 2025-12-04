@@ -19,6 +19,7 @@ import biologia from "/CoverImages/biologia.svg";
 export default function StudyCreateCollection({ onSave }) {
   const [userId, setUserId] = useState(0);
   const dialogRef = useRef(null);
+  const coversContainerRef = useRef(null);
 
   // Estados dos inputs
   const [name, setName] = useState("");
@@ -57,6 +58,28 @@ export default function StudyCreateCollection({ onSave }) {
       }
     }
     loadUser();
+  }, []);
+
+  // ---------- SCROLL HORIZONTAL COM RODINHA DO MOUSE ----------
+  useEffect(() => {
+    const el = coversContainerRef.current;
+    if (!el) return;
+
+    const handleWheel = (event) => {
+      // se não tiver scroll vertical, ignora
+      if (event.deltaY === 0) return;
+
+      // evita scroll vertical da página
+      event.preventDefault();
+
+      // move horizontalmente de acordo com a rodinha
+      el.scrollLeft += event.deltaY;
+    };
+
+    // preciso dele como NÃO-passive pra poder dar preventDefault
+    el.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => el.removeEventListener("wheel", handleWheel);
   }, []);
 
   // ---------- USEEFFECT DO MODAL COM ANIMAÇÃO ----------
@@ -160,11 +183,16 @@ export default function StudyCreateCollection({ onSave }) {
 
           <p style={{ fontSize: "larger" }}>CAPA DA COLEÇÃO:</p>
 
-          <div className="collectionCoverOptions">
+          <div
+            className="collectionCoverOptions"
+            ref={coversContainerRef}
+          >
             {covers.map((img, i) => (
               <div
                 key={i}
-                className={`collectionCoverOption ${cover === img ? "selectedCover" : ""}`}
+                className={`collectionCoverOption ${
+                  cover === img ? "selectedCover" : ""
+                }`}
                 onClick={() => setCover(img)}
               >
                 <img src={img} style={{ width: "8.5rem", height: "8.5rem" }} />

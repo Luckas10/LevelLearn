@@ -24,8 +24,12 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 70%;
+    height: 90%;
     padding: 10%;
+}
+
+.sidebarLinks li:last-child {
+    margin-top: auto;
 }
 
 .sidebarLogo {
@@ -37,7 +41,7 @@ section {
     justify-content: center;
     font-weight: bold;
     margin-top: 0.2em;
-    margin-bottom: 0;
+    margin-bottom: 2rem;
 }
 
 .sidebarLogo img {
@@ -148,6 +152,7 @@ section {
 @media (max-width: 530px) {
     section {
         padding-left: 0 !important;
+        padding-bottom: 5rem;
     }
 
     .sidebar {
@@ -160,38 +165,53 @@ section {
         border-right: none;
         border-top: 0.2em solid #09254D;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
         background-color: #0C0B1A;
-        z-index: 10000; /* consistente com desktop */
-    }
-
-    .sidebarLinks {
-        flex-direction: row;
+        z-index: 10000;
     }
 
     .sidebarLogo {
         display: none;
     }
 
-    .sidebar ul {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        width: 100%;
+    .logoutButton {
+        display: none;
     }
 
-    .sidebar li {
+    /* lista principal de links vira a bottom bar inteira */
+    .sidebarLinks {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+        justify-content: space-evenly;
+        align-items: center;
+        padding: 0 1.5rem;
+    }
+
+    .sidebarLinks li:last-child {
+        margin-top: 0;
+    }
+
+    .sidebarLinks li {
+        flex: 1;                          /* cada item ocupa a mesma largura */
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin: 0;
     }
 
     .sidebar a {
-        width: auto;
-        padding: 0.5em;
+        width: 100%;
+        padding: 0.4em 0;
         border: none;
         border-radius: 10px;
         background: none;
         color: #cfcfe6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .sidebar a.active {

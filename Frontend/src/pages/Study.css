@@ -4,18 +4,26 @@
     width: 100%;
     color: white;
     outline: none;
-    height: 100vh;
+    min-height: 100vh;
 }
 
+/* wrapper do conteúdo (navbar + section) */
+.study-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+/* section principal (o offset lateral vem do Sidebar.css pelo seletor "section") */
 .content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    padding-left: 15vw;
 }
 
+/* ===== Cards principais (desktop) ===== */
 .cards-container {
     display: flex;
     flex-wrap: wrap;
@@ -24,6 +32,7 @@
     align-items: center;
     width: 100%;
     height: 100%;
+    margin-top: 2rem;
 }
 
 .study-card {
@@ -75,22 +84,24 @@
     height: 40%;
 }
 
-.study-text>p {
+.study-text > p {
     font-size: clamp(1.5rem, 1vw + 0.4rem, 1.4rem);
 }
 
+/* ===== Ajustes de tipografia em telas grandes/medias ===== */
 @media (max-width: 1600px) {
-  .study-text > p {
-    font-size: clamp(0.9rem, 0.9vw + 0.3rem, 1.2rem);
-  }
+    .study-text > p {
+        font-size: clamp(0.9rem, 0.9vw + 0.3rem, 1.2rem);
+    }
 }
 
 @media (max-width: 900px) {
-    .study-text>p {
+    .study-text > p {
         font-size: clamp(0.8rem, 0.8vw + 0.2rem, 1rem);
     }
 }
 
+/* ===== Layout em coluna (tablet) ===== */
 @media (max-width: 768px) {
     .cards-container {
         flex-direction: column;
@@ -100,6 +111,7 @@
 
     .study-card {
         width: 80%;
+        height: auto;        /* deixa o card crescer conforme o conteúdo */
     }
 
     #flashcards-img,
@@ -112,12 +124,23 @@
     }
 }
 
-@media (max-width: 480px) {
-    .content {
-        padding: 4% 2%;
-        /* substituindo 2rem 1rem */
+/* ===== Mobile com bottom bar (≤ 530px) ===== */
+@media (max-width: 530px) {
+    .study-page {
+        flex-direction: column;   /* conteúdo em coluna, barra fixa embaixo */
     }
 
+    .study-card {
+        width: 90%;
+    }
+
+    .cards-container {
+        gap: 2rem;
+    }
+}
+
+/* ===== Mobile pequeno (≤ 480px) ===== */
+@media (max-width: 480px) {
     .study-card {
         width: 90%;
     }
@@ -129,11 +152,11 @@
 
     h1 {
         font-size: 120%;
+        text-align: center;
     }
 
     .study-text {
         font-size: 90%;
         padding: 2% 2%;
-        /* substituindo 1rem */
     }
 }
