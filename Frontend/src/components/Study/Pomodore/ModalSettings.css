@@ -6,8 +6,10 @@
   border: none;
   border-radius: 20px;
   background: #0d0f2b;
-  padding: 2.5rem 3rem;
-  width: 480px;
+  padding: 2.2rem 2.2rem;
+  width: min(480px, 95vw);
+  max-height: 90vh;
+  overflow-y: auto;
   color: white;
   box-shadow: 0 0 20px rgba(80, 112, 255, 0.7);
   opacity: 0;
@@ -15,6 +17,7 @@
   transition: 0.25s ease;
   text-align: center;
 }
+
 
 /* Ativo, mas invisível */
 .settings-dialog.showing {
@@ -254,4 +257,19 @@ input[type=number]::-webkit-inner-spin-button {
 .close-x:hover {
   opacity: 1;
   transform: scale(1.1);
+}
+
+@media (max-width: 480px) {
+  .settings-dialog {
+    padding: 1.6rem 1.4rem;
+  }
+
+  .duration-grid {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .duration-block {
+    width: 100%;
+  }
 }

@@ -7,11 +7,14 @@ export function Study() {
     return (
         <div className="study-page">
             <Sidebar />
-            <section className="content">
+
+            <div className="study-main">
                 <Navbar />
-                <StudyHeader />
-                <StudyCardsContainer />
-            </section>
+
+                <section className="content">
+                    <StudyCardsContainer />
+                </section>
+            </div>
         </div>
     );
 }

@@ -1,3 +1,5 @@
+/* ===== LAYOUT GERAL ===== */
+
 .studyPomodore-page {
   display: flex;
   flex-direction: row;
@@ -8,20 +10,39 @@
   font-family: "Poppins", sans-serif;
 }
 
+/* wrapper pra Navbar + conteúdo */
+.studyPomodore-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+/* section (já recebe o padding-left do section global da Sidebar) */
 .studyPomodore {
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
+  justify-content: center;
+  padding-top: 3rem;
 }
+
+/* ===== TIMER + BOTÕES (DESKTOP, IGUAL ANTES) ===== */
 
 .pomodoretimer-container {
   display: flex;
   width: 100%;
-  height: 100%;
   align-items: center;
   justify-content: center;
   gap: 7rem;
+}
+
+
+.pomodore-timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .timer-circle {
@@ -30,8 +51,32 @@
   align-items: center;
   justify-content: center;
   z-index: 2;
+
+  width: min(500px, 45vw);
+  aspect-ratio: 1 / 1;
 }
 
+/* tamanho fixo, como no código original (SVG 500x500) */
+.progress-ring {
+  width: 100%;
+  height: 100%;
+}
+
+.progress-ring__circle {
+  z-index: 10;
+  stroke-linecap: round;
+  stroke-width: 12;
+  filter: drop-shadow(0 0 10px #6a5af9);
+}
+
+.timer-text {
+  position: absolute;
+  font-size: 5rem;
+  font-weight: 700;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Fogueira embaixo do círculo, como antes */
 .campfire-wrapper {
   position: absolute;
   transform: scale(1.25);
@@ -44,22 +89,12 @@
   pointer-events: none;
 }
 
-.progress-ring {
-  transform: rotate(-90deg);
-}
+/* ===== BOTÕES ===== */
 
-.progress-ring__circle {
-  z-index: 10;
-  stroke-linecap: round;
-  stroke-width: 12; /* mais grosso */
-  filter: drop-shadow(0 0 10px #6a5af9); /* leve brilho */
-}
-
-.timer-text {
-  position: absolute;
-  font-size: 5rem;
-  font-weight: 700;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+.pomodore-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .timer-buttons {
@@ -77,13 +112,12 @@
   color: white;
   border-radius: 16px;
   cursor: pointer;
-  font-size: 1.4rem;
+  font-size: 1rem;
   font-weight: 600;
   height: 50px;
   width: 280px;
   transition: 0.3s;
 }
-
 
 .btnPomodore:hover {
   background: rgba(60, 60, 120, 0.8);
@@ -105,37 +139,154 @@
   padding: 3px;
 }
 
-@media (max-width: 700px) {
+/* ===== RESPONSIVIDADE ===== */
+
+@media (max-width: 1200px) {
   .pomodoretimer-container {
-    flex-direction: column;
-    gap: 3rem;
+    gap: 4rem;
   }
 
-  .timer-circle {
-    width: 320px;
-    height: 320px;
-  }
-
-  .campfire-wrapper {
-    bottom: -90px;
-    width: 340px;
-    height: 340px;
-  }
-
-  .campfire {
-    transform: translateY(25px) scale(0.55);
+  .progress-ring {
+    width: 420px;
+    height: 420px;
   }
 
   .timer-text {
-    font-size: 3.5rem;
+    font-size: 4.2rem;
   }
 
-  .btn {
-    font-size: 1.2rem;
-    padding: 14px 30px;
+  .btnPomodore {
+    width: 250px;
+    font-size: 0.9rem;
   }
 }
 
-/* .flame {
-  filter: hue-rotate(270deg);
-} */
+/* tablet – empilha timer em cima e botões embaixo */
+@media (max-width: 980px) {
+
+  .pomodoretimer-container {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .progress-ring {
+    width: min(380px, 80vw);
+    height: auto;
+  }
+
+  .timer-text {
+    font-size: 3rem;
+  }
+
+  .timer-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .btnPomodore {
+    width: 220px;
+  }
+
+  .campfire {
+    transform: scale(0.6);
+    width: 480px;
+    height: 600px;
+    right: 30px;
+  }
+}
+
+/* tablets pequenos / celulares grandes */
+@media (max-width: 700px) {
+  .progress-ring {
+    width: min(340px, 82vw);
+    height: auto;
+  }
+
+  .timer-text {
+    font-size: 3.2rem;
+  }
+
+  .btnPomodore {
+    width: 200px;
+    font-size: 0.8rem;
+  }
+
+  .campfire {
+    transform: scale(0.5);
+    width: 380px;
+    height: 480px;
+  }
+
+  .campfire-wrapper {
+    transform: scale(0.8);
+    width: 340px;
+    height: 340px;
+  }
+}
+
+/* quando a sidebar vira bottom bar (≤ 530px) */
+@media (max-width: 530px) {
+  .studyPomodore-page {
+    flex-direction: column;
+  }
+
+  .studyPomodore {
+    padding: 1.2rem 1rem 5.5rem; /* espaço pra bottom bar */
+    justify-content: flex-start; /* NÃO centraliza verticalmente pra não “colar” no topo */
+  }
+
+  .pomodoretimer-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .timer-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btnPomodore {
+    width: 100%;
+    max-width: 260px;
+    font-size: 0.7rem;
+  }
+
+  .progress-ring {
+    width: min(300px, 84vw);
+    height: auto;
+  }
+
+  .timer-text {
+    font-size: 3rem;
+  }
+}
+
+/* celulares bem pequenos */
+@media (max-width: 400px) {
+  .studyPomodore {
+    padding: 1rem 0.7rem 5.5rem;
+  }
+
+  .progress-ring {
+    width: min(270px, 86vw);
+    height: auto;
+  }
+
+  .timer-text {
+    font-size: 2.7rem;
+  }
+
+  .campfire {
+    transform: scale(0.45);
+    width: 320px;
+    height: 420px;
+  }
+
+  .campfire-wrapper {
+    transform: scale(0.7);
+    width: 300px;
+    height: 320px;
+  }
+}

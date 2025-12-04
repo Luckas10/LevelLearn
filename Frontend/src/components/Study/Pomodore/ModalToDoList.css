@@ -6,9 +6,11 @@
   border: none;
   border-radius: 20px;
   background: #0d0f2b;
-  padding: 2.5rem 3rem;
-  width: 480px;
-  height: 600px;
+  padding: 2.2rem 2.2rem;
+  width: min(480px, 95vw);
+  max-height: 90vh;
+  height: auto;
+  overflow-y: auto;
   color: white;
   box-shadow: 0 0 20px rgba(80, 112, 255, 0.7);
   opacity: 0;
@@ -16,6 +18,7 @@
   transition: 0.25s ease;
   text-align: center;
 }
+
 
 /* Ativo, mas invisível */
 .todolist-dialog.showing {
@@ -466,3 +469,16 @@ input[type=number]::-webkit-inner-spin-button {
   outline: none;
 }
 
+@media (max-width: 480px) {
+  .todolist-dialog {
+    padding: 1.6rem 1.4rem;
+  }
+
+  .todo-input-row {
+    flex-direction: column;
+  }
+
+  .add-btn {
+    width: 100%;
+  }
+}

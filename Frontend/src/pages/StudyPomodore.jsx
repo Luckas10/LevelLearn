@@ -174,88 +174,100 @@ export function StudyPomodore() {
   return (
     <div className="studyPomodore-page">
       <Sidebar />
-      <section className="studyPomodore">
+
+      <div className="studyPomodore-main">
         <Navbar />
-        <div className="pomodoretimer-container">
-          <div className="pomodore-timer">
-            <div className="timer-circle">
-              <svg className="progress-ring" width="500" height="500">
-                <circle
-                  className="progress-ring__circle"
-                  stroke="url(#gradient)"
-                  strokeWidth="6"
-                  fill="transparent"
-                  r={radius}
-                  cx="250"
-                  cy="250"
-                  style={{
-                    strokeDasharray: circumference,
-                    strokeDashoffset: circumference * (1 - progress / 100),
-                    transition: "stroke-dashoffset 0.5s linear",
-                    transform: "rotate(-90deg)",
-                    transformOrigin: "50% 50%",
-                    filter: `drop-shadow(0 0 20px ${startColor})`,
-                  }}
-                />
-                <defs>
-                  <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor={startColor} />
-                    <stop offset="100%" stopColor={endColor} />
-                  </linearGradient>
-                </defs>
-              </svg>
 
-              <div className="timer-text">{minutes}:{seconds}</div>
+        <section className="studyPomodore">
+          <div className="pomodoretimer-container">
+            <div className="pomodore-timer">
+              <div className="timer-circle">
+                <svg className="progress-ring" viewBox="0 0 500 500">
+                  <circle
+                    className="progress-ring__circle"
+                    stroke="url(#gradient)"
+                    strokeWidth="6"
+                    fill="transparent"
+                    r={radius}
+                    cx="250"
+                    cy="250"
+                    style={{
+                      strokeDasharray: circumference,
+                      strokeDashoffset: circumference * (1 - progress / 100),
+                      transition: "stroke-dashoffset 0.5s linear",
+                      transform: "rotate(-90deg)",
+                      transformOrigin: "50% 50%",
+                      filter: `drop-shadow(0 0 20px ${startColor})`,
+                    }}
+                  />
+                  <defs>
+                    <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor={startColor} />
+                      <stop offset="100%" stopColor={endColor} />
+                    </linearGradient>
+                  </defs>
+                </svg>
 
-              <div className="campfire-wrapper">
-                <Campfire isActive={isRunning} />
+                <div className="timer-text">
+                  {minutes}:{seconds}
+                </div>
+
+                <div className="campfire-wrapper">
+                  <Campfire isActive={isRunning} />
+                </div>
+              </div>
+            </div>
+
+            <div className="pomodore-buttons">
+              <div className="timer-buttons">
+                <button onClick={handleStart} className="btnPomodore start">
+                  <img src={Sword} alt="" />
+                  {isRunning ? "PAUSAR" : "COMEÇAR"}
+                </button>
+
+                <button
+                  onClick={() => handleReset(settings.pomodoro * 60, "pomodoro")}
+                  className="btnPomodore pomo"
+                >
+                  <img src={Pomodore} alt="" />
+                  POMODORO
+                </button>
+
+                <button
+                  onClick={() => handleReset(settings.short * 60, "short")}
+                  className="btnPomodore"
+                >
+                  <img src={TimerCurto} alt="" />
+                  PAUSA CURTA
+                </button>
+
+                <button
+                  onClick={() => handleReset(settings.long * 60, "long")}
+                  className="btnPomodore"
+                >
+                  <img src={TimerLongo} alt="" />
+                  PAUSA LONGA
+                </button>
+
+                <button
+                  className="btnPomodore"
+                  onClick={() => setShowToDoList(true)}
+                >
+                  <img src={Missions} alt="" />
+                  TAREFAS
+                </button>
+
+                <button
+                  className="btnPomodore"
+                  onClick={() => setShowSettings(true)}
+                >
+                  <img src={Settings} alt="" />
+                  CONFIGURAÇÕES
+                </button>
               </div>
             </div>
           </div>
-
-          <div className="pomodore-buttons">
-            <div className="timer-buttons">
-              <button onClick={handleStart} className="btnPomodore start">
-                <img src={Sword} alt="" />
-                {isRunning ? "PAUSAR" : "COMEÇAR"}
-              </button>
-
-              <button
-                onClick={() => handleReset(settings.pomodoro * 60, "pomodoro")}
-                className="btnPomodore pomo"
-              >
-                <img src={Pomodore} alt="" />
-                POMODORO
-              </button>
-
-              <button
-                onClick={() => handleReset(settings.short * 60, "short")}
-                className="btnPomodore"
-              >
-                <img src={TimerCurto} alt="" />
-                PAUSA CURTA
-              </button>
-
-              <button
-                onClick={() => handleReset(settings.long * 60, "long")}
-                className="btnPomodore"
-              >
-                <img src={TimerLongo} alt="" />
-                PAUSA LONGA
-              </button>
-
-              <button className="btnPomodore" onClick={() => setShowToDoList(true)}>
-                <img src={Missions} alt="" />
-                TAREFAS
-              </button>
-
-              <button className="btnPomodore" onClick={() => setShowSettings(true)}>
-                <img src={Settings} alt="" />
-                CONFIGURAÇÕES
-              </button>
-            </div>
-          </div>
-        </div>
+        </section>
 
         <ModalSettings
           open={showSettings}
@@ -275,8 +287,11 @@ export function StudyPomodore() {
           }}
         />
 
-        <ModalToDoList open={showToDoList} onClose={() => setShowToDoList(false)} />
-      </section>
+        <ModalToDoList
+          open={showToDoList}
+          onClose={() => setShowToDoList(false)}
+        />
+      </div>
     </div>
   );
 }

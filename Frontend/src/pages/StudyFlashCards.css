@@ -1,26 +1,40 @@
-body {
+/* NÃO mexe mais no body aqui pra não quebrar scroll global */
+/* body {
     overflow-y: hidden;
-}
+} */
 
 .studyFlashCards-page {
     display: flex;
     flex-direction: row;
-    width: 100vw;
-    height: 100vh;
-    color: #333;
+    width: 100%;
+    min-height: 100vh;
+    color: #f5f5f5;
 }
 
+/* wrapper de navbar + conteúdo */
+.studyFlashCards-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+/* section principal (offset lateral vem do Sidebar.css via seletor "section") */
 .studyFlashCards {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
+    flex: 1;
+    min-height: 0;                 /* importante pra área scrollável funcionar em flex */
 }
+
+/* ====== TABS ====== */
 
 .studyTabs {
     display: flex;
     width: 100%;
-    height: 7%;
+    flex-shrink: 0;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
 }
 
 .studyTabsSelect {
@@ -29,29 +43,30 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     width: 50%;
-    height: 100%;
     cursor: pointer;
-    padding: 10px 20px;
+    padding: 0.9rem 1.2rem;
     background-color: #131226;
     transition: 0.3s;
 }
 
 .studyTabsSelect.active {
-    background-color: #151737; 
+    background-color: #151737;
     color: white;
     border-bottom: 5px solid #4346E6;
 }
 
-/* Study Collection */
+/* ====== STUDY COLLECTION (área abaixo das tabs) ====== */
 
 .studyCollection-page {
+    flex: 1;                      /* ocupa o resto da altura */
     width: 100%;
-    height: 93%;
     overflow: auto;
+    padding-bottom: 1.5rem;
 }
 
+/* scroll custom */
 .studyCollection-page::-webkit-scrollbar {
     width: 8px;
 }
@@ -63,6 +78,7 @@ body {
     background: #666;
 }
 
+/* header com botão de criar coleção */
 .studyCreateCollection {
     display: flex;
     justify-content: flex-end;
@@ -97,6 +113,8 @@ body {
     background-color: #4346E6;
 }
 
+/* ====== MODAL CRIAR COLEÇÃO ====== */
+
 .createCollectionModal {
     position: fixed;
     overflow: hidden;
@@ -111,7 +129,7 @@ body {
     width: 46rem;
     height: 38rem;
     box-shadow: 0 0 20px rgba(80, 112, 255, 0.7);
-    transition: 0.25s;
+    transition: opacity 220ms ease, transform 220ms ease;
     font-size: larger;
 }
 
@@ -123,19 +141,6 @@ body {
 .createCollectionModal.visible {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
-}
-
-.createCollectionModal {
-    transition: opacity 220ms ease, transform 220ms ease;
-}
-
-.createCollectionModal::backdrop {
-    background: rgba(0, 0, 0, 0);
-    transition: background 220ms ease;
-}
-
-.createCollectionModal.visible::backdrop {
-    background: rgba(0, 0, 0, 0.6);
 }
 
 .createCollectionModal::backdrop {
@@ -153,24 +158,24 @@ body {
     padding-inline: 10px;
 }
 
+/* scroll do conteúdo do modal */
 .collectionModalContent::-webkit-scrollbar {
     width: 8px;
     height: 6px;
 }
-
 .collectionModalContent::-webkit-scrollbar-track {
     background-color:#151737;
-    width: 8px;
-    height: 6px;
     border-radius: 4px;
 }
 .collectionModalContent::-webkit-scrollbar-thumb {
-    background: #4346E6;;
+    background: #4346E6;
     border-radius: 4px;
 }
 .collectionModalContent::-webkit-scrollbar-thumb:hover {
-    background: #5356f1;;
+    background: #5356f1;
 }
+
+/* inputs do modal */
 
 .collectionInput {
     border: none;
@@ -244,21 +249,17 @@ body {
     width: 8px;
     height: 6px;
 }
-
 .collectionCoverOptions::-webkit-scrollbar-track {
     background-color:#151737;
-    width: 8px;
-    height: 6px;
     border-radius: 4px;
 }
 .collectionCoverOptions::-webkit-scrollbar-thumb {
-    background: #4346E6;;
+    background: #4346E6;
     border-radius: 4px;
 }
 .collectionCoverOptions::-webkit-scrollbar-thumb:hover {
-    background: #5356f1;;
+    background: #5356f1;
 }
-
 
 .collectionButtonSave {
     padding: 10px;
@@ -275,10 +276,11 @@ body {
     background-color: #5356f1;
 }
 
+/* GRID das coleções */
+
 .studyCollection {
     display: grid;
     width: 100%;
-    height: 28rem;
     margin-top: 2rem;
     padding: 0 3rem;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -287,10 +289,9 @@ body {
     align-items: start;
 }
 
-
 .collectionContainer {
-    width: 100%;           
-    height: 18rem;            
+    width: 100%;
+    height: 18rem;
     background-color: #151838;
     border-radius: 15px;
     display: flex;
@@ -305,23 +306,85 @@ body {
 .collectionContainer:hover {
     transform: translateY(-5px);
 }
+
 .cardImg {
     width: 90%;
     height: 80%;
+    object-fit: contain;
 }
 
 .collectionCoverOption.selectedCover {
     border: 2px solid #4346E6;
 }
 
-/* Study Library */
+/* ====== RESPONSIVO ====== */
 
+/* tablet */
+@media (max-width: 900px) {
+
+    .createCollectionButton {
+        margin-right: 1.5rem;
+    }
+
+    .studyCollection {
+        padding: 0 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}
+
+/* tablet pequeno / mobile landscape */
+@media (max-width: 768px) {
+    .studyCollection {
+        padding: 0 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 24px;
+    }
+
+    .collectionContainer {
+        height: 16rem;
+    }
+
+    .createCollectionButton {
+        margin-right: 1rem;
+    }
+}
+
+/* mobile com bottom bar da sidebar */
 @media (max-width: 530px) {
     .studyFlashCards-page {
         flex-direction: column;
     }
 
-    .studyFlashCards {
+    .studyCreateCollection {
+        justify-content: center;
+        margin-top: 1.5rem;
+    }
+
+    .createCollectionButton {
+        margin-right: 0;
         width: 100%;
+        max-width: 280px;
+    }
+
+    .studyCollection {
+        padding: 0 0.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+}
+
+/* mobile bem pequeno */
+@media (max-width: 400px) {
+    .studyTabsSelect {
+        font-size: 0.95rem;
+        padding: 0.7rem 0.6rem;
+    }
+
+    .collectionContainer {
+        height: auto;
+        padding: 1rem 0.5rem;
+    }
+
+    .cardImg {
+        height: auto;
     }
 }
