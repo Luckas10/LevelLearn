@@ -111,7 +111,7 @@ def list_received_requests(
             "xp": sender.xp,
             "coins": sender.coins,
             "combo": sender.combo,
-            "achievements": sender.achievements
+            "achievements_count": len(sender.achievements)
         })
 
     return result

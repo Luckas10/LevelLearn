@@ -28,9 +28,7 @@ export function Friends() {
   const [sentRequests, setSentRequests] = useState([]);
   const [users, setUsers] = useState([]);
 
-  // -----------------------------
-  // LOAD DATA
-  // -----------------------------
+  // Carregar informações
   useEffect(() => {
     loadFriends();
     loadRequests();
@@ -50,7 +48,6 @@ export function Friends() {
 
   async function loadAllUsers() {
     try {
-      // ESTE ENDPOINT JÁ REMOVE O USUÁRIO LOGADO
       const res = await api.get("/users/search");
       setUsers(res.data || []);
     } catch (error) {
@@ -66,9 +63,6 @@ export function Friends() {
     }
   }, [activeTab]);
 
-  // -----------------------------
-  // ACTIONS
-  // -----------------------------
   async function handleSendRequest(id) {
     await sendFriendRequest(id);
     await loadRequests();
@@ -90,9 +84,7 @@ export function Friends() {
     setFriends(prev => prev.filter(f => f.id !== id));
   }
 
-  // -----------------------------
-  // FILTERS
-  // -----------------------------
+  // Filtros
   const filteredFriends = useMemo(() => {
     if (!query.trim()) return friends;
     const q = query.toLowerCase();
@@ -168,7 +160,7 @@ export function Friends() {
                   key={f.id}
                   username={f.username}
                   level={f.level}
-                  achievements={f.achievements}
+                  achievements={"0"}
                   onRemove={() => handleRemoveFriend(f.id)}
                   to={`/profile/${f.id}`}
                 />
@@ -185,7 +177,7 @@ export function Friends() {
                   key={r.request_id}
                   username={r.username}
                   level={r.level}
-                  achievements={r.achievements}
+                  achievements={"0"}
                   onAccept={() => handleAcceptRequest(r.request_id)}
                   onDecline={() => handleDeclineRequest(r.request_id)}
                   to={`/profile/${r.id}`}
@@ -203,7 +195,7 @@ export function Friends() {
                   key={u.id}
                   username={u.username}
                   level={u.level}
-                  achievements={u.achievements}
+                  achievements={"0"}
                   onAdd={() => handleSendRequest(u.id)}
                   to={`/profile/${u.id}`}
                 />
