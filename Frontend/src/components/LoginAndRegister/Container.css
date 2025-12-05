@@ -314,6 +314,7 @@ main.sign-up-mode .carousel {
     line-height: 2.2rem;
     font-weight: 600;
     font-size: 1.6rem;
+    color: var(--text-logo);
 }
 
 .bullets {

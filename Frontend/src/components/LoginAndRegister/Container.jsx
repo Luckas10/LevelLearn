@@ -92,7 +92,10 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme, onLogin
                         <form action="index.html" autoComplete="off" className="sign-in-form" onSubmit={handleSignIn}>
                             <div className="logo">
                                 <div className="brand">
-                                    <img src="/img/LogoSVG.svg" alt="LevelLearn" />
+                                    <img
+                                        src={isNight ? "/img/LogoSVG.svg" : "/img/LogoLightSVG.svg"}
+                                        alt="LevelLearn"
+                                        />
                                     <h4>LevelLearn</h4>
                                 </div>
 
@@ -206,8 +209,12 @@ export default function LoginRegisterContainer({ isNight, onToggleTheme, onLogin
                     <div className="carousel">
                         <div className="images-wrapper">
                             <img src="/img/carrousel1.png" className="image img-1 show" alt="" />
-                            <img src="/img/image2.png" className="image img-2" alt="" />
-                            <img src="/img/image3.png" className="image img-3" alt="" />
+                            <img src="/img/FlashDore.svg" className="image img-2" alt="" />
+                            <img
+                                src={isNight ? "/img/LL_icons.svg" : "/img/LL_iconsLight.svg"}
+                                alt="LevelLearn"
+                                className="image img-3"
+                            />
                         </div>
 
                         <div className="text-slider">
