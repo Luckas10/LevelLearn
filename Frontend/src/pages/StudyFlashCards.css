@@ -307,14 +307,79 @@
     transform: translateY(-5px);
 }
 
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    width: 13rem;
+    height: 25rem;
+    align-items: center;
+    gap: 0;           
+}
+
 .cardImg {
-    width: 90%;
-    height: 80%;
-    object-fit: contain;
+    width: 85%;                /* largura relativa pro layout da grid */
+    height: auto;
+    max-height: 65%;           /* limita altura ocupada pela imagem */
+    object-fit: contain;       /* preserva proporção sem cortar */
+    display: block;
+    margin: 0.8rem auto 0 auto;/* centraliza horizontalmente e dá um top pequeno */
+    pointer-events: none;      /* evita interferência com onMouseMove */
+}
+
+.interactiveCardBase {
+    background-color: #151838;
+    border-radius: 15px;
+    width: 100%;
+    height: 18rem;             /* mesmo tamanho do .collectionContainer */
+    display: flex;
+    align-items: stretch;      /* importante para .cardContent preencher todo o card */
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    overflow: hidden;          /* garante que nada "vaze" para fora do card */
 }
 
 .collectionCoverOption.selectedCover {
     border: 2px solid #4346E6;
+}
+
+.cardContentTitle {
+    margin-top: auto;          /* empurra o bloco de títulos para o final do card */
+    width: 100%;
+    height: 5rem;
+    background-color: #4346E6;
+    color: #fff;
+    padding: 0.55rem 0;        /* altura compacta, sem espaços grandes */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 0 15px 15px; /* mantém cantos arredondados na base */
+    box-sizing: border-box;
+}
+
+.cardContentTitle h1,
+.cardContentTitle h2 {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;       /* evita quebra de linha que aumente a altura */
+}
+
+.cardContentTitle h1 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.cardContentTitle h2 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    opacity: 0.95;
+    margin-top: 0.18rem;       /* pequeno espaçamento interno entre título e subtítulo */
 }
 
 /* ====== RESPONSIVO ====== */

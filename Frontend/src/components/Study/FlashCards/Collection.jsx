@@ -22,7 +22,13 @@ export default function StudyCollection() {
 
       <div className="studyCollection">
         {collections.map((c, i) => (
-          <StudyInteractiveCard className="collectionContainer" key={i} image={c.cover_name} to={`/study/flashcards/selected/${c.id}`} />
+          <StudyInteractiveCard 
+            className="collectionContainer" 
+            key={i} 
+            image={c.cover_name} 
+            to={`/study/flashcards/selected/${c.id}`} 
+            title={c.name}
+            />
         ))}
       </div>
     </div>
