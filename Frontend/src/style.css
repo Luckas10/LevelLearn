@@ -7,6 +7,7 @@
   /* textos */
   --text: #ffffff;
   --text-muted: #bbb;
+  --text-logo: #ffffff;
 
   /* primária / hover */
   --primary: #8371fd;
@@ -18,6 +19,10 @@
   --btn-bg: #ffffff;
   --btn-fg: #000000;
   --btn-hover: var(--primary);
+
+  --btn-signup-bg: #1553ad;
+  --btn-signup-fg: #ffffff;
+  --btn-signup-hover: #337ed4;
 }
 
 /* Overrides para o tema CLARO */
@@ -27,6 +32,7 @@
 
   --text: #151111;
   --text-muted: #555;
+  --text-logo: #09254e;
 
   --primary: #5b6cff;
 
@@ -35,6 +41,10 @@
   --btn-bg: #151111;
   --btn-fg: #ffffff;
   --btn-hover: #2d2d2d;
+
+  --btn-signup-bg: #337ed4;
+  --btn-signup-fg: #ffffff;
+  --btn-signup-hover: #1553ad;
 }
 
 /* transições suaves ao trocar de tema */
@@ -57,7 +67,6 @@ html {
     background-color: #0C0B1A;
     color: white;
 }
-
 
 
 page-content {

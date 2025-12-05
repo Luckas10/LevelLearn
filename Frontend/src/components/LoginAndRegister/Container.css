@@ -116,7 +116,7 @@ form.sign-up-form {
 .logo h4 {
     font-size: 1.6rem;
     letter-spacing: -0.5px;
-    color: var(--text);
+    color: var(--text-logo);
 }
 
 .heading h2 {
@@ -133,7 +133,7 @@ form.sign-up-form {
 }
 
 .toggle {
-    color: #ffffff;
+    color: var(--text);
     text-decoration: none;
     font-size: 0.75rem;
     font-weight: 500;
@@ -192,8 +192,8 @@ form.sign-up-form {
     display: inline-block;
     width: 100%;
     height: 43px;
-    background-color: #ffffff;
-    color: #000000;
+    background-color: var(--btn-signup-bg);
+    color: var(--btn-signup-fg);
     border: none;
     cursor: pointer;
     border-radius: 0.8rem;
@@ -203,7 +203,7 @@ form.sign-up-form {
 }
 
 .sign-btn:hover {
-    background-color: #8371fd;
+    background-color: var(--btn-signup-hover);
 }
 
 .text {
@@ -406,7 +406,6 @@ main.sign-up-mode .carousel {
     .logo h4 {
         font-size: 1.4rem;
         letter-spacing: -0.5px;
-        color: #ffffff;
     }
 }
 
@@ -448,6 +447,5 @@ main.sign-up-mode .carousel {
     .logo h4 {
         font-size: 1rem;
         letter-spacing: -0.5px;
-        color: #ffffff;
     }
 }
