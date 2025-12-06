@@ -1,15 +1,23 @@
 import { PlayButton } from "./StartButton.jsx";
 
-
 export default function InfoPanel({ description, name, cover }) {
 
     return (
         <div className="infoPanelContainer">
             <div className="infoPanel">
-                <div className="cover">
-                    <img src={cover} style={{width: "20rem", height: "18rem"}}/>
-                    <h1>{name}</h1>
+
+                {/* Imagem + botão juntos no celular */}
+                <div className="coverAndButton">
+                    <div className="cover">
+                        <img src={cover} className="coverImage" />
+                        <h1>{name}</h1>
+                    </div>
+
+                    <div className="mobilePlayButton">
+                        <PlayButton />
+                    </div>
                 </div>
+
                 <div className="descriptionCollectionContainer">
                     <div className="descriptionCollection">
                         <h1 className="collectionTitle">{name}</h1>
@@ -17,8 +25,11 @@ export default function InfoPanel({ description, name, cover }) {
                     </div>
                 </div>
             </div>
-            <PlayButton />
+
+            {/* No desktop: botão continua no canto direito */}
+            <div className="desktopPlayButton">
+                <PlayButton />
+            </div>
         </div>
     );
 }
-

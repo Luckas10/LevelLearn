@@ -19,7 +19,6 @@ export function CollectionSelected() {
         load();
     }, [id]);
 
-    // ⛔ Impede erro: collection ainda é null no início
     if (!collection) {
         return <div className="collectionSelected-page">Carregando...</div>
     }
@@ -27,15 +26,23 @@ export function CollectionSelected() {
     return (
         <div className="collectionSelected-page">
             <Sidebar />
-                <section className="collectionSelected">
-                    <Navbar />
+            <section className="collectionSelected">
+                <Navbar />
+
+                {/* TOPO: capa, nome, descrição, botão jogar */}
+                <div className="collectionSelected-top">
                     <InfoPanel 
                         name={collection.name} 
                         description={collection.description} 
                         cover={collection.cover_name} 
                     />
+                </div>
+
+                {/* PARTE DE BAIXO: grid de flashcards */}
+                <div className="collectionSelected-bottom">
                     <CreateCard />
-                </section>
+                </div>
+            </section>
         </div>
-    )
+    );
 }

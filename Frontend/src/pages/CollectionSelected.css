@@ -1,3 +1,7 @@
+/* ========================================================================
+   LAYOUT GERAL DA PÁGINA
+   ======================================================================== */
+
 .collectionSelected-page {
     display: flex;
     flex-direction: row;
@@ -5,59 +9,146 @@
     height: 100vh;
     color: #333;
     font-family: "Poppins", sans-serif;
+    background-color: #050515;
 }
 
+/* Conteúdo principal (área à direita da Sidebar) */
 .collectionSelected {
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
+/* Scrollbar */
 .collectionSelected::-webkit-scrollbar {
     width: 8px;
     height: 6px;
 }
 
 .collectionSelected::-webkit-scrollbar-track {
-    background-color:#151737;
-    width: 8px;
-    height: 6px;
+    background-color: #151737;
     border-radius: 4px;
 }
+
 .collectionSelected::-webkit-scrollbar-thumb {
-    background: #4346E6;;
+    background: #4346E6;
     border-radius: 4px;
 }
+
 .collectionSelected::-webkit-scrollbar-thumb:hover {
-    background: #5356f1;;
+    background: #5356f1;
+}
+
+/* ========================================================================
+   TOPO / PARTE DE BAIXO (WRAPPERS)
+   ======================================================================== */
+
+.collectionSelected-top,
+.collectionSelected-bottom {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Limita a largura do topo (InfoPanel) */
+.collectionSelected-top > .infoPanelContainer {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;         /* centraliza o bloco inteiro */
 }
 
 
-/* InfoPanel */
+/* Limita a largura da área de cards */
+.collectionSelected-bottom > .createCardContainer {
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* ========================================================================
+   INFOPANEL (PARTE DE CIMA)
+   ======================================================================== */
 
 .infoPanelContainer {
     display: flex;
     width: 100%;
-    height: 50%;
+    min-height: 260px;
+    padding: 2rem 3rem;
+    box-sizing: border-box;
+    gap: 2rem;
 }
 
 .infoPanel {
     display: flex;
     align-items: center;
-    width: 80%;
-    height: 100%;
+    justify-content: space-between;
+    gap: 2rem;
+    width: 100%;
     color: white;
+    flex-wrap: wrap;
 }
 
+/* Wrapper que junta capa + botão no mobile */
+.coverAndButton {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Capa + título */
+.cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 220px;
+    max-width: 20rem;
+    width: 100%;
+    height: auto;
+    padding: 1rem 1rem 1.5rem 1rem;
+    background-color: #151838;
+    border-radius: 1rem;
+}
+
+.cover img,
+.coverImage {
+    width: 100%;
+    max-width: 20rem;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0.8rem;
+}
+
+.cover h1 {
+    margin-top: 1rem;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+/* Descrição da coleção */
+.descriptionCollectionContainer {
+    flex: 1;
+    min-width: 260px;
+    max-width: 700px;
+}
+
+.descriptionCollection {
+    width: 100%;
+}
+
+.collectionTitle {
+    font-size: 2.4rem;
+}
+
+/* Botão "JOGAR" – padrão (desktop) */
 .startButtonContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 50%;
-    height: 100%;
+    min-width: 220px;
 }
 
 .startButton {
@@ -71,8 +162,8 @@
     border-radius: 1rem;
     font-family: "Poppins", sans-serif;
     background-color: #342FCF;
-    width: 25rem;
-    height: 7rem;
+    width: 18rem;
+    height: 4.5rem;
     cursor: pointer;
     transition: 0.3s;
 }
@@ -81,80 +172,106 @@
     background-color: #4346E6;
 }
 
-.cover {
+/* Botão em posições diferentes desktop x mobile */
+.desktopPlayButton {
     display: flex;
-    flex-direction: column;
-    margin-left: 4rem;
-    justify-content: center;
     align-items: center;
-    width: 20rem;
-    height: 23rem;
-    background-color: #151838;
-    border-radius: 1rem;
 }
 
-.descriptionCollectionContainer {
-    width: 100%;
-    height: 50%;
+.mobilePlayButton {
+    display: none;
 }
 
-.descriptionCollection {
-    margin-left: 4rem;
-    width: 36rem;
-}
-
-.collectionTitle {
-    font-size: 3rem;
-}
-
-/* CreateCard */
+/* ========================================================================
+   CREATECARD (PARTE DE BAIXO)
+   ======================================================================== */
 
 .createCardContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 50%;
+    min-height: 50vh;
     color: white;
+    padding: 1rem 2rem 2rem 2rem;
+    box-sizing: border-box;
 }
 
-.createCard {
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    width: 14rem;
-    height: 18rem;
-    margin: 1rem;
-    background-color: #151838;
-    border-radius: 1rem;
-    border: none ;
-    cursor: pointer;
+.createCardContainer > h1 {
+    text-align: center;
 }
 
+/* Wrapper dos cards + botão de criar */
 .cards {
     width: 100%;
     display: flex;
-
+    justify-content: center;
 }
+
+/* Grid de cards criados */
+.createdCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1100px;
+    margin-top: 1rem;
+    justify-items: center;
+}
+
+/* Card de criar novo */
+.createCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 12rem;
+    height: 16rem;
+    margin: 0.5rem;
+    background-color: #151838;
+    border-radius: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+/* Card já criado */
+.flashCardContainer {
+    width: 12rem;
+    height: 16rem;
+    margin: 0.5rem;
+    background-color: #151838;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    color: white;
+}
+
+/* ========================================================================
+   MODAL DE CRIAÇÃO DE CARD
+   ======================================================================== */
 
 .createCardModal {
     position: fixed;
-    overflow: hidden;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    overflow: hidden;
+    transform: translate(-50%, -50%) scale(1);
     border: none;
     border-radius: 10px;
     padding: 2rem;
     background-color: #0d0f2b;
     color: white;
     width: 46rem;
-    height: 19rem;
+    max-width: 95vw;
+    max-height: 90vh;
     box-shadow: 0 0 20px rgba(80, 112, 255, 0.7);
-    transition: 0.25s;
     font-size: larger;
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transition: opacity 220ms ease, transform 220ms ease;
 }
 
 .createCardModal.showing {
@@ -167,19 +284,6 @@
     transform: translate(-50%, -50%) scale(1);
 }
 
-.createCardModal {
-    transition: opacity 220ms ease, transform 220ms ease;
-}
-
-.createCardModal::backdrop {
-    background: rgba(0, 0, 0, 0);
-    transition: background 220ms ease;
-}
-
-.createCardModal.visible::backdrop {
-    background: rgba(0, 0, 0, 0.6);
-}
-
 .createCardModal::backdrop {
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(3px);
@@ -190,8 +294,8 @@
     align-items: center;
     flex-direction: column;
     gap: 15px;
-    height: 100%;
-    overflow: auto;
+    max-height: 100%;
+    overflow-y: auto;
     padding-inline: 10px;
 }
 
@@ -238,29 +342,252 @@
     background-color: #5356f1;
 }
 
-.flashCardContainer {
-    width: 14rem;
-    height: 18rem;
-    margin: 1rem;
-    background-color: #151838;
-    border-radius: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border: none;
-    text-decoration: none;
-    color: white;
+/* ========================================================================
+   RESPONSIVIDADE
+   ======================================================================== */
+
+/* ====== Até ~1200px ====== */
+@media (max-width: 1200px) {
+    .infoPanelContainer {
+        padding: 2rem;
+    }
+
+    .collectionTitle {
+        font-size: 2rem;
+    }
+
+    .startButton {
+        width: 16rem;
+        height: 4.2rem;
+    }
 }
 
-.createdCards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-    gap: 2rem;
-    width: 90%;
-    margin-top: 1rem;
-    justify-items: center; /* centraliza cada item dentro da coluna */
-    align-items: start;
-    margin-left: 5rem;
+/* ====== Até ~900px ====== */
+@media (max-width: 900px) {
+    .collectionSelected-page {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .infoPanelContainer {
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem 1.5rem 1rem 1.5rem;
+    }
+
+    .infoPanel {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* Capa + botão ficam lado a lado, centralizados */
+    .coverAndButton {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    /* Capa em formato de card */
+    .cover {
+        margin: 0;
+        width: 12rem;
+        max-width: 12rem;
+        padding: 0.5rem;
+    }
+
+    .coverImage,
+    .cover img {
+        width: 100%;
+        height: auto;
+    }
+
+    /* Container do botão do mesmo “slot” da capa */
+    .mobilePlayButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .desktopPlayButton {
+        display: none;
+    }
+
+    .startButtonContainer {
+        min-width: 0;
+        width: 12rem;
+        max-width: 12rem;
+        align-items: stretch;
+        justify-content: center;
+    }
+
+    /* Botão azul, formato de card, sem texto */
+    .startButton {
+        width: 100%;
+        height: 16rem;             /* altura estilo card */
+        background-color: #342FCF;  /* continua azul */
+        border-radius: 1rem;
+        padding: 0;
+        gap: 0;
+    }
+
+    .startButtonText {
+        display: none;             /* some o "JOGAR" no mobile */
+    }
+
+    .startButtonIcon {
+        font-size: 2.4rem;         /* ícone centralizado e bem visível */
+    }
+
+    .descriptionCollectionContainer {
+        max-width: 100%;
+    }
+
+    .descriptionCollection {
+        margin: 1rem auto 0 auto;
+        width: 100%;
+    }
+
+    .collectionTitle {
+        text-align: center;
+    }
+
+    .descriptionCollection p {
+        text-align: justify;
+    }
+
+    .createCardContainer {
+        padding: 1rem 1.5rem 2rem 1.5rem;
+    }
+
+    .createdCards {
+        max-width: 100%;
+    }
+}
+
+
+/* ====== Até ~600px ====== */
+@media (max-width: 600px) {
+    .infoPanelContainer {
+        padding: 1rem;
+    }
+
+    .collectionTitle {
+        font-size: 1.8rem;
+    }
+
+    .cover {
+        max-width: 16rem;
+    }
+
+    .startButton {
+        width: 14rem;
+        height: 4rem;
+    }
+
+    .createCardContainer > h1 {
+        font-size: 2rem;
+    }
+
+    .createdCards {
+        grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+        gap: 1rem;
+    }
+
+    .createCard,
+    .flashCardContainer {
+        width: 9rem;
+        height: 12rem;
+    }
+}
+
+/* ====== Até ~500px ====== */
+@media (max-width: 500px) {
+    .cover {
+        max-width: 10rem;
+    }
+
+    .coverImage,
+    .cover img {
+        max-width: 10rem;
+    }
+}
+
+/* ====== Até ~400px ====== */
+@media (max-width: 400px) {
+    .collectionTitle {
+        font-size: 1.6rem;
+    }
+
+    .cover {
+        max-width: 14rem;
+    }
+
+    .startButton {
+        width: 12rem;
+        height: 3.5rem;
+        font-size: 0.9rem;
+    }
+
+    .cardsButtonSave {
+        width: 70%;
+    }
+}
+
+/* ========================================================================
+   AJUSTE DO BOTÃO QUANDO A SIDEBAR REDUZIR (MOBILE)
+   ======================================================================== */
+
+/* Estilo padrão do texto (desktop) */
+.startButtonText {
+    display: block;
+}
+
+/* Só pra garantir controle do ícone se quiser mexer depois */
+.startButtonIcon {
+    display: block;
+}
+
+/* Quando a tela estiver no mesmo breakpoint em que a sidebar reduz */
+@media (max-width: 900px) {
+    /* Botão vira um "cardzinho", igual à capa */
+    .startButton {
+        width: 4rem;
+        height: 4rem;
+        background-color: #151838; /* mesma cor da capa */
+        border-radius: 1rem;
+        padding: 0;
+        gap: 0;
+    }
+
+    /* some o texto JOGAR */
+    .startButtonText {
+        display: none;
+    }
+
+    /* Ícone centralizado e menor */
+    .startButtonIcon {
+        font-size: 2rem;
+    }
+
+    /* Garante que capa + botão se comportem bem lado a lado */
+    .coverAndButton {
+        gap: 1rem;
+    }
+}
+
+/* Se quiser ainda mais compacto em telas bem pequenas */
+@media (max-width: 500px) {
+    .startButton {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+
+    .startButtonIcon {
+        font-size: 1.6rem;
+    }
 }
