@@ -34,8 +34,6 @@ export default function Sidebar() {
             text: "Você será desconectado da sua conta.",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
             confirmButtonText: "Sim, sair",
             cancelButtonText: "Cancelar",
         });

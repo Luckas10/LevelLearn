@@ -5,7 +5,6 @@ import Background from "../components/LoginAndRegister/Background";
 import LoginRegisterContainer from "../components/LoginAndRegister/Container";
 import { loginWithPassword, registerUser } from "../services/auth";
 import "../style.css";
-import "./LoginRegister.css";
 
 export function LoginRegister() {
     const [isNight, setIsNight] = useState(false);
@@ -13,7 +12,6 @@ export function LoginRegister() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // aplica o atributo para o CSS enxergar
         document.documentElement.setAttribute("data-theme", isNight ? "dark" : "light");
     }, [isNight]);
 
@@ -26,7 +24,7 @@ export function LoginRegister() {
             const { access_token } = await loginWithPassword({ email, password });
             localStorage.setItem("token", access_token);
 
-            navigate("/");  // primeiro redireciona pro dashboard
+            navigate("/");
 
             Swal.fire({
                 icon: "success",
@@ -34,13 +32,13 @@ export function LoginRegister() {
                 toast: true,
                 position: "top-end",
                 showConfirmButton: false,
-                timer: 3200,              // ⏳ um pouco mais demorado
+                timer: 3200,
                 timerProgressBar: true,
                 showClass: {
-                    popup: "swal2-animate-toast-in",   // animação de entrada
+                    popup: "swal2-animate-toast-in",
                 },
                 hideClass: {
-                    popup: "swal2-animate-toast-out",  // animação de saída
+                    popup: "swal2-animate-toast-out",
                 },
                 didOpen: (toast) => {
                     toast.addEventListener("mouseenter", Swal.stopTimer);
@@ -71,8 +69,6 @@ export function LoginRegister() {
                 text: "Você já pode entrar com seu e-mail e senha.",
                 confirmButtonText: "Beleza",
             });
-            // opcional: automaticamente alternar para o formulário de login
-            // ou navegar de volta para /login
             navigate('/login')
         } catch (err) {
             const msg =
@@ -91,7 +87,7 @@ export function LoginRegister() {
             as="main"
             src={videoSrc}
             blur={2}
-            dark={isNight ? 0.15 : 0}   // escurece um pouco só no modo noite
+            dark={isNight ? 0.15 : 0}
         >
             <LoginRegisterContainer
                 isNight={isNight}
