@@ -283,7 +283,7 @@
     width: 100%;
     margin-top: 2rem;
     padding: 0 3rem;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
     gap: 32px;
     justify-items: center;
     align-items: start;
@@ -310,11 +310,12 @@
 .cardContent {
     display: flex;
     flex-direction: column;
-    width: 13rem;
-    height: 25rem;
-    align-items: center;
-    gap: 0;           
+    width: 100%;
+    height: 100%;
+    align-items: stretch;   /* garante que o título ocupe toda a largura */
+    gap: 0;
 }
+
 
 .cardImg {
     width: 85%;                /* largura relativa pro layout da grid */
@@ -330,14 +331,14 @@
     background-color: #151838;
     border-radius: 15px;
     width: 100%;
-    height: 18rem;             /* mesmo tamanho do .collectionContainer */
+    height: 100%;          /* antes 18rem */
     display: flex;
-    align-items: stretch;      /* importante para .cardContent preencher todo o card */
+    align-items: stretch;
     justify-content: center;
     cursor: pointer;
     transition: 0.25s;
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    overflow: hidden;          /* garante que nada "vaze" para fora do card */
+    overflow: hidden;
 }
 
 .collectionCoverOption.selectedCover {
@@ -439,7 +440,7 @@
 
     .studyCollection {
         padding: 0 1.5rem;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
     }
 }
 
@@ -449,10 +450,6 @@
         padding: 0 1rem;
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 24px;
-    }
-
-    .collectionContainer {
-        height: 16rem;
     }
 
     .createCollectionButton {
@@ -488,11 +485,6 @@
     .studyTabsSelect {
         font-size: 0.95rem;
         padding: 0.7rem 0.6rem;
-    }
-
-    .collectionContainer {
-        height: auto;
-        padding: 1rem 0.5rem;
     }
 
     .cardImg {

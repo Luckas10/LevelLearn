@@ -257,7 +257,7 @@
     background: rgba(0, 0, 0, .6);
     display: grid;
     place-items: center;
-    z-index: 1000;
+    z-index: 9999;          /* 👈 fica acima da navbar fixa */
     padding: 16px;
 }
 
@@ -269,7 +269,8 @@
     border-radius: 16px;
     box-shadow: 0 18px 48px rgba(0, 0, 0, .5);
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    max-height: 90vh;
     overflow: hidden;
 }
 
@@ -299,6 +300,7 @@
     padding: 16px 18px 8px 18px;
     display: grid;
     gap: 16px;
+    overflow-y: auto;
 }
 
 .store-modal-images {
@@ -387,5 +389,80 @@
 
     .store-modal-images {
         grid-template-columns: 1fr;
+    }
+}
+
+/* -------------------------
+    Responsividade
+-------------------------- */
+@media (max-width: 1024px) {
+    .store {
+        width: 100%;
+    }
+}
+
+/* TELAS MÉDIAS — sidebar ainda aberta, modal precisa ficar menor */
+@media (max-width: 900px) {
+    .store-modal {
+        width: calc(100vw - 180px); /* 180px ≈ largura útil da sidebar + margem */
+        max-width: 600px;           /* limite visual confortável */
+        margin-left: auto;          /* empurra o modal totalmente para a direita */
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .store-header {
+        grid-template-columns: 1fr;
+    }
+
+    .store-search-btn {
+        width: 100%;
+    }
+
+    /* Imagens do modal em 1 coluna no mobile */
+    .store-modal-images {
+        grid-template-columns: 1fr;
+    }
+
+    /* 2 colunas na loja no mobile */
+    .store-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    /* Card mais compacto no mobile */
+    .store-card {
+        border-radius: 12px;
+    }
+
+    .store-info {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .store-title {
+        font-size: 0.9rem;
+    }
+
+    .store-btn {
+        font-size: 0.7rem;
+        height: 31px;
+        padding: 0 8px;
+    }
+
+    /* Modal sobe um pouco pra não brigar com a navbar fixa */
+    .store-modal-backdrop {
+        padding: 8px 8px 88px;                    /* espaço pro bottom nav */
+    }
+
+    .store-modal {
+        width: 100%;
+        max-height: calc(100vh - 88px);           /* garante que tudo caiba acima do nav */
+    }
+
+    .store-modal-actions {
+        justify-content: center;
+        gap: 10px;
     }
 }
