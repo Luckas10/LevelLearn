@@ -57,9 +57,8 @@
 .collectionSelected-top > .infoPanelContainer {
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto;         /* centraliza o bloco inteiro */
+    margin: 0 auto;
 }
-
 
 /* Limita a largura da área de cards */
 .collectionSelected-bottom > .createCardContainer {
@@ -71,33 +70,27 @@
    INFOPANEL (PARTE DE CIMA)
    ======================================================================== */
 
+/* Container geral do topo (capa + botão + texto embaixo) */
 .infoPanelContainer {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column; /* topo em cima, texto embaixo */
+    gap: 2.5rem;            /* espaço entre topo e texto */
+    color: #fff;
+}
+
+/* PRIMEIRA LINHA: CAPA + BOTÃO JOGAR */
+.infoPanelContainer > div:first-child {
     display: flex;
     width: 100%;
-    min-height: 260px;
-    padding: 2rem 3rem;
-    box-sizing: border-box;
-    gap: 2rem;
-}
-
-.infoPanel {
-    display: flex;
+    justify-content: space-between; /* capa à esquerda, botão à direita */
     align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    width: 100%;
-    color: white;
-    flex-wrap: wrap;
 }
 
-/* Wrapper que junta capa + botão no mobile */
-.coverAndButton {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-/* Capa + título */
+/* Capa + título dentro da capa */
 .cover {
     display: flex;
     flex-direction: column;
@@ -112,8 +105,8 @@
     border-radius: 1rem;
 }
 
-.cover img,
-.coverImage {
+.coverImage,
+.cover img {
     width: 100%;
     max-width: 20rem;
     height: auto;
@@ -127,19 +120,12 @@
     text-align: center;
 }
 
-/* Descrição da coleção */
-.descriptionCollectionContainer {
-    flex: 1;
-    min-width: 260px;
-    max-width: 700px;
-}
-
-.descriptionCollection {
-    width: 100%;
-}
-
-.collectionTitle {
-    font-size: 2.4rem;
+/* Wrapper do botão JOGAR (coluna direita) */
+.playButtonWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 220px;
 }
 
 /* Botão "JOGAR" – padrão (desktop) */
@@ -148,7 +134,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 220px;
+    width: 100%;
 }
 
 .startButton {
@@ -172,14 +158,28 @@
     background-color: #4346E6;
 }
 
-/* Botão em posições diferentes desktop x mobile */
-.desktopPlayButton {
+/* SEGUNDA LINHA: TÍTULO + DESCRIÇÃO, EMBAIXO E SEPARADO */
+.descriptionCollectionContainer {
+    width: 100%;
     display: flex;
-    align-items: center;
+    justify-content: center;
 }
 
-.mobilePlayButton {
-    display: none;
+.descriptionCollection {
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+}
+
+.collectionTitle {
+    font-size: 2.4rem;
+    margin-bottom: 1rem;
+}
+
+.collectionDescription {
+    text-align: justify;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
 }
 
 /* ========================================================================
@@ -371,84 +371,63 @@
     }
 
     .infoPanelContainer {
-        flex-direction: column;
-        align-items: center;
         padding: 1.5rem 1.5rem 1rem 1.5rem;
+        gap: 1.5rem;
     }
 
-    .infoPanel {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
-
-    /* Capa + botão ficam lado a lado, centralizados */
-    .coverAndButton {
-        width: 100%;
-        display: flex;
+    /* Primeira linha (capa + botão) centralizada */
+    .infoPanelContainer > div:first-child {
+        flex-direction: row;
         justify-content: center;
         align-items: center;
         gap: 1.5rem;
     }
 
-    /* Capa em formato de card */
+    /* Capa e botão viram “cards” de mesmo tamanho */
     .cover {
         margin: 0;
         width: 12rem;
-        max-width: 12rem;
+        height: 16rem;
+        max-width: none;
         padding: 0.5rem;
+        box-sizing: border-box;
     }
 
-    .coverImage,
-    .cover img {
-        width: 100%;
-        height: auto;
-    }
-
-    /* Container do botão do mesmo “slot” da capa */
-    .mobilePlayButton {
-        display: flex;
+    .infoPanelContainer > div:first-child {
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        justify-content: center;
+        gap: 1rem;
     }
 
-    .desktopPlayButton {
-        display: none;
-    }
-
-    .startButtonContainer {
-        min-width: 0;
+    /* encolhe um pouco os dois cards */
+    .cover {
         width: 12rem;
-        max-width: 12rem;
-        align-items: stretch;
-        justify-content: center;
+        height: 16rem; 
     }
 
-    /* Botão azul, formato de card, sem texto */
+    .playButtonWrapper {
+        width: 11rem;
+        height: 5rem;
+    }
+    .startButtonContainer {
+        width: 100%;
+        height: 100%;
+    }
+
     .startButton {
         width: 100%;
-        height: 16rem;             /* altura estilo card */
-        background-color: #342FCF;  /* continua azul */
+        height: 100%;
         border-radius: 1rem;
-        padding: 0;
-        gap: 0;
-    }
-
-    .startButtonText {
-        display: none;             /* some o "JOGAR" no mobile */
-    }
-
-    .startButtonIcon {
-        font-size: 2.4rem;         /* ícone centralizado e bem visível */
     }
 
     .descriptionCollectionContainer {
         max-width: 100%;
+        margin-top: 0.5rem;
     }
 
     .descriptionCollection {
-        margin: 1rem auto 0 auto;
+        margin: 0 auto;
         width: 100%;
     }
 
@@ -469,24 +448,33 @@
     }
 }
 
-
 /* ====== Até ~600px ====== */
 @media (max-width: 600px) {
     .infoPanelContainer {
-        padding: 1rem;
+        padding: 1.25rem 1rem 1rem 1rem;
+        gap: 1.25rem;
     }
 
     .collectionTitle {
-        font-size: 1.8rem;
+        font-size: 1.9rem;
     }
 
+    .infoPanelContainer > div:first-child {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    /* encolhe um pouco os dois cards */
     .cover {
-        max-width: 16rem;
+        width: 12rem;
+        height: 16rem; 
     }
 
-    .startButton {
-        width: 14rem;
-        height: 4rem;
+    .playButtonWrapper {
+        width: 11rem;
+        height: 5rem;
     }
 
     .createCardContainer > h1 {
@@ -500,20 +488,32 @@
 
     .createCard,
     .flashCardContainer {
-        width: 9rem;
-        height: 12rem;
+        width: 10rem;
+        height: 14rem;
     }
 }
 
 /* ====== Até ~500px ====== */
 @media (max-width: 500px) {
-    .cover {
-        max-width: 10rem;
+    .infoPanelContainer {
+        padding: 1rem 0.75rem 0.75rem 0.75rem;
     }
 
-    .coverImage,
-    .cover img {
-        max-width: 10rem;
+    /* aqui empilha: capa em cima, botão embaixo */
+    .infoPanelContainer > div:first-child {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .playButtonWrapper {
+        width: 11rem;
+        height: 5rem;
+    }
+
+    .startButton {
+        font-size: 0.95rem;
     }
 }
 
@@ -523,71 +523,31 @@
         font-size: 1.6rem;
     }
 
-    .cover {
-        max-width: 14rem;
-    }
-
-    .startButton {
-        width: 12rem;
-        height: 3.5rem;
-        font-size: 0.9rem;
-    }
-
     .cardsButtonSave {
         width: 70%;
     }
 }
 
 /* ========================================================================
-   AJUSTE DO BOTÃO QUANDO A SIDEBAR REDUZIR (MOBILE)
+   CENTRALIZAÇÃO FIXA DO CONTEÚDO DOS FLASHCARDS
    ======================================================================== */
 
-/* Estilo padrão do texto (desktop) */
-.startButtonText {
-    display: block;
+/* Garante que o card em si seja um flex container centralizado */
+.createdCards .flashCardContainer {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center;
 }
 
-/* Só pra garantir controle do ícone se quiser mexer depois */
-.startButtonIcon {
-    display: block;
+/* Garante que o conteúdo interno não “grude” no topo */
+.createdCards .flashCardContainer > * {
+    margin: 0.4rem 0;
 }
 
-/* Quando a tela estiver no mesmo breakpoint em que a sidebar reduz */
-@media (max-width: 900px) {
-    /* Botão vira um "cardzinho", igual à capa */
-    .startButton {
-        width: 4rem;
-        height: 4rem;
-        background-color: #151838; /* mesma cor da capa */
-        border-radius: 1rem;
-        padding: 0;
-        gap: 0;
-    }
-
-    /* some o texto JOGAR */
-    .startButtonText {
-        display: none;
-    }
-
-    /* Ícone centralizado e menor */
-    .startButtonIcon {
-        font-size: 2rem;
-    }
-
-    /* Garante que capa + botão se comportem bem lado a lado */
-    .coverAndButton {
-        gap: 1rem;
-    }
-}
-
-/* Se quiser ainda mais compacto em telas bem pequenas */
-@media (max-width: 500px) {
-    .startButton {
-        width: 3.5rem;
-        height: 3.5rem;
-    }
-
-    .startButtonIcon {
-        font-size: 1.6rem;
-    }
+/* Deixa o textinho "Clique para ver o verso" sempre coladinho ao título */
+.createdCards .flashCardContainer p {
+    margin: 0.4rem 0;
+    word-break: break-word;
 }
