@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 
 import { createCollection } from "../../../services/collection";
 import { getDataUser } from "../../../services/auth";
@@ -139,7 +140,18 @@ export default function StudyCreateCollection({ onSave }) {
 
     try {
       await createCollection(newCollection);
-      alert("Coleção criada com sucesso!");
+
+      closeModal()
+
+      setTimeout(async () => {
+        await Swal.fire({
+          icon: "success",
+          title: "Coleção criada com sucesso",
+          text: "Você criou uma coleção",
+          timer: 1800,
+          showConfirmButton: false,
+        });
+      }, 220);
 
       setName("");
       setDescription("");
@@ -148,7 +160,7 @@ export default function StudyCreateCollection({ onSave }) {
 
       if (onSave) onSave();
     } catch {
-      alert("Erro ao criar coleção");
+
     }
   };
 
@@ -176,7 +188,7 @@ export default function StudyCreateCollection({ onSave }) {
             className="collectionInput"
             type="text"
             placeholder="Descrição:"
-            maxLength="30"
+            maxLength="200"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -199,7 +211,7 @@ export default function StudyCreateCollection({ onSave }) {
               </div>
             ))}
           </div>
-
+          
           <button className="collectionButtonSave" onClick={handleSave}>
             SALVAR
           </button>

@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { getCollectionById } from "../../../../services/collection";
 import { getCards, createCards, getCardsByDeckId } from "../../../../services/cards";
+import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import CreateInteractiveCard from "../InteractiveCard";
 
@@ -108,8 +109,18 @@ export default function CreateCard({ onSave }) {
             try {
                 await createCards(newCard);
                 await loadCards();
-                alert("Card criado com sucesso!");
-            
+                closeModal()
+      
+                setTimeout(async () => {
+                  await Swal.fire({
+                    icon: "success",
+                    title: "Flashcard criado com sucesso!",
+                    text: "Você criou um flashcard.",
+                    timer: 1800,
+                    showConfirmButton: false,
+                  });
+                }, 220);
+
                 setFront("");
                 setBack("");
                 closeModal();
