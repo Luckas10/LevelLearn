@@ -1,14 +1,15 @@
 import api from "./api";
 import { getDataUser } from "./auth";
+import { getMyFriends } from "./friends";
 
 export async function createCollection(data) {
     const { data: responseData } = await api.post("/decks", data);
-    return responseData; 
+    return responseData;
 }
 
 export async function getCollections() {
     const { data } = await api.get("/decks");
-    return data;
+    return data; // <-- data é um array de decks
 }
 
 export async function getCollectionById(id) {
@@ -17,8 +18,32 @@ export async function getCollectionById(id) {
 }
 
 export async function getCollectionByOwnerId() {
-    const dataCollecntions = await getCollections();
+    const collections = await getCollections();
     const dataUser = await getDataUser();
-    const filteredData = dataCollecntions.filter((collection) => collection.owner_id === dataUser.id);
+
+    const filteredData = collections.filter(
+        (collection) => collection.owner_id === dataUser.id
+    );
+
     return filteredData;
+}
+
+// ==> NOVA VERSÃO CORRETA
+export async function getCollectionsByFriends() {
+    // busca decks e amigos em paralelo
+    const [collections, friends] = await Promise.all([
+        getCollections(),
+        getMyFriends(),
+    ]);
+
+    // friends vem como array de usuários:
+    // [{ id, username, email, ... }, ...]
+    const friendIds = friends.map((friend) => friend.id);
+
+    // pega apenas os decks cujo owner_id é um dos ids dos amigos
+    const data = collections.filter((collection) =>
+        friendIds.includes(collection.owner_id)
+    );
+
+    return data;
 }

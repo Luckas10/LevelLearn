@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Tabs from "../../General/Tabs"; // ajuste o caminho conforme sua estrutura
 import StudyCollection from "./Collection";
-// import StudyLibrary from "./Library"; // quando existir
+import StudyLibrary from "./Library"; // quando existir
 
 export default function StudyTabs() {
   const [selected, setSelected] = useState("COLEÇÃO");
@@ -17,7 +17,7 @@ export default function StudyTabs() {
       <Tabs options={tabOptions} selected={selected} onChange={setSelected} />
 
       {selected === "COLEÇÃO" && <StudyCollection />}
-      {/* {selected === "BIBLIOTECA" && <StudyLibrary />} */}
+      {selected === "BIBLIOTECA" && <StudyLibrary />}
     </div>
   );
 }
