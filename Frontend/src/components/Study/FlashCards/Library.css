@@ -1,0 +1,69 @@
+.librarySearch {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: calc(100% - 4rem);
+    height: 56px;
+    margin: 18px 2rem 6px 2rem;
+    padding: 0 14px;
+    border-radius: 12px;
+    background-color: #151737;
+    border: 1px solid rgba(67, 70, 230, 0.35);
+}
+
+.searchInputLibrary {
+    flex: 1;
+    height: 38px;
+    outline: none;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
+.libraryFriendsCollections {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 64px - 80px);
+    padding: 1rem 2rem;
+    color: #c4c8ff;
+}
+
+.libraryHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.libraryHeader h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.libraryControls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.librarySelect {
+    padding: 0.4rem 0.6rem;
+    border-radius: 8px;
+    background-color: #1e2054;
+    color: #c4c8ff;
+    border: 1px solid rgba(67, 70, 230, 0.35);
+    font-size: 0.9rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.librarySelect option {
+    background-color: #1e2054;
+    color: #c4c8ff;
+    border-radius: 8px;
+}
+
+.librarySelect option:hover {
+    background-color: #2a2c6d;
+}
