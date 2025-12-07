@@ -1,15 +1,22 @@
 import { useRef, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faX, faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 import "./ModalSettings.css";
+
+const alarmMap = {
+  "ALARME 1": "/alarms/alarme1.mp3",
+  "ALARME 2": "/alarms/alarme2.mp3",
+  "ALARME 3": "/alarms/alarme3.mp3",
+  "ALARME 4": "/alarms/alarme4.mp3",
+  "ALARME 5": "/alarms/alarme5.mp3",
+};
 
 export function ModalSettings({ open, onClose, settings, onSave }) {
   const dialogRef = useRef(null);
-
-  // estados locais (edição antes de salvar)
+  const audioRef = useRef(null);
   const [localSettings, setLocalSettings] = useState(settings);
+  const [testAudio, setTestAudio] = useState(null);
 
-  // 🔥 Carregar configurações salvas no localStorage ao iniciar
   useEffect(() => {
     const saved = localStorage.getItem("pomodoroSettings");
     if (saved) {
@@ -17,15 +24,12 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
     }
   }, []);
 
-  // sincroniza ao abrir
   useEffect(() => {
-    if (open) setLocalSettings((prev) => {
-      // se o estado atual já foi carregado do localStorage, ele prevalece
-      return prev || settings;
-    });
+    if (open) {
+      setLocalSettings((prev) => prev || settings);
+    }
   }, [open, settings]);
 
-  // abrir/fechar modal com animação
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
@@ -38,23 +42,21 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
         dialog.classList.add("visible");
       });
 
-      // clicar fora do modal fecha sem salvar
       const handleClickOutside = (event) => {
-        const dialogDimensions = dialog.getBoundingClientRect();
+        const rect = dialog.getBoundingClientRect();
         if (
-          event.clientX < dialogDimensions.left ||
-          event.clientX > dialogDimensions.right ||
-          event.clientY < dialogDimensions.top ||
-          event.clientY > dialogDimensions.bottom
+          event.clientX < rect.left ||
+          event.clientX > rect.right ||
+          event.clientY < rect.top ||
+          event.clientY > rect.bottom
         ) {
           handleCloseWithoutSaving();
         }
       };
 
       dialog.addEventListener("click", handleClickOutside);
-
-      return () => dialog.removeEventListener("click", handleClickOutside);
-
+      return () =>
+        dialog.removeEventListener("click", handleClickOutside);
     } else {
       if (dialog.open) {
         dialog.classList.remove("visible");
@@ -66,16 +68,48 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
     }
   }, [open]);
 
+  useEffect(() => {
+    const path = alarmMap[localSettings.alarmSound];
+    if (!path) return;
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+
+    const audio = new Audio(path);
+    audio.load();
+
+    audioRef.current = audio;
+    setTestAudio(audio);
+  }, [localSettings.alarmSound]);
+
   const handleCloseWithoutSaving = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
     onClose();
   };
 
   const handleSave = () => {
-    onSave(localSettings);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
 
-    // 🔥 SALVAR EM LOCALSTORAGE
-    localStorage.setItem("pomodoroSettings", JSON.stringify(localSettings));
+    const sanitized = {
+      ...localSettings,
+      pomodoro: Number(localSettings.pomodoro) || 1,
+      short: Number(localSettings.short) || 1,
+      long: Number(localSettings.long) || 1,
+      autoLongBreakInterval:
+        Number(localSettings.autoLongBreakInterval) || 1,
+      autoRepeats: Number(localSettings.autoRepeats) || 1,
+    };
 
+    onSave(sanitized);
+    localStorage.setItem("pomodoroSettings", JSON.stringify(sanitized));
     onClose();
   };
 
@@ -86,17 +120,61 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
     }));
   };
 
+  const handleNumberChange = (field) => (e) => {
+    const raw = e.target.value;
+    const digitsOnly = raw.replace(/[^0-9]/g, "");
+    updateField(field, digitsOnly === "" ? "" : Number(digitsOnly));
+  };
+
+  const handlePasteAsDigits = (e) => {
+    const paste = (e.clipboardData || window.clipboardData).getData("text");
+
+    if (!/^\d+$/.test(paste)) {
+      e.preventDefault();
+    }
+  };
+
+  const preventDecimalKeys = (e) => {
+    if (e.key === "." || e.key === "," || e.key === "e") {
+      e.preventDefault();
+    }
+  };
+
+  const handleTestAlarm = () => {
+    if (!localSettings.alarmEnabled) {
+      alert("Habilite o alarme para testar.");
+      return;
+    }
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+
+      audioRef.current.play().catch(() => {
+        console.warn("Autoplay bloqueado pelo navegador.");
+      });
+    }
+  };
+
+  const handleStopAlarm = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
+
   return (
-    <dialog ref={dialogRef} className="settings-dialog" onCancel={handleCloseWithoutSaving}>
-      
-      {/* Botão X */}
+    <dialog
+      ref={dialogRef}
+      className="settings-dialog"
+      onCancel={handleCloseWithoutSaving}
+    >
       <button className="close-x" onClick={handleCloseWithoutSaving}>
         <FontAwesomeIcon size="sm" icon={faX} />
       </button>
 
       <h2 className="modal-title">CONFIGURAÇÕES</h2>
 
-      {/* DURAÇÃO */}
       <p className="section-title">DURAÇÃO (EM MINUTOS)</p>
 
       <div className="duration-grid">
@@ -105,8 +183,12 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
           <input
             type="number"
             min="1"
+            step="1"
+            inputMode="numeric"
             value={localSettings.pomodoro}
-            onChange={(e) => updateField("pomodoro", Number(e.target.value))}
+            onChange={handleNumberChange("pomodoro")}
+            onKeyDown={preventDecimalKeys}
+            onPaste={handlePasteAsDigits}
           />
         </div>
 
@@ -115,8 +197,12 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
           <input
             type="number"
             min="1"
+            step="1"
+            inputMode="numeric"
             value={localSettings.short}
-            onChange={(e) => updateField("short", Number(e.target.value))}
+            onChange={handleNumberChange("short")}
+            onKeyDown={preventDecimalKeys}
+            onPaste={handlePasteAsDigits}
           />
         </div>
 
@@ -125,13 +211,16 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
           <input
             type="number"
             min="1"
+            step="1"
+            inputMode="numeric"
             value={localSettings.long}
-            onChange={(e) => updateField("long", Number(e.target.value))}
+            onChange={handleNumberChange("long")}
+            onKeyDown={preventDecimalKeys}
+            onPaste={handlePasteAsDigits}
           />
         </div>
       </div>
 
-      {/* AUTOMÁTICO */}
       <p className="section-title">POMODORO AUTOMÁTICO</p>
 
       <div className="auto-container">
@@ -139,10 +228,12 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
         <input
           type="number"
           min="1"
+          step="1"
+          inputMode="numeric"
           value={localSettings.autoLongBreakInterval}
-          onChange={(e) =>
-            updateField("autoLongBreakInterval", Number(e.target.value))
-          }
+          onChange={handleNumberChange("autoLongBreakInterval")}
+          onKeyDown={preventDecimalKeys}
+          onPaste={handlePasteAsDigits}
         />
       </div>
 
@@ -151,8 +242,12 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
         <input
           type="number"
           min="1"
+          step="1"
+          inputMode="numeric"
           value={localSettings.autoRepeats}
-          onChange={(e) => updateField("autoRepeats", Number(e.target.value))}
+          onChange={handleNumberChange("autoRepeats")}
+          onKeyDown={preventDecimalKeys}
+          onPaste={handlePasteAsDigits}
         />
       </div>
 
@@ -162,7 +257,9 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
           <input
             type="checkbox"
             checked={localSettings.autoEnabled}
-            onChange={(e) => updateField("autoEnabled", e.target.checked)}
+            onChange={(e) =>
+              updateField("autoEnabled", e.target.checked)
+            }
           />
           <span className="slider"></span>
         </label>
@@ -170,7 +267,6 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
 
       <hr className="divider" />
 
-      {/* ALARME */}
       <p className="section-title">ALARME</p>
 
       <label className="switch-row">
@@ -187,11 +283,14 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
         </label>
       </label>
 
+      <label>Escolha seu alarme</label>
       <div className="select-container">
-        <label>Escolha seu alarme</label>
+        
         <select
           value={localSettings.alarmSound}
-          onChange={(e) => updateField("alarmSound", e.target.value)}
+          onChange={(e) =>
+            updateField("alarmSound", e.target.value)
+          }
         >
           <option>ALARME 1</option>
           <option>ALARME 2</option>
@@ -199,13 +298,29 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
           <option>ALARME 4</option>
           <option>ALARME 5</option>
         </select>
+
+        <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+          <button
+            type="button"
+            className="test-alarm-btn"
+            onClick={handleTestAlarm}
+          >
+            <FontAwesomeIcon icon={faPlay} /> Testar Alarme
+          </button>
+
+          <button
+            type="button"
+            className="stop-alarm-btn"
+            onClick={handleStopAlarm}
+          >
+            <FontAwesomeIcon icon={faStop} /> Parar
+          </button>
+        </div>
       </div>
 
-      {/* BOTÃO DE SALVAR */}
       <button className="close-btn" onClick={handleSave}>
         Salvar
       </button>
-
     </dialog>
   );
 }

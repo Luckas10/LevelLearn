@@ -5,6 +5,8 @@ import { Campfire } from "../components/Study/Pomodore/Campfire";
 import { ModalSettings } from "../components/Study/Pomodore/ModalSettings";
 import { ModalToDoList } from "../components/Study/Pomodore/ModalToDoList";
 
+import Swal from "sweetalert2";
+
 import "./StudyPomodore.css";
 
 import Sword from "../assets/Pomodore/sword.svg";
@@ -14,7 +16,18 @@ import TimerLongo from "../assets/Pomodore/timerlongo.svg";
 import Settings from "../assets/Pomodore/settings.svg";
 import Missions from "../assets/Pomodore/missions.svg";
 
+const alarmMap = {
+  "ALARME 1": "/alarms/alarme1.mp3",
+  "ALARME 2": "/alarms/alarme2.mp3",
+  "ALARME 3": "/alarms/alarme3.mp3",
+  "ALARME 4": "/alarms/alarme4.mp3",
+  "ALARME 5": "/alarms/alarme5.mp3",
+};
+
 export function StudyPomodore() {
+
+  const [alarmAudio, setAlarmAudio] = useState(null);
+
   const [time, setTime] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [initialTime, setInitialTime] = useState(25 * 60);
@@ -33,6 +46,23 @@ export function StudyPomodore() {
     alarmEnabled: true,
     alarmSound: "ALARME 1",
   });
+
+  useEffect(() => {
+    const soundPath = alarmMap[settings.alarmSound];
+    if (!soundPath) return;
+
+    if (alarmAudio) {
+      alarmAudio.pause();
+      alarmAudio.currentTime = 0;
+    }
+
+    const audio = new Audio(soundPath);
+    audio.loop = true;
+    audio.load();
+    setAlarmAudio(audio);
+  }, [settings.alarmSound]);
+
+
 
   const [autoActive, setAutoActive] = useState(false);
   const [pomodorosSinceLong, setPomodorosSinceLong] = useState(0);
@@ -107,6 +137,7 @@ export function StudyPomodore() {
   };
 
   const handleReset = (newTime, newMode) => {
+    stopAlarm();
     setTime(newTime);
     setInitialTime(newTime);
     setMode(newMode);
@@ -116,14 +147,45 @@ export function StudyPomodore() {
     setCompletedPomodoros(0);
   };
 
-  const handlePeriodEnd = () => {
+  const stopAlarm = () => {
+    if (alarmAudio) {
+      alarmAudio.pause();
+      alarmAudio.currentTime = 0;
+    }
+  };
+
+
+  const handlePeriodEnd = async () => {
     setIsRunning(false);
 
-    if (settings.alarmEnabled) {
-      console.log("Tocar alarme:", settings.alarmSound);
+    if (settings.alarmEnabled && alarmAudio) {
+      alarmAudio.currentTime = 0;
+      alarmAudio.play().catch(() => { });
     }
 
-    if (!settings.autoEnabled && !autoActive) {
+    const titles = {
+      pomodoro: "Pomodoro finalizado!",
+      short: "Pausa curta finalizada!",
+      long: "Pausa longa finalizada!",
+    };
+
+    const result = await Swal.fire({
+      title: titles[mode],
+      text: "Clique para continuar.",
+      icon: "success",
+      confirmButtonText: "Continuar",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    });
+
+    if (result.isConfirmed) {
+      stopAlarm();
+      proceedNextPeriod();
+    }
+  };
+
+  const proceedNextPeriod = () => {
+    if (!settings.autoEnabled) {
       setMode("pomodoro");
       setTime(settings.pomodoro * 60);
       setInitialTime(settings.pomodoro * 60);
@@ -132,16 +194,6 @@ export function StudyPomodore() {
 
     if (mode === "pomodoro") {
       const newCompleted = completedPomodoros + 1;
-
-      if (newCompleted >= settings.autoRepeats) {
-        setAutoActive(false);
-        setCompletedPomodoros(0);
-        setMode("pomodoro");
-        setTime(settings.pomodoro * 60);
-        setInitialTime(settings.pomodoro * 60);
-        return;
-      }
-
       setCompletedPomodoros(newCompleted);
 
       const newPomodorosSinceLong = pomodorosSinceLong + 1;
@@ -167,9 +219,9 @@ export function StudyPomodore() {
       setTime(settings.pomodoro * 60);
       setInitialTime(settings.pomodoro * 60);
       setIsRunning(true);
-      return;
     }
   };
+
 
   return (
     <div className="studyPomodore-page">
