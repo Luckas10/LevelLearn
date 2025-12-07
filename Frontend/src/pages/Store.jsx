@@ -4,8 +4,8 @@ import Navbar from "../components/General/Navbar";
 import StoreHeader from "../components/Store/Header";
 import StoreGrid from "../components/Store/Grid";
 import StoreModal from "../components/Store/Modal";
+import Swal from "sweetalert2";
 
-// 👇 Importando as imagens (Vite recomenda importar)
 import Cobra from "../assets/Animals/Cobra.png";
 import Dragao from "../assets/Animals/Dragao.png";
 import Fenix from "../assets/Animals/Fenix.png";
@@ -16,9 +16,8 @@ import "./Store.css";
 
 export function Store() {
     const [query, setQuery] = useState("");
-    const [selected, setSelected] = useState(null); // item selecionado para modal
+    const [selected, setSelected] = useState(null);
 
-    // EXEMPLO: se ainda não tiver costas, use a mesma imagem nas duas props
     const items = useMemo(
         () => [
             {
@@ -96,12 +95,40 @@ export function Store() {
     function openBuy(item) {
         setSelected(item);
     }
+
     function closeModal() {
         setSelected(null);
     }
-    function confirmBuy(item) {
-        // aqui você chama sua API de compra
-        alert(`Comprado: ${item.title} por ${item.price} moedas (sem reembolso).`);
+
+    async function confirmBuy(item) {
+        const result = await Swal.fire({
+            icon: "warning",
+            title: "Confirmar compra?",
+            html: `
+                Você deseja comprar <b>${item.title}</b> por 
+                <span style="font-weight:800;color:#ffd43b">${item.price} moedas</span>?
+            `,
+            showCancelButton: true,
+            confirmButtonText: "Sim, comprar",
+            cancelButtonText: "Cancelar",
+            reverseButtons: true,
+            customClass: {
+                popup: "comment-alert",
+            },
+        });
+
+        if (!result.isConfirmed) return;
+
+        await Swal.fire({
+            icon: "success",
+            title: "Compra realizada!",
+            text: `Você adquiriu o item "${item.title}".`,
+            timer: 1800,
+            showConfirmButton: false,
+        });
+
+        console.log(`Item comprado: ${item.title}`);
+
         closeModal();
     }
 

@@ -8,6 +8,10 @@
     font-family: "Inter", sans-serif;
 }
 
+.swal2-container {
+    z-index: 11000 !important;
+}
+
 .swal2-title {
     font-size: 1.4rem;
     font-weight: 700;
@@ -107,6 +111,12 @@ html.swal2-height-auto,
 body.swal2-height-auto {
     height: 100% !important;
     overflow-x: hidden !important;
+}
+
+html.swal2-shown .store-modal-backdrop,
+body.swal2-shown .store-modal-backdrop {
+    pointer-events: none;
+    filter: brightness(0.7);
 }
 
 div:where(.swal2-icon).swal2-warning {
