@@ -382,6 +382,52 @@
     margin-top: 0.18rem;       /* pequeno espaçamento interno entre título e subtítulo */
 }
 
+.cardMenuBtn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.cardMenuBtn:hover {
+  opacity: 0.8;
+}
+
+.cardMenuOptions {
+  position: absolute;
+  top: 2.8rem;
+  left: 6.5rem;
+  background: #1a1d3a;
+  border: 1px solid #2c2f59;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 50;
+}
+
+.cardMenuOptions button {
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  transition: 0.3s;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  text-align: left;
+  cursor: pointer;
+  font-size: .9rem;
+}
+
+.cardMenuOptions button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 /* ====== RESPONSIVO ====== */
 
 /* tablet */

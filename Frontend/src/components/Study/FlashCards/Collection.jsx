@@ -28,6 +28,8 @@ export default function StudyCollection() {
             image={c.cover_name} 
             to={`/study/flashcards/selected/${c.id}`} 
             title={c.name}
+            onEdit={() => console.log("Editar")}
+            onDelete={() => console.log("Excluir")}
             />
         ))}
       </div>
