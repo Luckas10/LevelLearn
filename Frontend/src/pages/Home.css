@@ -247,34 +247,43 @@ body,
     position: absolute;
     border-radius: 50%;
     opacity: .9;
-    z-index: 0
+    z-index: 0;
 }
 
 .orb-1 {
     width: 8px;
     height: 8px;
-    background: var(--accent);
+    background:
+        color-mix(in srgb, var(--char-glow, #49e3ff) 85%, #ffffff 15%);
+    box-shadow: 0 0 12px
+        color-mix(in srgb, var(--char-glow, #49e3ff) 80%, transparent);
     top: 18%;
     left: 18%;
-    animation: orbit 10s linear infinite
+    animation: orbit 10s linear infinite;
 }
 
 .orb-2 {
     width: 10px;
     height: 10px;
-    background: #7aa2ff;
+    background:
+        color-mix(in srgb, var(--char-glow, #49e3ff) 65%, #ffffff 35%);
+    box-shadow: 0 0 16px
+        color-mix(in srgb, var(--char-glow, #49e3ff) 60%, transparent);
     top: 28%;
     right: 18%;
-    animation: orbit 12s linear infinite reverse
+    animation: orbit 12s linear infinite reverse;
 }
 
 .orb-3 {
     width: 6px;
     height: 6px;
-    background: #b8e1ff;
+    background:
+        color-mix(in srgb, var(--char-glow, #49e3ff) 45%, #b8e1ff 55%);
+    box-shadow: 0 0 10px
+        color-mix(in srgb, var(--char-glow, #49e3ff) 50%, transparent);
     bottom: 22%;
     left: 24%;
-    animation: orbit 8s linear infinite
+    animation: orbit 8s linear infinite;
 }
 
 .badge {

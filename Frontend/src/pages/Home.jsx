@@ -27,17 +27,17 @@ export function Home() {
         { id: 2, name: "Raposa", img: Raposa, glow: "#dddddd" },
         { id: 3, name: "Dragão", img: Dragao, glow: "#00ff00" },
         { id: 4, name: "Fênix", img: Fenix, glow: "#fff70f" },
-        { id: 5, name: "Ouriço", img: Ourico, glow: "#EAB308" },
+        { id: 5, name: "Ouriço", img: Ourico, glow: "#c5970d" },
         { id: 6, name: "Cobra", img: Cobra, glow: "#9a0b93" },
         { id: 8, name: "Raposa 2", img: Raposa, glow: "#dddddd" },
         { id: 9, name: "Dragão 2", img: Dragao, glow: "#00ff00" },
         { id: 10, name: "Fênix 2", img: Fenix, glow: "#fff70f" },
-        { id: 11, name: "Ouriço 2", img: Ourico, glow: "#EAB308" },
+        { id: 11, name: "Ouriço 2", img: Ourico, glow: "#c5970d" },
         { id: 12, name: "Cobra 2", img: Cobra, glow: "#9a0b93" },
         { id: 13, name: "Raposa 3", img: Raposa, glow: "#dddddd" },
         { id: 14, name: "Dragão 3", img: Dragao, glow: "#00ff00" },
         { id: 15, name: "Fênix 3", img: Fenix, glow: "#fff70f" },
-        { id: 16, name: "Ouriço 3", img: Ourico, glow: "#EAB308" },
+        { id: 16, name: "Ouriço 3", img: Ourico, glow: "#c5970d" },
     ];
 
     const currentCharData = characters.find((c) => c.img === currentCharacter);

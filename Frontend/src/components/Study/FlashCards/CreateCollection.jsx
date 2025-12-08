@@ -162,8 +162,7 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
       setTimeout(async () => {
         await Swal.fire({
           icon: "success",
-          title: "Coleção criada com sucesso",
-          text: "Você criou uma coleção",
+          title: "Coleção editada com sucesso!",
           timer: 1800,
           showConfirmButton: false,
         });
@@ -175,7 +174,7 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
 
       if (onSave) onSave();
     } catch (err) {
-      console.error("Erro ao criar coleção:", err);
+      console.error("Erro ao editar coleção:", err);
     }
   };
 
