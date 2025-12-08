@@ -1,7 +1,7 @@
 import "./Library.css";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getCollections, getCollectionsByFriends } from "../../../services/collection";
+import { getCollectionsWithoutMe, getCollectionsByFriends } from "../../../services/collection";
 import StudyInteractiveCard from "./InteractiveCardCollection";
 import { useEffect, useState } from "react";
 
@@ -14,7 +14,7 @@ export default function StudyLibrary() {
 
     const loadCollections = async () => {
         const [allCollections, friendsDecks] = await Promise.all([
-            getCollections(),
+            getCollectionsWithoutMe(),
             getCollectionsByFriends(),
         ]);
 
@@ -105,7 +105,7 @@ export default function StudyLibrary() {
                             className="collectionContainer"
                             key={c.id}
                             image={c.cover_name}
-                            to={`/study/flashcards/selected/${c.id}`}
+                            to={`/study/flashcards/anotherselected/${c.id}`}
                             title={c.name}
                         />
                     ))}

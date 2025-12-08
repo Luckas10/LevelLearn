@@ -12,6 +12,18 @@ export async function getCollections() {
     return data; // <-- data é um array de decks
 }
 
+export async function getCollectionsWithoutMe() {
+    const collections = await getCollections();
+    const dataUser = await getDataUser();
+
+    // retorna somente coleções cujo owner_id é diferente do usuário logado
+    const filtered = collections.filter(
+        (collection) => collection.owner_id !== dataUser.id
+    );
+
+    return filtered;
+}
+
 export async function getCollectionById(id) {
     const { data } = await api.get(`/decks/${id}`);
     return data;
