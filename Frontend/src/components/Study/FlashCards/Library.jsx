@@ -2,7 +2,7 @@ import "./Library.css";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getCollections, getCollectionsByFriends } from "../../../services/collection";
-import StudyInteractiveCard from "./InteractiveCard";
+import StudyInteractiveCard from "./InteractiveCardCollection";
 import { useEffect, useState } from "react";
 
 export default function StudyLibrary() {

@@ -371,12 +371,12 @@
 
 .cardMenuBtn {
   position: absolute;
-  top: 0.6rem;
+  top: 1.2rem;
   right: 0.6rem;
   background: transparent;
   border: none;
   color: white;
-  font-size: 1rem;
+  font-size: 1.5rem;
   cursor: pointer;
   z-index: 10;
 }
@@ -408,7 +408,7 @@
   padding: 0.3rem 0.6rem;
   text-align: left;
   cursor: pointer;
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .cardMenuOptions button:hover {
