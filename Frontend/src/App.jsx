@@ -30,7 +30,7 @@ export default function App() {
           <Route path="/study/pomodore" element={<StudyPomodore />} />
           <Route path="/study/flashcards/selected/:id" element={<CollectionSelected />} />
           <Route path="/study/flashcards/anotherselected/:id" element={<AnotherCollectionSelected />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProfileID />} />
           <Route path="/profile/:id" element={<ProfileID />} />
           <Route path="/store" element={<Store />} />
           <Route path="/friends" element={<Friends />} />
