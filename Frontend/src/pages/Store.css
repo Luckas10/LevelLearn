@@ -257,12 +257,11 @@
     background: rgba(0, 0, 0, .6);
     display: grid;
     place-items: center;
-    z-index: 9999;          /* 👈 fica acima da navbar fixa */
-    padding: 16px;
+    z-index: 1000;
 }
 
 .store-modal {
-    width: min(900px, 100%);
+    width: min(700px, 100%);
     background: var(--panel-2);
     color: var(--text);
     border: 2px solid #141428;
@@ -270,8 +269,11 @@
     box-shadow: 0 18px 48px rgba(0, 0, 0, .5);
     display: grid;
     grid-template-rows: auto minmax(0, 1fr) auto;
+    /* 👈 body flexível */
     max-height: 90vh;
+    /* 👈 nunca maior que a viewport */
     overflow: hidden;
+    /* bordas bonitinhas, scroll só no body */
 }
 
 .store-modal-head {
@@ -301,6 +303,7 @@
     display: grid;
     gap: 16px;
     overflow-y: auto;
+    /* 👈 conteúdo rola dentro do modal */
 }
 
 .store-modal-images {
@@ -372,6 +375,12 @@
 /* -------------------------
     Responsividade
 -------------------------- */
+@media (min-width: 640px) {
+    .store-modal-backdrop {
+        padding-left: 15vw;
+    }
+}
+
 @media (max-width: 1024px) {
     .store {
         width: 100%;
@@ -383,12 +392,26 @@
         grid-template-columns: 1fr;
     }
 
+    .store-modal {
+        width: min(400px, 100%);
+    }
+
+    .store-modal-backdrop {
+        padding-left: 6rem;
+    }
+
     .store-search-btn {
         width: 100%;
     }
 
     .store-modal-images {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 540px) {
+    .store-modal-backdrop {
+        padding-left: 0;
     }
 }
 
@@ -401,16 +424,6 @@
     }
 }
 
-/* TELAS MÉDIAS — sidebar ainda aberta, modal precisa ficar menor */
-@media (max-width: 900px) {
-    .store-modal {
-        width: calc(100vw - 180px); /* 180px ≈ largura útil da sidebar + margem */
-        max-width: 600px;           /* limite visual confortável */
-        margin-left: auto;          /* empurra o modal totalmente para a direita */
-        margin-right: auto;
-    }
-}
-
 @media (max-width: 640px) {
     .store-header {
         grid-template-columns: 1fr;
@@ -420,18 +433,18 @@
         width: 100%;
     }
 
-    /* Imagens do modal em 1 coluna no mobile */
     .store-modal-images {
         grid-template-columns: 1fr;
     }
 
-    /* 2 colunas na loja no mobile */
+    /* 👇 FORÇA 2 COLUNAS NO MOBILE */
     .store-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 18px;
+        /* se quiser um pouco menos de espaço entre cards */
     }
 
-    /* Card mais compacto no mobile */
+    /* opcional: deixar o card um pouquinho mais compacto */
     .store-card {
         border-radius: 12px;
     }
@@ -449,20 +462,5 @@
         font-size: 0.7rem;
         height: 31px;
         padding: 0 8px;
-    }
-
-    /* Modal sobe um pouco pra não brigar com a navbar fixa */
-    .store-modal-backdrop {
-        padding: 8px 8px 88px;                    /* espaço pro bottom nav */
-    }
-
-    .store-modal {
-        width: 100%;
-        max-height: calc(100vh - 88px);           /* garante que tudo caiba acima do nav */
-    }
-
-    .store-modal-actions {
-        justify-content: center;
-        gap: 10px;
     }
 }
