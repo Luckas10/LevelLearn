@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 
-import { createCollection } from "../../../services/collection";
+import { createCollection, updateCollection } from "../../../services/collection";
 import { getDataUser } from "../../../services/auth";
 
 // Import das imagens
@@ -17,7 +17,7 @@ import geografia from "/CoverImages/geografia.svg";
 import ingles from "/CoverImages/ingles.svg";
 import biologia from "/CoverImages/biologia.svg";
 
-export default function StudyCreateCollection({ onSave }) {
+export default function StudyCreateCollection({ onSave, editMode=false, initialData=null }) {
   const [userId, setUserId] = useState(0);
   const dialogRef = useRef(null);
   const coversContainerRef = useRef(null);
@@ -46,6 +46,16 @@ export default function StudyCreateCollection({ onSave }) {
     setCover(null);
     setOpen(false);
   };
+
+  // ---------- PREENCHE OS INPUTS AUTOMATICAMENTE QUANDO FOR EDITAR --------------
+
+  useEffect(() => {
+  if (editMode && initialData) {
+    setName(initialData.name || "");
+    setDescription(initialData.description || "");
+    setCover(initialData.cover_name || null);
+  }
+  }, [editMode, initialData]);
 
   // ---------- CARREGAR USER ----------
   
@@ -139,7 +149,13 @@ export default function StudyCreateCollection({ onSave }) {
     };
 
     try {
-      await createCollection(newCollection);
+      if (editMode) {
+        // atualizar
+        await updateCollection(initialData.id, newCollection);
+      } else {
+        // criar
+        await createCollection(newCollection);
+      }
 
       closeModal()
 
@@ -156,13 +172,19 @@ export default function StudyCreateCollection({ onSave }) {
       setName("");
       setDescription("");
       setCover(null);
-      closeModal();
 
       if (onSave) onSave();
     } catch {
 
     }
   };
+
+  useEffect(() => {
+    if (editMode) {
+      setOpen(true);
+    }
+  }, [editMode]);
+
 
   return (
     <div className="studyCreateCollection">
@@ -173,7 +195,7 @@ export default function StudyCreateCollection({ onSave }) {
 
       <dialog className="createCollectionModal" ref={dialogRef}>
         <div className="collectionModalContent">
-          <p style={{ fontWeight: "bold", fontSize: "larger" }}>CRIAR COLEÇÃO</p>
+          <p style={{ fontWeight: "bold", fontSize: "larger" }}>{editMode ? "EDITAR COLEÇÃO" : "CRIAR COLEÇÃO"}</p>
 
           <input
             className="collectionInput"

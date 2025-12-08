@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import StudyCreateCollection from "./CreateCollection";
-import StudyInteractiveCard from "./InteractiveCard";
+import InteractiveCardCollection from "./InteractiveCardCollection";
 import { getCollectionByOwnerId } from "../../../services/collection";
+import { deleteCollection } from "../../../services/collection";
 
 export default function StudyCollection() {
   const [collections, setCollections] = useState([]);
+  const [editingCollection, setEditingCollection] = useState(null);
 
   const loadCollections = async () => {
     const data = await getCollectionByOwnerId();
     setCollections(data);
-    console.log(data);
+  };
+
+  const handleDeleteCollection = async (id) => {
+    await deleteCollection(id);
+    loadCollections();
   };
 
   useEffect(() => {
@@ -18,21 +24,33 @@ export default function StudyCollection() {
 
   return (
     <div className="studyCollection-page">
-      <StudyCreateCollection onSave={loadCollections} />
+
+      {/* Modal de criar coleção */}
+      <StudyCreateCollection 
+        onSave={() => {
+          loadCollections();
+          setEditingCollection(null); // fecha o modal depois
+        }}
+        editMode={!!editingCollection}
+        initialData={editingCollection} 
+        />
+
 
       <div className="studyCollection">
         {collections.map((c, i) => (
-          <StudyInteractiveCard 
-            className="collectionContainer" 
-            key={i} 
-            image={c.cover_name} 
-            to={`/study/flashcards/selected/${c.id}`} 
+          <InteractiveCardCollection
+            className="collectionContainer"
+            id={c.id}
+            key={i}
+            image={c.cover_name}
+            to={`/study/flashcards/selected/${c.id}`}
             title={c.name}
-            onEdit={() => console.log("Editar")}
-            onDelete={() => console.log("Excluir")}
-            />
+            onEdit={() => setEditingCollection(c)}
+            onDelete={handleDeleteCollection}
+          />
         ))}
       </div>
+
     </div>
   );
 }

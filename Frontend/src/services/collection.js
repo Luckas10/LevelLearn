@@ -22,3 +22,13 @@ export async function getCollectionByOwnerId() {
     const filteredData = dataCollecntions.filter((collection) => collection.owner_id === dataUser.id);
     return filteredData;
 }
+
+export async function deleteCollection(id) {
+    const { data } = await api.delete(`/decks/${id}`)
+    return data;
+}
+
+export async function updateCollection(id, data) {
+    const { data: responseData } = await api.put(`/decks/${id}`, data);
+    return responseData;
+}

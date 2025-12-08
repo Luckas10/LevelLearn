@@ -101,9 +101,11 @@ class Deck(SQLModel, table=True):
     description: str
     cover_name: str
     owner_id: int = Field(foreign_key="user.id")
-
     owner: Optional[User] = Relationship(back_populates="decks")
-    cards: List["Card"] = Relationship(back_populates="deck")
+    cards: List["Card"] = Relationship(
+        back_populates="deck",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
+    )
 
 
 class Card(SQLModel, table=True):

@@ -290,8 +290,8 @@
 }
 
 .collectionContainer {
-    width: 100%;
-    height: 18rem;
+    width: 16rem;
+    height: 20rem;
     background-color: #151838;
     border-radius: 15px;
     display: flex;
@@ -316,7 +316,6 @@
     gap: 0;
 }
 
-
 .cardImg {
     width: 85%;                /* largura relativa pro layout da grid */
     height: auto;
@@ -327,19 +326,6 @@
     pointer-events: none;      /* evita interferência com onMouseMove */
 }
 
-.interactiveCardBase {
-    background-color: #151838;
-    border-radius: 15px;
-    width: 100%;
-    height: 100%;          /* antes 18rem */
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.25s;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    overflow: hidden;
-}
 
 .collectionCoverOption.selectedCover {
     border: 2px solid #4346E6;
@@ -348,7 +334,7 @@
 .cardContentTitle {
     margin-top: auto;          /* empurra o bloco de títulos para o final do card */
     width: 100%;
-    height: 5rem;
+    height: 5.5rem;
     background-color: #4346E6;
     color: #fff;
     padding: 0.55rem 0;        /* altura compacta, sem espaços grandes */
@@ -372,7 +358,7 @@
 }
 
 .cardContentTitle h1 {
-    font-size: 1rem;
+    font-size: 1.3rem;
     font-weight: 600;
 }
 
@@ -401,8 +387,8 @@
 
 .cardMenuOptions {
   position: absolute;
-  top: 2.8rem;
-  left: 6.5rem;
+  top: 2.2rem;
+  left: 7.8rem;
   background: #1a1d3a;
   border: 1px solid #2c2f59;
   padding: 0.4rem;

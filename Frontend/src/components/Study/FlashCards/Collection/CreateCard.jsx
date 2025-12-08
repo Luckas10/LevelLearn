@@ -3,9 +3,10 @@ import { useState, useEffect, useRef } from "react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { getCollectionById } from "../../../../services/collection";
 import { getCards, createCards, getCardsByDeckId } from "../../../../services/cards";
+import { deleteCards } from "../../../../services/cards";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
-import CreateInteractiveCard from "../InteractiveCard";
+import InteractiveFlashCard from "./InteractiveFlashCard";
 
 export default function CreateCard({ onSave }) {
     const [flashcards, setFlashCards] = useState([]);
@@ -87,50 +88,54 @@ export default function CreateCard({ onSave }) {
         }
       }, [open]);
 
-      // ---------- SALVAR CARD CRIADO ----------
+    // ---------- SALVAR CARD CRIADO ----------
 
-      const handleSave = async () => {
-            if (!front.trim()) {
-                alert("Coloque a mensagem da frente do flashcard.");
-                return;
-            }
+    const handleSave = async () => {
+          if (!front.trim()) {
+              alert("Coloque a mensagem da frente do flashcard.");
+              return;
+          }
 
-            if (!back.trim()) {
-                alert("Coloque o verso do card.");
-                return;
-            }
-        
-            const newCard = {
-                question: front,
-                answer: back,
-                deck_id: deckId
-            };
-        
-            try {
-                await createCards(newCard);
-                await loadCards();
-                closeModal()
+          if (!back.trim()) {
+              alert("Coloque o verso do card.");
+              return;
+          }
       
-                setTimeout(async () => {
-                  await Swal.fire({
-                    icon: "success",
-                    title: "Flashcard criado com sucesso!",
-                    text: "Você criou um flashcard.",
-                    timer: 1800,
-                    showConfirmButton: false,
-                  });
-                }, 220);
-
-                setFront("");
-                setBack("");
-                closeModal();
-        
-                if (onSave) onSave();
-                } catch {
-                alert("Erro ao criar card");
-            }
-        };
+          const newCard = {
+              question: front,
+              answer: back,
+              deck_id: deckId
+          };
+      
+          try {
+              await createCards(newCard);
+              await loadCards();
+              closeModal()
     
+              setTimeout(async () => {
+                await Swal.fire({
+                  icon: "success",
+                  title: "Flashcard criado com sucesso!",
+                  text: "Você criou um flashcard.",
+                  timer: 1800,
+                  showConfirmButton: false,
+                });
+              }, 220);
+
+              setFront("");
+              setBack("");
+              closeModal();
+      
+              if (onSave) onSave();
+              } catch {
+              alert("Erro ao criar card");
+          }
+      };
+    
+    const handleDeleteCard = async (id) => {
+      await deleteCards(id);
+      loadCards(); // atualizar lista após excluir
+    };
 
     return (
         <div className="createCardContainer">
@@ -166,10 +171,15 @@ export default function CreateCard({ onSave }) {
                     <FontAwesomeIcon size="5x" icon={faPlus} style={{color: "#4346E6"}} />
                   </button>
                   {flashcards.map((card, i) => (
-                    <CreateInteractiveCard className="flashCardContainer" key={i}>
+                    <InteractiveFlashCard 
+                    className="flashCardContainer" 
+                    key={i}
+                    id={card.id}
+                    onDelete={handleDeleteCard}
+                    >
                       <p style={{fontSize: "1.5rem", padding: "1rem", wordBreak: "break-word"}}>{card.question}</p>
                       <p style={{fontSize: "0.9rem"}}>Clique para ver o verso</p>
-                    </CreateInteractiveCard>
+                    </InteractiveFlashCard>
                   ))}
                 </div>
             </div>

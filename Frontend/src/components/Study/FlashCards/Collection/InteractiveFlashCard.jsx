@@ -1,19 +1,15 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
 
-export default function InteractiveCard({ 
-  title, 
-  className = "", 
-  to, 
-  image, 
-  children, 
+export default function InteractiveFlashCard({
+  id,
+  title,
   onEdit,
   onDelete,
-  ...props 
+  children,
+  ...props
 }) {
-
   const [style, setStyle] = useState({});
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -48,48 +44,34 @@ export default function InteractiveCard({
 
   return (
     <div style={{ position: "relative" }}>
-      <NavLink style={{ textDecoration: "none" }} to={to}>
-        <div
-          className={`interactiveCardBase ${className}`}
-          {...props}
-          style={style}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
+      <div
+        {...props}
+        style={style}
+        onMouseMove={menuOpen ? undefined : handleMouseMove}
+        onMouseLeave={menuOpen ? undefined : handleMouseLeave}
+      >
+        <button
+          className="cardMenuBtn"
+          onClick={(e) => {
+            e.preventDefault();
+            setMenuOpen(!menuOpen);
+            if (!menuOpen) {
+              setStyle({ transform: "none" });
+            }
+          }}
         >
-          {/* Botão dos 3 pontinhos */}
-          <button
-            className="cardMenuBtn"
-            onClick={(e) => {
-              e.preventDefault(); 
-              setMenuOpen(!menuOpen);
-            }}
-          >
-            <FontAwesomeIcon icon={faEllipsisVertical} />
-          </button>
+          <FontAwesomeIcon icon={faEllipsisVertical} />
+        </button>
+        {children}
+      </div>
 
-          {/* Conteúdo do card */}
-          {image && (
-            <div className="cardContent">
-              <img src={image} className="cardImg" />
-              <div className="cardContentTitle">
-                <h1>{title}</h1>
-                <h2>Biologia</h2>
-              </div>
-            </div>
-          )}
-
-          {children}
-        </div>
-      </NavLink>
-
-      {/* MENU (Editar / Excluir) */}
       {menuOpen && (
         <div className="cardMenuOptions">
-          <button onClick={() => onEdit?.()}>
+          <button onClick={() => onEdit(id)}>
             <FontAwesomeIcon icon={faPen} /> Editar
           </button>
 
-          <button onClick={() => onDelete?.()}>
+          <button onClick={() => onDelete(id)}>
             <FontAwesomeIcon icon={faTrash} /> Excluir
           </button>
         </div>

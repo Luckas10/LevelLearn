@@ -30,3 +30,20 @@ def deletar_deck(session: SessionDep, id: int) -> str:
     session.delete(deck)
     session.commit()
     return "Deck excluído com sucesso."
+
+@router.put("/{id}")
+def atualizar_deck(session: SessionDep, id: int, dados: Deck) -> Deck:
+    deck = session.get(Deck, id)
+
+    if not deck:
+        raise HTTPException(404, "Deck não encontrado")
+
+    # atualiza apenas os campos enviados
+    update_data = dados.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(deck, key, value)
+
+    session.add(deck)
+    session.commit()
+    session.refresh(deck)
+    return deck
