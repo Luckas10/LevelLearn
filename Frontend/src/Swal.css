@@ -1,46 +1,37 @@
-/* ===========================
-   SWEETALERT2 – BASE POPUP
-   =========================== */
 .swal2-popup {
     background: radial-gradient(circle at top, #132045 0, #050713 55%);
     border-radius: 18px;
-    border: 1px solid #243b72;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75);
+    border: 1px solid #6A7CFF;
+    box-shadow: 0 18px 450px #6a7bff7c;
     padding: 1.8rem 2.4rem;
     color: #e4e7ff;
     font-family: "Inter", sans-serif;
 }
 
-/* TÍTULO */
+.swal2-container {
+    z-index: 11000 !important;
+}
+
 .swal2-title {
     font-size: 1.4rem;
     font-weight: 700;
-    color: #ffffff;
+    color: #6A7CFF;
 }
 
-/* TEXTO */
 .swal2-html-container {
     font-size: 0.95rem;
-    color: #c7ccff;
+    color: #6A7CFF;
 }
 
-/* BACKDROP (FUNDO ESCURECIDO) */
 .swal2-backdrop-show {
     background: rgba(4, 6, 15, 0.78);
 }
 
-
-/* ===========================
-   AÇÕES E BOTÕES
-   =========================== */
-
-/* CONTAINER DOS BOTÕES */
 .swal2-actions {
     gap: 0.75rem;
     margin-top: 1.6rem;
 }
 
-/* ESTILO BASE DOS BOTÕES */
 .swal2-confirm,
 .swal2-cancel {
     display: inline-flex;
@@ -60,7 +51,6 @@
         color 0.18s ease;
 }
 
-/* BOTÃO PRINCIPAL (CONFIRMAR) */
 .swal2-confirm {
     background: linear-gradient(135deg, #4a4dff, #6276ff);
     border: none;
@@ -68,36 +58,71 @@
     box-shadow: 0 12px 28px rgba(74, 77, 255, 0.55);
 }
 
+div:where(.swal2-icon).swal2-error {
+    border-color: #6276ff !important;
+    color: #6276ff !important;
+}
+
+div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line] {
+    background-color: #6276ff !important;
+}
+
+div:where(.swal2-icon).swal2-success .swal2-success-ring {
+    border: .25em solid #6276ff !important;
+}
+
+div:where(.swal2-icon).swal2-success [class^=swal2-success-line] {
+    background-color: #6276ff !important;
+}
+
 .swal2-confirm:hover {
     filter: brightness(1.06);
     transform: translateY(-1px) scale(1.01);
 }
 
-/* BOTÃO CANCELAR */
 .swal2-cancel {
-    background: #18192f;
-    color: #d3d6ff;
-    border: 1px solid #343866;
+    background: #d3d6ff;
+    color: #6276ff;
+    border: 1px solid #c7ccff;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
 }
 
 .swal2-cancel:hover {
-    background: #202342;
-    border-color: #4a4dff;
+    background: #d3d6ff;
+    color: #6276ff;
+    border: 1px solid #c7ccff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
     transform: translateY(-1px);
 }
 
-/* FOCUS BONITO / ACESSIBILIDADE */
 .swal2-confirm:focus-visible,
 .swal2-cancel:focus-visible {
     outline: 2px solid #6b6eff;
     outline-offset: 2px;
 }
 
+html.swal2-shown,
+body.swal2-shown {
+    overflow-x: hidden !important;
+    padding-right: 0 !important;
+}
 
-/* ===========================
-   TOAST / LOGIN “BEM-VINDO”
-   =========================== */
+html.swal2-height-auto,
+body.swal2-height-auto {
+    height: 100% !important;
+    overflow-x: hidden !important;
+}
+
+html.swal2-shown .store-modal-backdrop,
+body.swal2-shown .store-modal-backdrop {
+    pointer-events: none;
+    filter: brightness(0.7);
+}
+
+div:where(.swal2-icon).swal2-warning {
+    border-color: #6276ff !important;
+    color: #6276ff !important;
+}
 
 .swal2-toast {
     border-radius: 999px;
@@ -106,14 +131,27 @@
     color: #e4e7ff;
 }
 
-/* BARRA DE TEMPO DO TOAST */
 .swal2-timer-progress-bar {
     background: linear-gradient(90deg, #4A4DFF, #6A7CFF);
     height: 4px !important;
     border-radius: 10px;
 }
 
-/* ANIMAÇÕES DE ENTRADA/SAÍDA DO TOAST */
+/* Quando o SweetAlert estiver aberto, desabilita a interação
+   com o conteúdo do modal de criar coleção */
+html.swal2-shown .createCollectionModal .collectionModalContent,
+body.swal2-shown .createCollectionModal .collectionModalContent {
+    pointer-events: none;
+    filter: brightness(0.7);
+}
+
+/* Mas mantém o próprio SweetAlert clicável dentro do dialog */
+html.swal2-shown .createCollectionModal .swal2-container,
+body.swal2-shown .createCollectionModal .swal2-container {
+    pointer-events: auto;
+    filter: none;
+}
+
 @keyframes toast-in {
     from {
         opacity: 0;
@@ -146,11 +184,6 @@
     animation: toast-out 0.28s ease-in both;
 }
 
-
-/* ===========================
-VARIAÇÃO POR TEMA (LIGHT/DARK)
-=========================== */
-
 :root[data-theme="light"] .swal2-popup {
     background: #f5f7ff;
     color: #101225;
@@ -159,4 +192,27 @@ VARIAÇÃO POR TEMA (LIGHT/DARK)
 :root[data-theme="dark"] .swal2-popup {
     background: radial-gradient(circle at top, #132045 0, #050713 55%);
     color: #e4e7ff;
+}
+
+:root[data-theme="dark"] .swal2-title {
+    color: #c7ccff;
+}
+
+:root[data-theme="dark"] .swal2-html-container {
+    font-size: 0.95rem;
+    color: #c7ccff; 
+}
+
+:root[data-theme="dark"] .swal2-confirm {
+    background: linear-gradient(135deg, #6276ff 60%, #4A4DFF);
+    border: none;
+    color: #ffffff;
+    box-shadow: 0 12px 28px rgba(74, 77, 255, 0.55);
+}
+
+:root[data-theme="dark"] .swal2-cancel {
+    background: #101225 !important;
+    color: #d3d6ff !important;
+    border: 1px solid #343866 !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45) !important;
 }

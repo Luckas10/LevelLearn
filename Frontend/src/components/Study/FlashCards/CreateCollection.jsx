@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 import { createCollection, updateCollection } from "../../../services/collection";
 import { getDataUser } from "../../../services/auth";
 
-// Import das imagens
 import fisica from "/CoverImages/fisica.svg";
 import matematica from "/CoverImages/matematica.svg";
 import portugues from "/CoverImages/portugues.svg";
@@ -22,20 +21,24 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
   const dialogRef = useRef(null);
   const coversContainerRef = useRef(null);
 
-  // Estados dos inputs
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [cover, setCover] = useState(null);
 
-  // Controle do modal com animação
   const [open, setOpen] = useState(false);
 
   const covers = [
-    fisica, matematica, portugues, historia,
-    edfisica, ingles, geografia, quimica, biologia
+    fisica,
+    matematica,
+    portugues,
+    historia,
+    edfisica,
+    ingles,
+    geografia,
+    quimica,
+    biologia,
   ];
 
-  // ---------- ABRIR E FECHAR ----------
   const openModal = () => setOpen(true);
 
   const closeModal = () => setOpen(false);
@@ -71,29 +74,22 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
     loadUser();
   }, []);
 
-  // ---------- SCROLL HORIZONTAL COM RODINHA DO MOUSE ----------
   useEffect(() => {
     const el = coversContainerRef.current;
     if (!el) return;
 
     const handleWheel = (event) => {
-      // se não tiver scroll vertical, ignora
       if (event.deltaY === 0) return;
 
-      // evita scroll vertical da página
       event.preventDefault();
 
-      // move horizontalmente de acordo com a rodinha
       el.scrollLeft += event.deltaY;
     };
 
-    // preciso dele como NÃO-passive pra poder dar preventDefault
     el.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => el.removeEventListener("wheel", handleWheel);
   }, []);
-
-  // ---------- USEEFFECT DO MODAL COM ANIMAÇÃO ----------
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -122,7 +118,6 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
       dialog.addEventListener("click", handleClickOutside);
 
       return () => dialog.removeEventListener("click", handleClickOutside);
-
     } else {
       if (dialog.open) {
         dialog.classList.remove("visible");
@@ -134,10 +129,15 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
     }
   }, [open]);
 
-  // ---------- SALVAR ----------
   const handleSave = async () => {
     if (!name || !cover) {
-      alert("Dê um nome e escolha uma capa.");
+      await Swal.fire({
+        icon: "warning",
+        title: "Atenção",
+        text: "É necessário preencher nome, descrição e selecionar uma capa para a coleção.",
+        confirmButtonText: "Ok",
+        target: dialogRef.current,
+      });
       return;
     }
 
@@ -145,7 +145,7 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
       name,
       description,
       cover_name: cover,
-      owner_id: userId
+      owner_id: userId,
     };
 
     try {
@@ -157,7 +157,7 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
         await createCollection(newCollection);
       }
 
-      closeModal()
+      closeModal();
 
       setTimeout(async () => {
         await Swal.fire({
@@ -174,8 +174,8 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
       setCover(null);
 
       if (onSave) onSave();
-    } catch {
-
+    } catch (err) {
+      console.error("Erro ao criar coleção:", err);
     }
   };
 
@@ -217,23 +217,23 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
 
           <p style={{ fontSize: "larger" }}>CAPA DA COLEÇÃO:</p>
 
-          <div
-            className="collectionCoverOptions"
-            ref={coversContainerRef}
-          >
+          <div className="collectionCoverOptions" ref={coversContainerRef}>
             {covers.map((img, i) => (
               <div
                 key={i}
-                className={`collectionCoverOption ${
-                  cover === img ? "selectedCover" : ""
-                }`}
+                className={`collectionCoverOption ${cover === img ? "selectedCover" : ""
+                  }`}
                 onClick={() => setCover(img)}
               >
-                <img src={img} style={{ width: "8.5rem", height: "8.5rem" }} />
+                <img
+                  src={img}
+                  style={{ width: "8.5rem", height: "8.5rem" }}
+                  alt="Capa da coleção"
+                />
               </div>
             ))}
           </div>
-          
+
           <button className="collectionButtonSave" onClick={handleSave}>
             SALVAR
           </button>

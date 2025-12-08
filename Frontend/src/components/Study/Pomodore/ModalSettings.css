@@ -19,12 +19,10 @@
 }
 
 
-/* Ativo, mas invisível */
 .settings-dialog.showing {
   pointer-events: auto;
 }
 
-/* Quando realmente visível */
 .settings-dialog.visible {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
@@ -36,7 +34,6 @@
   transition: 0.25s ease;
 }
 
-/* ------ RESTANTE DO SEU CSS ORIGINAL AQUI ------ */
 
 .modal-title {
   font-size: 1.6rem;
@@ -81,7 +78,6 @@
   font-size: 1rem;
 }
 
-/* AUTOMATICO */
 .auto-container {
   display: flex;
   justify-content: space-between;
@@ -116,7 +112,6 @@
   border-radius: 10px; 
 }
 
-/* SWITCH */
 .switch-row {
   display: flex;
   justify-content: space-between;
@@ -172,7 +167,6 @@
   transform: scale(1.15);
 }
 
-/* BOTÃO */
 .close-btn {
   margin-top: 22px;
   width: 100%;
@@ -209,7 +203,6 @@
   
 }
 
-/* ===== HOVER E FOCUS ===== */
 .settings-dialog input[type="number"]:hover {
   border-color: #7c6df8;
   box-shadow: 0 0 10px #6b63f855;
@@ -271,5 +264,57 @@ input[type=number]::-webkit-inner-spin-button {
 
   .duration-block {
     width: 100%;
+  }
+}
+
+.test-alarm-btn,
+.stop-alarm-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 2px solid #4f46e5;
+  background: #101332;
+  color: white;
+
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.test-alarm-btn:hover,
+.stop-alarm-btn:hover {
+  background: #4f46e5;
+  box-shadow: 0 0 12px #6b63f8;
+  transform: scale(1.03);
+}
+
+.test-alarm-btn:active,
+.stop-alarm-btn:active {
+  transform: scale(0.97);
+}
+
+.test-alarm-btn svg {
+  color: #22c55e;
+}
+
+.stop-alarm-btn svg {
+  color: #ef4444;
+}
+
+.test-alarm-btn:hover svg,
+.stop-alarm-btn:hover svg {
+  color: white;
+}
+
+@media (max-width: 480px) {
+  .test-alarm-btn,
+  .stop-alarm-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
