@@ -1,10 +1,10 @@
 # routers/flashcards.py
 from fastapi import APIRouter, Depends
 from sqlmodel import Session, SQLModel
-from ..models import User, FlashcardSession
-from ..database import get_session
+from models import User, FlashcardSession
+from database import get_session
 from .auth import get_current_user
-from ..rewards import calc_flashcard_rewards
+from rewards import calc_flashcard_rewards
 
 router = APIRouter(prefix="/flashcards", tags=["flashcards"])
 

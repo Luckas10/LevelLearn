@@ -12,7 +12,7 @@ def calc_flashcard_rewards(correct: int, total: int) -> tuple[int, int]:
     xp = int(correct * 10 * (0.5 + 0.5 * acc) * D)
 
     # Ouro com curva log
-    O_max = 150   # máximo de ouro na sessão
+    O_max = 70   # máximo de ouro na sessão
     C_ref = 50    # acertos onde quase encosta no limite
 
     gold_raw = O_max * (math.log(1 + correct) / math.log(1 + C_ref))

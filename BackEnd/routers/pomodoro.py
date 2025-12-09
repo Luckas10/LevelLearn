@@ -1,10 +1,10 @@
 # routers/pomodoro.py
 from fastapi import APIRouter, Depends
 from sqlmodel import Session, SQLModel
-from ..models import User, PomodoroSession
-from ..database import get_session
+from models import User, PomodoroSession
+from database import get_session
 from .auth import get_current_user
-from ..rewards import calc_pomodoro_rewards
+from rewards import calc_pomodoro_rewards
 
 router = APIRouter(prefix="/pomodoro", tags=["pomodoro"])
 
