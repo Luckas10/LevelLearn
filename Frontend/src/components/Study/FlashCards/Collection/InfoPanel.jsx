@@ -1,6 +1,8 @@
+// InfoPanel.jsx
 import { PlayButton } from "./StartButton.jsx";
+import { getDataUser } from "../../../../services/auth.js";
 
-export default function InfoPanel({ description, name, cover }) {
+export default function InfoPanel({ id, description, name, cover }) {
   return (
     <div className="infoPanelContainer">
       {/* TOPO: CAPA + BOTÃO JOGAR */}
@@ -17,7 +19,7 @@ export default function InfoPanel({ description, name, cover }) {
             <p className="collectionDescription">{description}</p>
           </div>
 
-          <PlayButton to={`/study/battleflashcards`} />
+          <PlayButton to={`/study/battleflashcards/${id}`} />
         </div>
       </div>
     </div>

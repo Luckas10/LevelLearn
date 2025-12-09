@@ -61,10 +61,12 @@ export function CollectionSelected() {
 
                 <div className="collectionSelected-top">
                     <InfoPanel
+                        id={collection.id}
                         name={collection.name}
                         description={collection.description}
                         cover={collection.cover_name}
                     />
+
                 </div>
 
                 <div className="collectionSelected-bottom">
