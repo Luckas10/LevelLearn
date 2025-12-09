@@ -220,73 +220,129 @@
   }
 
   .campfire-wrapper {
-    transform: scale(0.8);
+    transform: scale(1.1);
+    bottom: -4rem;
+    left: -3rem;
     width: 340px;
     height: 340px;
   }
 }
 
-/* quando a sidebar vira bottom bar (≤ 530px) */
+/* ===== quando a sidebar vira bottom bar (≤ 530px) ===== */
 @media (max-width: 530px) {
   .studyPomodore-page {
     flex-direction: column;
   }
 
   .studyPomodore {
-    padding: 1.2rem 1rem 5.5rem; /* espaço pra bottom bar */
-    justify-content: flex-start; /* NÃO centraliza verticalmente pra não “colar” no topo */
+    padding: 1.5rem 1rem 5.8rem; /* topo um pouco maior, espaço pra bottom bar */
+    justify-content: flex-start;
   }
 
   .pomodoretimer-container {
     flex-direction: column;
-    gap: 2rem;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+
+  .timer-circle {
+    /* garante que o bloco do timer ocupe só o centro */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .progress-ring {
+    width: min(310px, 84vw);
+    height: auto;
+  }
+
+  .timer-text {
+    font-size: 2.9rem;
+  }
+
+  /* ⬇ Fogueira centralizada e bem colada na base do círculo */
+  .campfire-wrapper {
+    position: absolute;
+    bottom: -1rem;
+    left: 4rem;                 /* ajusta mais pra cima/baixo se quiser */
+    transform: translateX(-50%) scale(1);
+    width: 300px;
+    height: 230px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  /* Botões mais próximos da bottombar */
+  .pomodore-buttons {
+    width: 100%;
+    margin-top: 3.2rem;            /* empurra o bloco de botões pra baixo */
   }
 
   .timer-buttons {
-    flex-direction: column;
-    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.9rem;
   }
 
   .btnPomodore {
-    width: 100%;
-    max-width: 260px;
+    width: calc(50% - 0.9rem);     /* 2 colunas */
+    max-width: none;
     font-size: 0.7rem;
-  }
-
-  .progress-ring {
-    width: min(300px, 84vw);
-    height: auto;
-  }
-
-  .timer-text {
-    font-size: 3rem;
+    height: 48px;
   }
 }
 
-/* celulares bem pequenos */
+/* ===== celulares bem pequenos (≤ 400px) ===== */
 @media (max-width: 400px) {
   .studyPomodore {
-    padding: 1rem 0.7rem 5.5rem;
+    padding: 1.4rem 0.7rem 5.8rem;
+  }
+
+  .pomodoretimer-container {
+    gap: 1.3rem;
   }
 
   .progress-ring {
-    width: min(270px, 86vw);
+    width: min(270px, 88vw);
     height: auto;
   }
 
   .timer-text {
-    font-size: 2.7rem;
+    font-size: 2.5rem;
   }
 
-  .campfire {
-    transform: scale(0.45);
-    width: 320px;
-    height: 420px;
-  }
-
+  /* Fogueira ainda encaixada, só um pouco menor */
   .campfire-wrapper {
-    transform: scale(0.7);
-    width: 300px;
-    height: 320px;
+    bottom: -38px;
+    left: 2.5rem;
+    transform: translateX(-50%) scale(0.9);
+    width: 260px;
+    height: 210px;
+  }
+
+  .pomodore-buttons {
+    margin-top: 3.4rem;           /* um tiquinho mais pra baixo */
+  }
+
+  .timer-buttons {
+    gap: 0.7rem;
+    margin-left: 1rem;
+  }
+
+  .btnPomodore {
+    width: calc(50% - 0.7rem);
+    font-size: 0.64rem;
+    height: 46px;
+  }
+
+  .btnPomodore img {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-right: 8px;
   }
 }

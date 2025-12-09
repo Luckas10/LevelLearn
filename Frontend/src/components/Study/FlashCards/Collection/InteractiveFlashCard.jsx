@@ -66,7 +66,7 @@ export default function InteractiveFlashCard({
       </div>
 
       {menuOpen && (
-        <div className="cardMenuOptions">
+        <div className="cardMenuOptions" style={{width: "6.3rem"}}>
           <button onClick={() => onEdit(id)}>
             <FontAwesomeIcon icon={faPen} /> Editar
           </button>

@@ -7,6 +7,7 @@ import { deleteCards } from "../../../../services/cards";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import InteractiveFlashCard from "./InteractiveFlashCard";
+import EditFlashCard from "./EditFlashCard";
 
 export default function CreateCard({ onSave }) {
     const [flashcards, setFlashCards] = useState([]);
@@ -16,6 +17,8 @@ export default function CreateCard({ onSave }) {
     const dialogRef = useRef(null);
     const [open, setOpen] = useState(false);
     const { id } = useParams(); 
+    const [ editingFlashCard, setEditingFlashCard ] = useState(null)
+    const [openEdit, setOpenEdit] = useState(false);
 
     const openModal = () => setOpen(true);
     const closeModal = () => setOpen(false);
@@ -176,11 +179,22 @@ export default function CreateCard({ onSave }) {
                     key={i}
                     id={card.id}
                     onDelete={handleDeleteCard}
+                    onEdit={() => {
+                        setEditingFlashCard(card);
+                        setOpenEdit(true);
+                    }}
                     >
-                      <p style={{fontSize: "1.5rem", padding: "1rem", wordBreak: "break-word"}}>{card.question}</p>
+                      <p style={{fontSize: "1.1rem", padding: "1rem", wordBreak: "break-word", overflow: "hidden", }}>{card.question}</p>
                       <p style={{fontSize: "0.9rem"}}>Clique para ver o verso</p>
                     </InteractiveFlashCard>
                   ))}
+
+                  <EditFlashCard
+                      open={openEdit}
+                      onClose={() => setOpenEdit(false)}
+                      flashcard={editingFlashCard}
+                      onSave={loadCards}
+                  />
                 </div>
             </div>
         </div>
