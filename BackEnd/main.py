@@ -3,6 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from database import lifespan
 from routers import auth, users, achievements, friends, shop, decks, cards
 
+# 👇 IMPORTA OS LISTENERS (gatilhos)
+import events          # conquistas / missões
+import rewards_events  # XP + moedas (flashcards, pomodoro, conquista)
+
+
 tags_metadata = [
     {"name": "Usuários", "description": "Gerenciamento de contas, níveis, XP e moedas."},
     {"name": "Conquistas", "description": "CRUD de conquistas vinculadas aos usuários."},

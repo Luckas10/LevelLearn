@@ -1,5 +1,6 @@
 from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship
+from datetime import datetime
 
 # Usuários e Conquistas
 
@@ -116,3 +117,23 @@ class Card(SQLModel, table=True):
 
     deck_id: int = Field(foreign_key="deck.id")
     deck: Optional[Deck] = Relationship(back_populates="cards")
+
+# Sessões
+
+class FlashcardSession(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id")
+    deck_id: int = Field(foreign_key="deck.id")
+
+    correct: int          # acertos
+    total: int            # total respondidas
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class PomodoroSession(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id")
+
+    focus_minutes: int        # F
+    short_break_minutes: int  # B_s
+    long_break_minutes: int   # B_l
+    created_at: datetime = Field(default_factory=datetime.utcnow)
