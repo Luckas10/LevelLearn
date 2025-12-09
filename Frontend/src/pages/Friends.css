@@ -166,8 +166,8 @@
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background: radial-gradient(60% 60% at 50% 40%, #5aa3ff 0%, #3b67ea 100%);
-    color: #0b0c17;
+    background: linear-gradient(135deg, #0a0a13, #0a225c);
+    color: #E3EFFD;
     font-weight: 800;
     font-size: 0.95rem;
     letter-spacing: 0.04em;
