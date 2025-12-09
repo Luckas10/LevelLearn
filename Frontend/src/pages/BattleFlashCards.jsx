@@ -1,6 +1,7 @@
 // BattleFlashCards.jsx
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { sendSessionResult } from "../services/flashcards";
 import Sidebar from "../components/General/Sidebar";
 import Navbar from "../components/General/Navbar";
 
@@ -233,6 +234,7 @@ export function BattleFlashCards() {
         const finishBattle = (outcome) => {
             const timeMs = battleStart ? Date.now() - battleStart : 0;
 
+            // ===== resultado local (como já estava) =====
             if (outcome === "win") {
                 const xpPerCorrect = 10;
                 const coinsPerCorrect = 5;
@@ -245,19 +247,42 @@ export function BattleFlashCards() {
                     correct: nextCorrect,
                     wrong: nextWrong,
                     xp,
-                    coins
+                    coins,
                 });
             } else {
                 setResult({
                     outcome: "lose",
                     timeMs,
                     correct: nextCorrect,
-                    wrong: nextWrong
+                    wrong: nextWrong,
+                });
+            }
+
+            // ===== monta corpo igual ao schema da API =====
+            const elapsed_minutes = Math.max(
+                0,
+                Math.round(timeMs / 60000)
+            );
+            const total = cards.length || 0;
+            const deck_id = deck?.id ?? Number(id);
+
+            if (deck_id) {
+                sendSessionResult({
+                    deck_id,
+                    correct: nextCorrect,
+                    total,
+                    elapsed_minutes,
+                }).catch((err) => {
+                    console.error(
+                        "Erro ao enviar resultado da sessão de flashcards:",
+                        err
+                    );
                 });
             }
 
             setShowResultModal(true);
         };
+
 
         setTimeout(() => {
             // derrota imediata se o player morrer
