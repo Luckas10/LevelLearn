@@ -54,14 +54,14 @@
 }
 
 /* Limita a largura do topo (InfoPanel) */
-.collectionSelected-top > .infoPanelContainer {
+.collectionSelected-top>.infoPanelContainer {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 /* Limita a largura da área de cards */
-.collectionSelected-bottom > .createCardContainer {
+.collectionSelected-bottom>.createCardContainer {
     width: 100%;
     max-width: 1200px;
 }
@@ -77,16 +77,19 @@
     margin: 0 auto;
     padding: 3rem 2rem;
     display: flex;
-    flex-direction: column; /* topo em cima, texto embaixo */
-    gap: 2.5rem;            /* espaço entre topo e texto */
+    flex-direction: column;
+    /* topo em cima, texto embaixo */
+    gap: 2.5rem;
+    /* espaço entre topo e texto */
     color: #fff;
 }
 
 /* PRIMEIRA LINHA: CAPA + BOTÃO JOGAR */
-.infoPanelContainer > div:first-child {
+.infoPanelContainer>div:first-child {
     display: flex;
     width: 100%;
-    justify-content: space-between; /* capa à esquerda, botão à direita */
+    justify-content: space-between;
+    /* capa à esquerda, botão à direita */
     align-items: center;
 }
 
@@ -194,7 +197,7 @@
     box-sizing: border-box;
 }
 
-.createCardContainer > h1 {
+.createCardContainer>h1 {
     text-align: center;
 }
 
@@ -235,7 +238,6 @@
     width: 12rem;
     height: 16rem;
     margin: 0.5rem;
-    background-color: #151838;
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
@@ -373,7 +375,7 @@
     }
 
     /* Primeira linha (capa + botão) centralizada */
-    .infoPanelContainer > div:first-child {
+    .infoPanelContainer>div:first-child {
         flex-direction: row;
         justify-content: center;
         align-items: center;
@@ -390,7 +392,7 @@
         box-sizing: border-box;
     }
 
-    .infoPanelContainer > div:first-child {
+    .infoPanelContainer>div:first-child {
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -400,13 +402,14 @@
     /* encolhe um pouco os dois cards */
     .cover {
         width: 12rem;
-        height: 16rem; 
+        height: 16rem;
     }
 
     .playButtonWrapper {
         width: 11rem;
         height: 5rem;
     }
+
     .startButtonContainer {
         width: 100%;
         height: 100%;
@@ -451,7 +454,7 @@
         font-size: 1.9rem;
     }
 
-    .infoPanelContainer > div:first-child {
+    .infoPanelContainer>div:first-child {
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -461,7 +464,7 @@
     /* encolhe um pouco os dois cards */
     .cover {
         width: 12rem;
-        height: 16rem; 
+        height: 16rem;
     }
 
     .playButtonWrapper {
@@ -469,7 +472,7 @@
         height: 5rem;
     }
 
-    .createCardContainer > h1 {
+    .createCardContainer>h1 {
         font-size: 2rem;
     }
 
@@ -492,7 +495,7 @@
     }
 
     /* aqui empilha: capa em cima, botão embaixo */
-    .infoPanelContainer > div:first-child {
+    .infoPanelContainer>div:first-child {
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -518,28 +521,4 @@
     .cardsButtonSave {
         width: 70%;
     }
-}
-
-/* ========================================================================
-   CENTRALIZAÇÃO FIXA DO CONTEÚDO DOS FLASHCARDS
-   ======================================================================== */
-
-/* Garante que o card em si seja um flex container centralizado */
-.createdCards .flashCardContainer {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    text-align: center;
-}
-
-/* Garante que o conteúdo interno não “grude” no topo */
-.createdCards .flashCardContainer > * {
-    margin: 0.4rem 0;
-}
-
-/* Deixa o textinho "Clique para ver o verso" sempre coladinho ao título */
-.createdCards .flashCardContainer p {
-    margin: 0.4rem 0;
-    word-break: break-word;
 }
