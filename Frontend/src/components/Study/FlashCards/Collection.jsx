@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import StudyCreateCollection from "./CreateCollection";
 import InteractiveCardCollection from "./InteractiveCardCollection";
-import { getCollectionByOwnerId } from "../../../services/collection";
-import { deleteCollection } from "../../../services/collection";
+import { getCollectionByOwnerId, deleteCollection } from "../../../services/collection";
+import EditCollection from "./EditCollection";
 
 export default function StudyCollection() {
   const [collections, setCollections] = useState([]);
@@ -24,15 +24,15 @@ export default function StudyCollection() {
 
   return (
     <div className="studyCollection-page">
-
+      
       {/* Modal de criar coleção */}
-      <StudyCreateCollection 
-        onSave={() => {
-          loadCollections();
-          setEditingCollection(null); // fecha o modal depois
-        }}
-        editMode={!!editingCollection}
-        initialData={editingCollection} 
+        <StudyCreateCollection onSave={loadCollections} />
+
+        <EditCollection
+          open={!!editingCollection}
+          initialData={editingCollection}
+          onClose={() => setEditingCollection(null)}
+          onSave={loadCollections}
         />
 
 

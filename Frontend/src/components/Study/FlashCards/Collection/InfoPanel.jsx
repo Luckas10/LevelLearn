@@ -11,15 +11,13 @@ export default function InfoPanel({ description, name, cover }) {
         </div>
 
         <div className="playButtonWrapper">
-          <PlayButton to={`/study/battleflashcards`} />
-        </div>
-      </div>
+          
+          <div className="descriptionCollection">
+            <h1 className="collectionTitle">{name}</h1>
+            <p className="collectionDescription">{description}</p>
+          </div>
 
-      {/* EMBAIXO: TÍTULO + DESCRIÇÃO */}
-      <div className="descriptionCollectionContainer">
-        <div className="descriptionCollection">
-          <h1 className="collectionTitle">{name}</h1>
-          <p className="collectionDescription">{description}</p>
+          <PlayButton />
         </div>
       </div>
     </div>

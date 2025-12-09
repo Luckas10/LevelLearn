@@ -1,18 +1,17 @@
-// CollectionSelected.jsx
+// AnotherCollectionSelected.jsx
 import Sidebar from "../components/General/Sidebar";
 import Navbar from "../components/General/Navbar";
-import InfoPanel from "../components/Study/FlashCards/Collection/InfoPanel";
-import CreateCard from "../components/Study/FlashCards/Collection/CreateCard";
+import InfoPanelAnother from "../components/Study/FlashCards/Library/InfoPanelAnother";
+import GridCard from "../components/Study/FlashCards/Library/GridCard";
 import { getCollectionById } from "../services/collection";
 import { getDataUser } from "../services/auth";
-import "./CollectionSelected.css";
+import "./AnotherCollectionSelected.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-export function CollectionSelected() {
+export function AnotherCollectionSelected() {
     const { id } = useParams();
     const navigate = useNavigate();
-
     const [collection, setCollection] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -24,9 +23,9 @@ export function CollectionSelected() {
                     getDataUser(),
                 ]);
 
-                // 🔒 se o deck NÃO é do usuário logado, não pode abrir essa tela
-                if (deck.owner_id !== user.id) {
-                    navigate(`/study/flashcards/anotherselected/${id}`, {
+                // se o deck for MEU, manda pra tela de dono
+                if (deck.owner_id === user.id) {
+                    navigate(`/study/flashcards/selected/${id}`, {
                         replace: true,
                     });
                     return;
@@ -35,7 +34,6 @@ export function CollectionSelected() {
                 setCollection(deck);
             } catch (err) {
                 console.error(err);
-                // se der erro (404, etc.) volta pra lista
                 navigate("/study/flashcards", { replace: true });
             } finally {
                 setLoading(false);
@@ -60,7 +58,7 @@ export function CollectionSelected() {
                 <Navbar />
 
                 <div className="collectionSelected-top">
-                    <InfoPanel
+                    <InfoPanelAnother
                         name={collection.name}
                         description={collection.description}
                         cover={collection.cover_name}
@@ -68,7 +66,7 @@ export function CollectionSelected() {
                 </div>
 
                 <div className="collectionSelected-bottom">
-                    <CreateCard />
+                    <GridCard />
                 </div>
             </section>
         </div>

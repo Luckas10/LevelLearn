@@ -124,8 +124,10 @@
 .playButtonWrapper {
     display: flex;
     align-items: center;
-    justify-content: center;
-    min-width: 220px;
+    justify-content: space-around;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
 }
 
 /* Botão "JOGAR" – padrão (desktop) */
@@ -160,25 +162,19 @@
 }
 
 /* SEGUNDA LINHA: TÍTULO + DESCRIÇÃO, EMBAIXO E SEPARADO */
-.descriptionCollectionContainer {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
 
 .descriptionCollection {
-    width: 100%;
-    max-width: 700px;
+    width: 60%;
     text-align: center;
 }
 
 .collectionTitle {
     font-size: 2.4rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .collectionDescription {
-    text-align: justify;
+    text-align: center;
     font-size: 1.2rem;
     line-height: 1.6rem;
 }
@@ -420,11 +416,6 @@
         width: 100%;
         height: 100%;
         border-radius: 1rem;
-    }
-
-    .descriptionCollectionContainer {
-        max-width: 100%;
-        margin-top: 0.5rem;
     }
 
     .descriptionCollection {

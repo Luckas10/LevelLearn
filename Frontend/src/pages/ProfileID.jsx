@@ -17,6 +17,8 @@ import { NavLink, useParams } from "react-router-dom";
 import Raposa from "../assets/Animals/Raposa.png";
 import Math from "../assets/Achievements/Math.png";
 
+import ButtonDarkMode from "../components/General/ButtonDarkMode";
+
 export function ProfileID() {
   const { id } = useParams();
 
@@ -33,6 +35,20 @@ export function ProfileID() {
 
   const [achievements, setAchievements] = useState([]);
 
+  const [isNight, setIsNight] = useState(() => {
+    if (typeof document === "undefined") return false;
+    return document.documentElement.getAttribute("data-theme") === "dark";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute(
+      "data-theme",
+      isNight ? "dark" : "light"
+    );
+  }, [isNight]);
+
+  const toggleTheme = () => setIsNight((v) => !v);
+
   const getFontSize = (name) => {
     const length = name.length;
     if (length <= 8) return "clamp(16pt, 4vw, 50pt)";
@@ -42,7 +58,6 @@ export function ProfileID() {
     return "clamp(8pt, 1.5vw, 22pt)";
   };
 
-  // Handle horizontal scrolling
   useEffect(() => {
     const handleWheel = (e) => {
       const el = e.currentTarget;
@@ -69,13 +84,11 @@ export function ProfileID() {
     };
   }, []);
 
-  // Load user, friends and achievements
   useEffect(() => {
     if (!id) return;
 
     async function loadProfileData() {
       try {
-        // Carregar usuário
         const user = await getUserByID(id);
 
         if (!user) {
@@ -88,9 +101,8 @@ export function ProfileID() {
         setUserXP(user.xp);
         setUserCoins(user.coins);
         setUserCombo(user.combo);
-        setError(null); // reseta erro caso existisse
+        setError(null);
 
-        // Carregar amigos
         try {
           const friendsResponse = await getFriendsOfUser(id);
           setFriends(friendsResponse);
@@ -100,7 +112,6 @@ export function ProfileID() {
           setFriendCount(0);
         }
 
-        // Carregar conquistas
         try {
           const achievementsResponse = await getAchievementsByUserID(id);
           setAchievements(achievementsResponse);
@@ -145,12 +156,29 @@ export function ProfileID() {
       <section className="profile">
         <Navbar />
         <div className="profile-container">
-          {/* Seção superior do perfil */}
           <div className="profile-status">
             <div className="user-container">
-              <img src={UserIcon} alt="User Image" className="user-picture" />
+              <div className="user-avatar-block">
+                <img
+                  src={UserIcon}
+                  alt="User Image"
+                  className="user-picture"
+                />
+
+                <div className="profile-theme-toggle">
+                  <ButtonDarkMode
+                    checked={isNight}
+                    onChange={toggleTheme}
+                    size={18}
+                  />
+                </div>
+              </div>
+
               <div className="name-level">
-                <h1 className="user-name" style={{ fontSize: getFontSize(userName) }}>
+                <h1
+                  className="user-name"
+                  style={{ fontSize: getFontSize(userName) }}
+                >
                   {userName}
                 </h1>
                 <h1 className="user-status">
@@ -165,26 +193,40 @@ export function ProfileID() {
 
             <div className="user-badges">
               <div className="badgeProfile">
-                <img src={TrophyIcon} alt="Trophy Icon" className="trophy-icon" />
+                <img
+                  src={TrophyIcon}
+                  alt="Trophy Icon"
+                  className="trophy-icon"
+                />
                 <p>CONQUISTAS: XX</p>
               </div>
               <div className="badgeProfile">
-                <img src={DecksIcon} alt="Decks Icon" className="decks-icon" />
+                <img
+                  src={DecksIcon}
+                  alt="Decks Icon"
+                  className="decks-icon"
+                />
                 <p>DECKS: XX</p>
               </div>
               <div className="badgeProfile">
-                <img src={ClockIcon} alt="Clock Icon" className="clock-icon" />
+                <img
+                  src={ClockIcon}
+                  alt="Clock Icon"
+                  className="clock-icon"
+                />
                 <p>HORAS DE ESTUDO: XX</p>
               </div>
             </div>
           </div>
+
           <hr />
 
-          {/* Seção inferior: amigos e conquistas */}
           <div className="achievements-friends">
             <div className="friends-container">
               <h1>Amigos ({friendCount})</h1>
-              {friends.length > 0 ? "" : <p>Ainda não tem amigos</p>}
+              {friends.length === 0 && (
+                <p className="no-friends">Ainda não tem amigos.</p>
+              )}
               <div className="friend-list">
                 {friends.map((friend) => (
                   <NavLink
@@ -211,13 +253,17 @@ export function ProfileID() {
                         className="achievement-picture"
                       />
                       <div className="achievement-info">
-                        <p className="achievement-title">{achievement.name}</p>
+                        <p className="achievement-title">
+                          {achievement.name}
+                        </p>
                         <p>{achievement.description}</p>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="no-achievements">Ainda não possui conquistas.</p>
+                  <p className="no-achievements">
+                    Ainda não possui conquistas.
+                  </p>
                 )}
               </div>
             </div>
@@ -227,3 +273,5 @@ export function ProfileID() {
     </div>
   );
 }
+
+export default ProfileID;
