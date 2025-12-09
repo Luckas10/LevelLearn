@@ -20,7 +20,7 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth')
 # ==============================
 SECRET_KEY = "minha_chave_secreta_super_segura"  # troque para algo mais seguro em produção
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = 10080
 
 def create_access_token(username: str, user_id: int, expires_delta: Optional[timedelta] = None):
     encode = {'sub': username, 'id': user_id}
