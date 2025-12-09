@@ -19,3 +19,8 @@ export async function getCardsByDeckId(deckId) {
     const { data } = await api.get(`/cards/${deckId}`);
     return data;
 }
+
+export async function updateCards(id, data) {
+    const { data: responseData } = await api.put(`/cards/${id}`, data);
+    return responseData;
+}

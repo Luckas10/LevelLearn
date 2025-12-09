@@ -1,188 +1,131 @@
-/* Tema padrão = escuro (mantém suas cores atuais) */
-:root[data-theme="light"] {
-    /* superfícies “vidro” */
-    --glass-bg: rgba(43, 39, 82, 0.59);
-    --glass-card: rgba(21, 23, 55, 0.20);
-
-    /* textos */
-    --text: #ffffff;
-    --text-muted: #bbb;
-    --text-logo: #ffffff;
-
-    /* primária / hover */
-    --primary: #8371fd;
-
-    /* inputs e bordas */
-    --input-border: #bbb;
-
-    /* botões */
-    --btn-bg: #ffffff;
-    --btn-fg: #000000;
-    --btn-hover: var(--primary);
-
-    --btn-signup-bg: #1553ad;
-    --btn-signup-fg: #ffffff;
-    --btn-signup-hover: #337ed4;
-}
-
-/* Overrides para o tema CLARO */
-:root[data-theme="light"] {
-    --glass-bg: rgba(255, 255, 255, 0.65);
-    --glass-card: rgba(255, 255, 255, 0.35);
-
-    --text: #151111;
-    --text-muted: #555;
-    --text-logo: #09254e;
-
-    --primary: #5b6cff;
-
-    --input-border: #444;
-
-    --btn-bg: #151111;
-    --btn-fg: #ffffff;
-    --btn-hover: #2d2d2d;
-
-    --btn-signup-bg: #337ed4;
-    --btn-signup-fg: #ffffff;
-    --btn-signup-hover: #1553ad;
-}
-
-/* transições suaves ao trocar de tema */
-.box,
-.carousel,
-.heading h2,
-.logo h4,
-.toggle,
-.input-field,
-.labelLoginContainer,
-.sign-btn,
-.bullets span.active {
-    transition: color .25s ease, background-color .25s ease, border-color .25s ease, filter .25s ease;
-}
-
-
-body,
-html {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    width: 100vw;
+:root[data-theme="light"] html,
+:root[data-theme="light"] body,
+:root[data-theme="light"] #root {
     height: auto;
-    overflow: hidden;
-    overflow-y: auto;
-    /* rolagem global */
-    margin: 0;
-    background-color: #0C0B1A;
-    color: white;
+    background-color: #faf3ff;
+    background: #faf3ff;
+    color: #ffffff;
 }
 
-
-page-content {
-    padding-left: 15vw;
-}
-
-body::-webkit-scrollbar {
-    width: 4px;
-}
-
-body::-webkit-scrollbar-thumb {
-    background: #444;
-    border-radius: 4px;
-}
-
-body::-webkit-scrollbar-thumb:hover {
-    background: #666;
-}
-
-.app-background {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.bg-video {
-    position: absolute;
-    inset: 0;
-    /* cobre toda a tela */
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* mantém proporção */
-    z-index: -1;
-    /* fica atrás */
-    filter: blur(2px);
-    /* opcional */
-}
-
-.app-content {
-    position: relative;
-    z-index: 1;
-    /* garante que o conteúdo fique por cima */
+:root[data-theme="light"] .profile-container {
+    flex: 1;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
-.vb-shell {
-    position: relative;
+    flex-direction: column;
+    padding: 2rem;
     width: 100%;
-    min-height: 100vh;
-    overflow: hidden;
+    height: auto;
+    box-sizing: border-box;
+    color: #0e1330;
+    overflow: visible;
 }
 
-.vb-media {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: blur(var(--vb-blur)) brightness(calc(1 - var(--vb-dark)));
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0;
-    /* começa invisível */
-    transition: opacity 400ms ease;
-    /* combine com FADE_MS no JS */
-    will-change: opacity;
-    background: #000;
+:root[data-theme="light"] .sidebar {
+    background-color: #E3EFFD;
+    border-color: #C8D6DF;
 }
 
-.vb-media.is-active {
-    opacity: 1;
-    /* o vídeo ativo fica visível */
+:root[data-theme="light"] .sidebar a {
+    color: #0e1330;
 }
 
-.vb-content {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    /* se quiser centralizar o conteúdo por padrão: */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+:root[data-theme="light"] .sidebar a:hover {
+    border-color: #6276ff;
+    background-color: #D0DDEE;
+    color: black;
 }
 
-@media (max-width: 850px) {
-
-    html,
-    body {
-        overflow: auto;
-        /* ou 'visible' */
-        height: auto;
-        /* deixa crescer com o conteúdo */
-    }
+:root[data-theme="light"] .sidebar a.active {
+    border-color: #6276ff;
+    background: #D0DDEE;
+    color: black;
+    box-shadow: 0 8px 24px -10px #6276ff;
 }
 
-@media (max-width: 530px) {
+:root[data-theme="light"] .sidebar a.active svg {
+    color: #6276ff;
+}
 
-    html,
-    body {
-        overflow: auto;
-        /* ou 'visible' */
-        height: auto;
-        /* deixa crescer com o conteúdo */
-    }
+:root[data-theme="light"] .navbar {
+    background-color: #E3EFFD;
+    border-color: #C8D6DF;
+    color: #0e1330;
+}
+
+:root[data-theme="light"] .navbar .level-bar {
+    background-color: #ffffff;
+}
+
+:root[data-theme="light"] .user-picture {
+    background: linear-gradient(135deg, #64b5f6, #0d5eaf);
+}
+
+:root[data-theme="light"] .card.status-card {
+    background-color: #E3EFFD;
+}
+
+:root[data-theme="light"] .status-pill {
+    background-color: #5979B2;
+}
+
+:root[data-theme="light"] .status-pill span.label {
+    color: #E3EFFD;
+}
+
+:root[data-theme="light"] .profile-theme-toggle p{
+    color: #0e1330;
+}
+
+:root[data-theme="light"] .card-title {
+    background: linear-gradient(90deg, #3B45F2 0%, #6C6CF7 55%, #342FCF 100%);
+}
+
+:root[data-theme="light"] span.badge {
+    background: linear-gradient(90deg, #3B45F2 0%, #6C6CF7 55%, #342FCF 100%);
+}
+
+:root[data-theme="light"] span.badge {
+    background: linear-gradient(90deg, #3B45F2 0%, #6C6CF7 55%, #342FCF 100%);
+}
+
+:root[data-theme="light"] .missions-card {
+    background-color: #E3EFFD;
+}
+
+:root[data-theme="light"] .missions-list li {
+    background-color: #5979B2;
+}
+
+:root[data-theme="light"] .missions-list li span {
+    color: #ffffff;
+}
+
+:root[data-theme="light"] button.chip {
+    border-color: #e3effd;
+    color: #ffffff;
+}
+
+:root[data-theme="light"] .progress-container {
+    background-color: #ffffff;
+}
+
+:root[data-theme="light"] .chip {
+    background: linear-gradient(90deg, #3B45F2 0%, #6C6CF7 55%, #342FCF 100%);
+}
+
+:root[data-theme="light"] .chip-outline {
+    background: transparent;
+}
+
+:root[data-theme="light"] .character-card {
+    background-color: #E3EFFD;
+}
+
+:root[data-theme="light"] .character-wrap {
+    background-color: #ffffff;
+    background: #ffffff;
+}
+
+:root[data-theme="light"] .btn-ghost {
+    background-color: #5979B2;
+    color: #ffffff;
 }
