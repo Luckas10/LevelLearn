@@ -24,6 +24,8 @@ class User(SQLModel, table=True):
     coins: int = Field(default=0)
     combo: int = Field(default=0)
 
+    study_time_minutes: int = Field(default=0)
+
     # Relacionamentos
     achievements: List["Achievement"] = Relationship(
         back_populates="users",
@@ -127,6 +129,7 @@ class FlashcardSession(SQLModel, table=True):
 
     correct: int          # acertos
     total: int            # total respondidas
+    elapsed_minutes: int = Field(default=0)  # ⬅️ tempo que levou na sessão
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class PomodoroSession(SQLModel, table=True):

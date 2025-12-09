@@ -11,6 +11,7 @@ export default function Navbar() {
     const [userName, setUserName] = useState("USERNAME");
     const [userLevel, setUserLevel] = useState(1);
     const [userXP, setUserXP] = useState(0);
+    const [userXPRequired, setUserXPRequired] = useState(0);
     const [userCoins, setUserCoins] = useState(0);
     const [userCombo, setUserCombo] = useState(0);
 
@@ -22,9 +23,9 @@ export default function Navbar() {
                 setUserName(user.username);
                 setUserLevel(user.level);
                 setUserXP(user.xp);
+                setUserXPRequired(user.xp_required ?? 0);
                 setUserCoins(user.coins);
                 setUserCombo(user.combo);
-
             } catch (err) {
                 console.error("Erro ao carregar dados do usuário:", err);
             }
@@ -33,9 +34,20 @@ export default function Navbar() {
         loadUser();
     }, []);
 
+    // progresso baseado no XP que falta
+    const levelProgress = (() => {
+        const xp = userXP || 0;
+        const required = userXPRequired || 0;
+
+        if (xp <= 0 && required <= 0) return 0;
+        if (required <= 0) return 1; // já passou ou está no último threshold
+
+        const progress = xp / (xp + required);
+        return Math.min(Math.max(progress, 0), 1); // clamp 0..1
+    })();
+
     return (
         <nav className="navbar">
-
             {/* COMBO / STREAK */}
             <div className="offensive">
                 <img src={FireIcon} alt="Fire Icon" />
@@ -55,9 +67,9 @@ export default function Navbar() {
                     <div
                         className="level-bar-fill"
                         style={{
-                            width: `${Math.min((userXP / 100) * 100, 100)}%`
+                            width: `${levelProgress * 100}%`
                         }}
-                    ></div>
+                    />
                 </div>
             </div>
 
