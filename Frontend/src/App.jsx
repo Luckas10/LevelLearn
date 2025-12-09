@@ -34,7 +34,7 @@ export default function App() {
           <Route path="/profile/:id" element={<ProfileID />} />
           <Route path="/store" element={<Store />} />
           <Route path="/friends" element={<Friends />} />
-          <Route path="/battleflashcards" element={<BattleFlashCards />} />
+          <Route path="/study/battleflashcards" element={<BattleFlashCards />} />
         </Route>
       </Routes>
     </Router>

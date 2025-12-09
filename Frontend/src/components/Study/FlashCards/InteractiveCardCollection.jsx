@@ -71,7 +71,6 @@ export default function InteractiveCardCollection({
             <img src={image} className="cardImg" />
             <div className="cardContentTitle">
               <h1>{title}</h1>
-              <h2>Biologia</h2>
             </div>
           </div>
         </div>

@@ -17,7 +17,7 @@ export default function InfoPanel({ description, name, cover }) {
             <p className="collectionDescription">{description}</p>
           </div>
 
-          <PlayButton />
+          <PlayButton to={`/study/battleflashcards`} />
         </div>
       </div>
     </div>
