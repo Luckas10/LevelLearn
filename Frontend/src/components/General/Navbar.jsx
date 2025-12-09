@@ -40,10 +40,23 @@ export default function Navbar() {
         const required = userXPRequired || 0;
 
         if (xp <= 0 && required <= 0) return 0;
-        if (required <= 0) return 1; // já passou ou está no último threshold
+        if (required <= 0) return 1; // já passou ou está pronto pro próximo
 
         const progress = xp / (xp + required);
-        return Math.min(Math.max(progress, 0), 1); // clamp 0..1
+        return Math.min(Math.max(progress, 0), 1);
+    })();
+
+    // texto do tooltip da barra de XP
+    const xpTooltip = (() => {
+        const xp = userXP || 0;
+        const required = userXPRequired || 0;
+
+        if (required <= 0) {
+            return `XP: ${xp} (pronto para o próximo nível!)`;
+        }
+
+        const totalNextLevel = xp + required; // XP total necessário para o próximo nível
+        return `XP: ${xp} / ${totalNextLevel} (faltam ${required} XP)`;
     })();
 
     return (
@@ -63,7 +76,10 @@ export default function Navbar() {
             {/* LEVEL + XP BAR */}
             <div className="level">
                 <span>LVL {userLevel}</span>
-                <div className="level-bar">
+                <div
+                    className="level-bar"
+                    title={xpTooltip}            // 👈 tooltip aqui
+                >
                     <div
                         className="level-bar-fill"
                         style={{
