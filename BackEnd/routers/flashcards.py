@@ -6,7 +6,7 @@ from database import get_session
 from .auth import get_current_user
 from rewards import calc_flashcard_rewards
 
-router = APIRouter(prefix="/flashcards", tags=["flashcards"])
+router = APIRouter(prefix="/flashcards", tags=["Flashcards"])
 
 class FlashcardSessionIn(SQLModel):
     deck_id: int

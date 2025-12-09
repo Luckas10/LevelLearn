@@ -6,7 +6,7 @@ from database import get_session
 from .auth import get_current_user
 from rewards import calc_pomodoro_rewards
 
-router = APIRouter(prefix="/pomodoro", tags=["pomodoro"])
+router = APIRouter(prefix="/pomodoro", tags=["Pomodoro"])
 
 class PomodoroSessionIn(SQLModel):
     focus_minutes: int
