@@ -30,8 +30,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    font-size: 0.85rem;
-    /* menor */
+    font-size: 0.85rem; /* menor */
     font-weight: 500;
     font-family: inherit;
     letter-spacing: 0.03em;
@@ -39,13 +38,11 @@
     width: 33.33%;
     height: 100%;
     cursor: pointer;
-    padding: 8px 14px;
-    /* menos padding */
+    padding: 8px 14px; /* menos padding */
     background-color: #131226;
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     border: 0;
 }
-
 
 .friendsTab:hover {
     background-color: #17163a;
@@ -102,8 +99,7 @@
 .friendsContent {
     position: relative;
     width: 100%;
-    height: calc(100% - 64px - 80px);
-    /* tabs + search */
+    height: calc(100% - 64px - 80px); /* tabs + search */
     overflow: auto;
     padding: 12px 24px 32px 24px;
 }
@@ -201,7 +197,7 @@
     flex-shrink: 0;
 }
 
-/* BUTTONS */
+/* BUTTONS base */
 .btn {
     height: 32px;
     padding: 0 10px;
@@ -213,13 +209,13 @@
     cursor: pointer;
     font-weight: 500;
     font-size: 0.85rem;
-    font-family: inherit;
-    /* mesma font das tabs */
+    font-family: inherit; /* mesma font das tabs */
     letter-spacing: 0.02em;
     transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
     white-space: nowrap;
 }
 
+/* botão específico para friends (usa a base) */
 .friends-btn {
     height: 32px;
     padding: 0 10px;
@@ -296,6 +292,7 @@
     padding: 24px 8px;
 }
 
+/* tirar sublinhado de links dentro do card e manter cor */
 .friends-cardHeader,
 .friends-cardHeader:link,
 .friends-cardHeader:visited,
@@ -303,8 +300,8 @@
 .friends-cardHeader:active,
 .friends-cardHeader.active,
 .friends-cardHeader:focus {
-  text-decoration: none;   /* tira sublinhado */
-  color: inherit;          /* não muda a cor */
+    text-decoration: none;
+    color: inherit;
 }
 
 /* RESPONSIVO */
@@ -322,7 +319,6 @@
         padding: 10px 18px 26px;
     }
 }
-
 
 /* TABLET PORTRAIT / MOBILE GRANDE */
 @media (max-width: 768px) {
@@ -352,10 +348,8 @@
         flex: 0 0 auto;
         width: auto;
         padding: 0 10px;
-        font-size: 0.8rem;
-        /* ainda menor no mobile */
+        font-size: 0.8rem; /* ainda menor no mobile */
     }
-
 
     /* busca ocupa praticamente toda a tela */
     .friendsSearch {

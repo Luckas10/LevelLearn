@@ -2,8 +2,11 @@ import Sidebar from "../components/General/Sidebar";
 import Navbar from "../components/General/Navbar";
 import UserIcon from "../assets/Animals/Raposa.png";
 import TrophyIcon from "../assets/Trophy.png";
+import LightTrophyIcon from "../assets/LightTrophy.png";
 import ClockIcon from "../assets/Clock.png";
+import LightClockIcon from "../assets/LightClock.png";
 import DecksIcon from "../assets/Decks.png";
+import LightDecksIcon from "../assets/LightDecks.png";
 import ProgressBar from "../components/Profile/ProgressBar";
 import "./Profile.css";
 
@@ -169,8 +172,9 @@ export function ProfileID() {
                   <ButtonDarkMode
                     checked={isNight}
                     onChange={toggleTheme}
-                    size={18}
+                    size={7}
                   />
+                  <p>TEMA: {isNight ? "ESCURO" : "CLARO"}</p>
                 </div>
               </div>
 
@@ -194,7 +198,7 @@ export function ProfileID() {
             <div className="user-badges">
               <div className="badgeProfile">
                 <img
-                  src={TrophyIcon}
+                  src={isNight ? TrophyIcon : LightTrophyIcon}
                   alt="Trophy Icon"
                   className="trophy-icon"
                 />
@@ -202,7 +206,7 @@ export function ProfileID() {
               </div>
               <div className="badgeProfile">
                 <img
-                  src={DecksIcon}
+                  src={isNight ? DecksIcon : LightDecksIcon}
                   alt="Decks Icon"
                   className="decks-icon"
                 />
@@ -210,7 +214,7 @@ export function ProfileID() {
               </div>
               <div className="badgeProfile">
                 <img
-                  src={ClockIcon}
+                  src={isNight ? ClockIcon : LightClockIcon}
                   alt="Clock Icon"
                   className="clock-icon"
                 />
