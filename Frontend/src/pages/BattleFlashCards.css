@@ -17,7 +17,6 @@
 
 .blf-content {
     flex: 1;
-    position: relative;
     background-size: cover;
     background-position: center;
     color: #fff;
@@ -34,7 +33,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 0.2rem;
+    margin-top: 0.6rem;
 }
 
 .blf-battle-title {
@@ -46,8 +45,9 @@
     border-radius: 0.75rem;
     background: rgba(14, 17, 43, 0.65);
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     box-shadow: 0 0 0 0.12rem rgba(59, 69, 242, 0.15) inset;
+    padding: 1rem 1.6rem;
 }
 
 .blf-divider {
@@ -71,51 +71,55 @@
     /* centralizado como no mock */
     display: grid;
     grid-template-columns: 1fr 1fr;
-    align-items: end;
-    justify-items: center;
-    gap: 1.4rem;
-    margin-top: 0.8rem;
+    align-items: center;
+    flex-direction: column;
+    justify-items: space-between;
 }
 
 /* Cada ator ocupa uma "caixa" vertical */
 .blf-actor {
-    position: relative;
     width: 100%;
-    height: 20rem;
+    height: 32rem; 
     /* espaço útil para barra + sprite */
+}
+
+/* Cada ator ocupa uma "caixa" vertical */
+.blf-actor {
+    width: 100%;
+    height: 33rem;           /* antes: 28rem – mais espaço pra sprite maior */
 }
 
 /* Profundidade e posicionamento (mock) */
 .blf-player {
     z-index: 3;
     transform: translateX(-0.3rem);
+    margin-top: 7rem;        /* levemente mais pra cima (antes 10rem) */
 }
 
 .blf-enemy {
     z-index: 2;
     transform: translate(0.6rem, -0.4rem) scale(0.98);
+    margin-bottom: 9rem;     /* antes 8.5rem – ajuste fino */
 }
 
 /* ===== Sprites (com moita integrada) ===== */
-/* Defino um tamanho base em rem para manter proporção e ser responsivo */
 .blf-sprite {
     position: absolute;
     bottom: 0;
-    /* a moita “encosta” no chão da arena */
     image-rendering: pixelated;
     pointer-events: none;
 }
 
 .blf-sprite-player {
-    width: clamp(16rem, 18vw, 22rem);
-    /* maior e responsivo */
-    left: 4.5rem;
+    width: clamp(24rem, 26vw, 30rem);   /* antes: 18rem,20vw,24rem */
+    right: 8rem;
+    bottom: 1.4rem;
 }
 
 .blf-sprite-enemy {
-    width: clamp(18rem, 21vw, 26rem);
-    /* vilão maior */
-    right: 3.8rem;
+    width: clamp(22rem, 25vw, 32rem);   /* antes: 18rem,21vw,26rem */
+    left: 8rem;
+    bottom: 1.2rem;
 }
 
 /* ===== Barras de HP (acima dos personagens) ===== */
@@ -129,11 +133,11 @@
 }
 
 .blf-hp-left {
-    left: 4.5rem;
+    right: 9.5rem;
 }
 
 .blf-hp-right {
-    right: 3.8rem;
+    left: 11.5rem;
 }
 
 .blf-hp-rail {
@@ -149,6 +153,7 @@
     height: 100%;
     background: #2ecc71;
     border-radius: 0.6rem 0 0 0.6rem;
+    transition: width 1s ease-out; /* OU 1.3s se quiser bem lenta */
 }
 
 .blf-hp-num {
@@ -159,7 +164,6 @@
 
 /* ===== Caixa de ação ===== */
 .blf-action-box {
-    margin-top: 0.6rem;
     align-self: center;
     background: rgba(13, 15, 35, 0.92);
     border: 0.12rem solid #3b45f2;
@@ -169,27 +173,36 @@
     letter-spacing: .04em;
     font-weight: 700;
     box-shadow: 0 0 0.9rem rgba(59, 69, 242, .35);
+    width: 60%;
+    height: 8rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    position: absolute;
+    bottom: 2rem;
+    z-index: 4;
 }
 
-/* ===== pequenos ajustes em telas menores ===== */
-@media (max-width: 900px) {
-    .blf-arena {
-        max-width: 60rem;
-    }
+@keyframes blf-shake {
+    0%   { transform: translate(0, 0); }
+    20%  { transform: translate(-4px, 2px); }
+    40%  { transform: translate(3px, -2px); }
+    60%  { transform: translate(-3px, 1px); }
+    80%  { transform: translate(2px, -1px); }
+    100% { transform: translate(0, 0); }
+}
 
-    .blf-sprite-player {
-        left: 2.6rem;
-    }
+.blf-hit {
+    animation: blf-shake 1s ease-in-out;
+}
 
-    .blf-sprite-enemy {
-        right: 2.4rem;
-    }
+@keyframes blf-message {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
 
-    .blf-hp-left {
-        left: 2.6rem;
-    }
-
-    .blf-hp-right {
-        right: 2.4rem;
-    }
+.blf-action-animate {
+    animation: blf-message 0.4s ease-out;
 }

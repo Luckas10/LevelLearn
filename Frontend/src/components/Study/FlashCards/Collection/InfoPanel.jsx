@@ -11,7 +11,7 @@ export default function InfoPanel({ description, name, cover }) {
         </div>
 
         <div className="playButtonWrapper">
-          <PlayButton />
+          <PlayButton to={`/study/battleflashcards`} />
         </div>
       </div>
 
