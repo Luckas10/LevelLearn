@@ -18,7 +18,6 @@ export function CopyButton({ collection, onCopied }) {
   const [loading, setLoading] = useState(false);
 
 
-
   async function handleCopy() {
     if (loading) return;
     setLoading(true);
@@ -26,10 +25,10 @@ export function CopyButton({ collection, onCopied }) {
     try {
       const user = await getDataUser();
 
-      // 1) buscar cards da coleção original
+      // ------------ BUSCA CARDS DA COLEÇÃO ORIGINAL PELO ID DO DECK ---------------
       const originalCards = await getCardsByDeckId(collection.id);
 
-      // 2) criar nova coleção para o usuário (mesma lógica do CreateCollection)
+      // ------------ CRIA A COLEÇÃO COM O ID DO CURRENT USER ----------------
       const newCollection = await createCollection({
         name: collection.name,
         description: collection.description,
@@ -37,8 +36,8 @@ export function CopyButton({ collection, onCopied }) {
         owner_id: user.id,
       });
 
-      // 3) copiar cards um a um para o novo deck
-      //    adaptamos as chaves para o formato que seu backend espera (question/answer)
+      // ------------ COPIA CARDS UM A UM PRO NOVO DECK ---------------
+
       for (const card of originalCards) {
         await createCards({
           question: card.question ?? card.front,
@@ -47,7 +46,7 @@ export function CopyButton({ collection, onCopied }) {
         });
       }
 
-      // 4) feedback
+
       await Swal.fire({
         icon: "success",
         title: "Coleção copiada!",

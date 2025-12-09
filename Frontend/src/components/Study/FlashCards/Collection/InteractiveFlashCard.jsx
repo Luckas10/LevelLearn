@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { getCardsByDeckId } from "../../../../services/cards";
 
 export default function InteractiveFlashCard({
   id,
-  title,
+  card,
   onEdit,
   onDelete,
   children,
@@ -12,6 +13,8 @@ export default function InteractiveFlashCard({
 }) {
   const [style, setStyle] = useState({});
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
+
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -41,12 +44,18 @@ export default function InteractiveFlashCard({
       background: "#151838"
     });
   };
+  
+  const handleFlipCard = () => {
+    setIsFlipped(prev => !prev);
+  };
+  
 
   return (
     <div style={{ position: "relative" }}>
       <div
         {...props}
         style={style}
+        onClick={handleFlipCard}
         onMouseMove={menuOpen ? undefined : handleMouseMove}
         onMouseLeave={menuOpen ? undefined : handleMouseLeave}
       >
@@ -54,19 +63,42 @@ export default function InteractiveFlashCard({
           className="cardMenuBtn"
           onClick={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             setMenuOpen(!menuOpen);
-            if (!menuOpen) {
-              setStyle({ transform: "none" });
-            }
           }}
         >
           <FontAwesomeIcon icon={faEllipsisVertical} />
         </button>
-        {children}
+
+        {/* Aqui alternamos entre question / answer */}
+        {!isFlipped ? (
+          <>
+            <p style={{
+              fontSize: "1.1rem",
+              padding: "1rem",
+              wordBreak: "break-word",
+              overflow: "hidden",
+            }}>
+              {card.question}
+            </p>
+            <p style={{ fontSize: "0.9rem" }}>Clique para ver o verso</p>
+          </>
+        ) : (
+          <>
+            <p style={{
+              fontSize: "1.1rem",
+              padding: "1rem",
+              wordBreak: "break-word"
+            }}>
+              {card.answer}
+            </p>
+            <p style={{ fontSize: "0.9rem" }}>Clique para ver a frente</p>
+          </>
+        )}
       </div>
 
       {menuOpen && (
-        <div className="cardMenuOptions" style={{width: "6.3rem"}}>
+        <div className="cardMenuOptions">
           <button onClick={() => onEdit(id)}>
             <FontAwesomeIcon icon={faPen} /> Editar
           </button>

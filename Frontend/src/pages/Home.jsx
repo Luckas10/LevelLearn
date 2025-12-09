@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getDataUser } from "../services/auth";
 import Sidebar from "../components/General/Sidebar";
 import Navbar from "../components/General/Navbar";
 import CharacterModal from "../components/Dashboard/CharacterModal";
@@ -14,6 +15,26 @@ import "./Home.css";
 
 export function Home() {
     const [currentCharacter, setCurrentCharacter] = useState(Gato);
+    const [userXP, setUserXP] = useState(0);
+    const [userCoins, setUserCoins] = useState(0);
+    const [userCombo, setUserCombo] = useState(0);
+    
+    useEffect(() => {
+        async function loadUser() {
+            try {
+                const user = await getDataUser();
+                
+                setUserXP(user.xp);
+                setUserCoins(user.coins);
+                setUserCombo(user.combo);
+
+            } catch (err) {
+                console.error("Erro ao carregar dados do usuário:", err);
+            }
+        }
+
+        loadUser();
+    }, []);
 
     const [showModal, setShowModal] = useState(false);
     const [selectedCharacter, setSelectedCharacter] = useState({
@@ -82,7 +103,7 @@ export function Home() {
 
                             <div className="status-pill">
                                 <span className="label">Moedas</span>
-                                <span className="value">1.240</span>
+                                <span className="value">{userCoins}</span>
                                 <div className="bar">
                                     <div className="bar-fill" style={{ width: "55%" }} />
                                 </div>
@@ -90,15 +111,15 @@ export function Home() {
 
                             <div className="status-pill">
                                 <span className="label">XP</span>
-                                <span className="value">3.450</span>
+                                <span className="value">{userXP}</span>
                                 <div className="bar">
-                                    <div className="bar-fill" style={{ width: "68%" }} />
+                                    <div className="bar-fill" style={{ width: `${userXP}` }} />
                                 </div>
                             </div>
 
                             <div className="status-pill">
                                 <span className="label">Sequência</span>
-                                <span className="value">7 dias</span>
+                                <span className="value">{userCombo}</span>
                                 <div className="bar">
                                     <div className="bar-fill" style={{ width: "70%" }} />
                                 </div>
