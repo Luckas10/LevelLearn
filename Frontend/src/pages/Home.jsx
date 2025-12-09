@@ -15,19 +15,25 @@ import "./Home.css";
 
 export function Home() {
     const [currentCharacter, setCurrentCharacter] = useState(Gato);
+
     const [userXP, setUserXP] = useState(0);
+    const [userXPRequired, setUserXPRequired] = useState(0);
     const [userCoins, setUserCoins] = useState(0);
     const [userCombo, setUserCombo] = useState(0);
-    
+    const [userBestStreak, setUserBestStreak] = useState(0);
+    const [userStudyTime, setUserStudyTime] = useState(0); // minutos
+
     useEffect(() => {
         async function loadUser() {
             try {
                 const user = await getDataUser();
-                
-                setUserXP(user.xp);
-                setUserCoins(user.coins);
-                setUserCombo(user.combo);
 
+                setUserXP(user.xp ?? 0);
+                setUserXPRequired(user.xp_required ?? 0);
+                setUserCoins(user.coins ?? 0);
+                setUserCombo(user.combo ?? 0);
+                setUserBestStreak(user.best_streak ?? 0);
+                setUserStudyTime(user.study_time ?? 0);
             } catch (err) {
                 console.error("Erro ao carregar dados do usuário:", err);
             }
@@ -35,6 +41,35 @@ export function Home() {
 
         loadUser();
     }, []);
+
+    // ==== PROGRESSOS NUMÉRICOS ====
+
+    // XP: progresso até o próximo level
+    const levelProgress = (() => {
+        const xp = userXP || 0;
+        const required = userXPRequired || 0;
+
+        if (xp <= 0 && required <= 0) return 0;
+        if (required <= 0) return 1;
+
+        const progress = xp / (xp + required);
+        return Math.min(Math.max(progress, 0), 1);
+    })();
+
+    // Foco / estudo: meta diária de 120 min
+    const dailyGoalMinutes = 120;
+    const focusProgress = Math.min(
+        (userStudyTime || 0) / dailyGoalMinutes,
+        1
+    );
+
+    // formatar tempo de estudo em "Xh Ym"
+    const studyHours = Math.floor(userStudyTime / 60);
+    const studyMinutesRest = userStudyTime % 60;
+    const studyLabel =
+        userStudyTime <= 0
+            ? "Nenhum minuto ainda"
+            : `${studyHours}h ${studyMinutesRest}min`;
 
     const [showModal, setShowModal] = useState(false);
     const [selectedCharacter, setSelectedCharacter] = useState({
@@ -93,35 +128,49 @@ export function Home() {
                         <div className="card-title">Seus Status</div>
 
                         <div className="status-grid">
+                            {/* SEQUÊNCIA */}
                             <div className="status-pill">
-                                <span className="label">Foco</span>
-                                <span className="value">82%</span>
-                                <div className="bar">
-                                    <div className="bar-fill" style={{ width: "82%" }} />
-                                </div>
+                                <span className="label">Sequência</span>
+                                <span className="value">{userCombo} dias</span>
                             </div>
 
+                            {/* MOEDAS */}
                             <div className="status-pill">
                                 <span className="label">Moedas</span>
                                 <span className="value">{userCoins}</span>
-                                <div className="bar">
-                                    <div className="bar-fill" style={{ width: "55%" }} />
-                                </div>
                             </div>
 
+                            {/* XP */}
                             <div className="status-pill">
                                 <span className="label">XP</span>
                                 <span className="value">{userXP}</span>
-                                <div className="bar">
-                                    <div className="bar-fill" style={{ width: `${userXP}` }} />
+                                <div
+                                    className="bar"
+                                    title={
+                                        userXPRequired <= 0
+                                            ? `XP: ${userXP} (pronto para o próximo nível!)`
+                                            : `XP até o próximo nível: faltam ${userXPRequired}`
+                                    }
+                                >
+                                    <div
+                                        className="bar-fill"
+                                        style={{ width: `${levelProgress * 100}%` }}
+                                    />
                                 </div>
                             </div>
 
+                            {/* FOCO / ESTUDO */}
                             <div className="status-pill">
-                                <span className="label">Sequência</span>
-                                <span className="value">{userCombo}</span>
-                                <div className="bar">
-                                    <div className="bar-fill" style={{ width: "70%" }} />
+                                <span className="label">Tempo de estudo</span>
+                                <span className="value">{studyLabel}</span>
+                                <div
+                                    className="bar"
+                                    title={`Meta diária: ${dailyGoalMinutes} min`}
+                                >
+                                    <div
+                                        className="bar-fill"
+                                        style={{ width: `${focusProgress * 100}%` }}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -133,7 +182,9 @@ export function Home() {
                         <ul className="missions-list">
                             <li>
                                 <span>Estudar 25 min (Pomodoro)</span>
-                                <button className="chip chip-outline">Iniciar</button>
+                                <button className="chip chip-outline">
+                                    Iniciar
+                                </button>
                             </li>
                             <li>
                                 <span>Responder 10 flashcards</span>
@@ -141,7 +192,9 @@ export function Home() {
                             </li>
                             <li>
                                 <span>Concluir 1 quiz</span>
-                                <button className="chip chip-outline">Fazer</button>
+                                <button className="chip chip-outline">
+                                    Fazer
+                                </button>
                             </li>
                             <li>
                                 <span>Revisão de ontem</span>
@@ -165,6 +218,7 @@ export function Home() {
                                 alt="Personagem atual"
                             />
                             <div className="floating-shadow" />
+                            {/* depois trocar por level real */}
                             <span className="badge">LVL 12</span>
 
                             <i className="orb orb-1" />

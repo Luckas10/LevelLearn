@@ -1,6 +1,6 @@
 from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship
-from datetime import datetime
+from datetime import datetime, date
 
 # Usuários e Conquistas
 
@@ -22,7 +22,14 @@ class User(SQLModel, table=True):
     level: int = Field(default=1)
     xp: int = Field(default=0)
     coins: int = Field(default=0)
+    # 🔥 sequência diária atual (em dias)
     combo: int = Field(default=0)
+
+    # 🏆 maior sequência diária que o usuário já teve
+    best_streak: int = Field(default=0)
+
+    # 📅 última data em que a sequência foi contada
+    last_streak_date: Optional[date] = Field(default=None)
 
     study_time_minutes: int = Field(default=0)
 
