@@ -175,14 +175,15 @@ export default function CreateCard({ onSave }) {
                   </button>
                   {flashcards.map((card, i) => (
                     <InteractiveFlashCard 
-                    className="flashCardContainer" 
-                    key={i}
-                    id={card.id}
-                    onDelete={handleDeleteCard}
-                    onEdit={() => {
-                        setEditingFlashCard(card);
-                        setOpenEdit(true);
-                    }}
+                      className="flashCardContainer" 
+                      key={i}
+                      id={card.id}
+                      onDelete={handleDeleteCard}
+                      onEdit={() => {
+                          setEditingFlashCard(card);
+                          setOpenEdit(true);
+                      }}
+                      card={card}
                     >
                       <p style={{fontSize: "1.1rem", padding: "1rem", wordBreak: "break-word", overflow: "hidden", }}>{card.question}</p>
                       <p style={{fontSize: "0.9rem"}}>Clique para ver o verso</p>
