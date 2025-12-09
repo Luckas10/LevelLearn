@@ -62,6 +62,7 @@ export function AnotherCollectionSelected() {
                         name={collection.name}
                         description={collection.description}
                         cover={collection.cover_name}
+                        collection={collection}
                     />
                 </div>
 
