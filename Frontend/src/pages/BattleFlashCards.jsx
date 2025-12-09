@@ -231,23 +231,79 @@ export function BattleFlashCards() {
 
         setStep("attack");
 
-        const finishBattle = (outcome) => {
+        const finishBattle = async (outcome) => {
             const timeMs = battleStart ? Date.now() - battleStart : 0;
 
-            // ===== resultado local (como já estava) =====
-            if (outcome === "win") {
-                const xpPerCorrect = 10;
-                const coinsPerCorrect = 5;
-                const xp = nextCorrect * xpPerCorrect;
-                const coins = nextCorrect * coinsPerCorrect;
+            // calcula tempo em minutos com casa decimal (ex.: 0.09)
+            const elapsed_minutes = Number((timeMs / 60000).toFixed(2));
+            const total = cards.length || 0;
+            const deck_id = deck?.id ?? Number(id);
 
+            // valores que vamos mostrar no modal
+            let xpGain = 0;
+            let coinsGain = 0;
+            let level = null;
+            let xpTotal = null;
+            let coinsTotal = null;
+            let streak = null;
+            let bestStreak = null;
+
+            // chama a API se tiver deck_id
+            if (deck_id) {
+                try {
+                    const resp = await sendSessionResult({
+                        deck_id,
+                        correct: nextCorrect,
+                        total,
+                        elapsed_minutes,
+                    });
+
+                    // resp vem exatamente assim:
+                    // {
+                    //   "xp_gain": 30,
+                    //   "coins_gain": 24,
+                    //   "xp_total": 110,
+                    //   "coins_total": 91,
+                    //   "level": 2,
+                    //   "study_time": 0.09,
+                    //   "streak": 1,
+                    //   "best_streak": 1
+                    // }
+
+                    xpGain = resp.xp_gain ?? 0;
+                    coinsGain = resp.coins_gain ?? 0;
+                    level = resp.level ?? null;
+                    xpTotal = resp.xp_total ?? null;
+                    coinsTotal = resp.coins_total ?? null;
+                    streak = resp.streak ?? null;
+                    bestStreak = resp.best_streak ?? null;
+                } catch (err) {
+                    console.error(
+                        "Erro ao enviar resultado da sessão de flashcards:",
+                        err
+                    );
+                    // se quiser, dá pra manter um fallback local aqui:
+                    // xpGain = nextCorrect * 10;
+                    // coinsGain = nextCorrect * 5;
+                }
+            }
+
+            // monta o objeto de resultado usando SEMPRE
+            // o que veio do backend (ou 0 / fallback)
+            if (outcome === "win") {
                 setResult({
                     outcome: "win",
                     timeMs,
                     correct: nextCorrect,
                     wrong: nextWrong,
-                    xp,
-                    coins,
+                    xp: xpGain,
+                    coins: coinsGain,
+                    level,
+                    xpTotal,
+                    coinsTotal,
+                    streak,
+                    bestStreak,
+                    elapsed_minutes,
                 });
             } else {
                 setResult({
@@ -255,33 +311,20 @@ export function BattleFlashCards() {
                     timeMs,
                     correct: nextCorrect,
                     wrong: nextWrong,
-                });
-            }
-
-            // ===== monta corpo igual ao schema da API =====
-            const elapsed_minutes = Math.max(
-                0,
-                Math.round(timeMs / 60000)
-            );
-            const total = cards.length || 0;
-            const deck_id = deck?.id ?? Number(id);
-
-            if (deck_id) {
-                sendSessionResult({
-                    deck_id,
-                    correct: nextCorrect,
-                    total,
+                    xp: xpGain,        // se perdeu, provavelmente 0 – mas vem do backend
+                    coins: coinsGain,
+                    level,
+                    xpTotal,
+                    coinsTotal,
+                    streak,
+                    bestStreak,
                     elapsed_minutes,
-                }).catch((err) => {
-                    console.error(
-                        "Erro ao enviar resultado da sessão de flashcards:",
-                        err
-                    );
                 });
             }
 
             setShowResultModal(true);
         };
+
 
 
         setTimeout(() => {
@@ -461,16 +504,13 @@ export function BattleFlashCards() {
 
                             <ul className="blf-result-stats">
                                 <li>
-                                    Tempo de batalha:{" "}
-                                    <strong>{formatTime(result.timeMs)}</strong>
+                                    Tempo de batalha: <strong>{formatTime(result.timeMs)}</strong>
                                 </li>
                                 <li>
-                                    Questões acertadas:{" "}
-                                    <strong>{result.correct}</strong>
+                                    Questões acertadas: <strong>{result.correct}</strong>
                                 </li>
                                 <li>
-                                    Questões erradas:{" "}
-                                    <strong>{result.wrong}</strong>
+                                    Questões erradas: <strong>{result.wrong}</strong>
                                 </li>
                                 <li>
                                     XP recebido: <strong>{result.xp}</strong>
@@ -478,7 +518,35 @@ export function BattleFlashCards() {
                                 <li>
                                     Moedas recebidas: <strong>{result.coins}</strong>
                                 </li>
+
+                                {result.level && (
+                                    <li>
+                                        Nível atual: <strong>{result.level}</strong>
+                                    </li>
+                                )}
+
+                                {result.xpTotal != null && (
+                                    <li>
+                                        XP total: <strong>{result.xpTotal}</strong>
+                                    </li>
+                                )}
+
+                                {result.coinsTotal != null && (
+                                    <li>
+                                        Moedas totais: <strong>{result.coinsTotal}</strong>
+                                    </li>
+                                )}
+
+                                {result.streak != null && (
+                                    <li>
+                                        Dias seguidos: <strong>{result.streak}</strong>
+                                        {result.bestStreak != null && (
+                                            <> (recorde: <strong>{result.bestStreak}</strong>)</>
+                                        )}
+                                    </li>
+                                )}
                             </ul>
+
 
                             <div className="blf-result-actions">
                                 <button
