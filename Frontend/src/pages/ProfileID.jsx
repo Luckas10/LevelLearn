@@ -167,15 +167,6 @@ export function ProfileID() {
                   alt="User Image"
                   className="user-picture"
                 />
-
-                <div className="profile-theme-toggle">
-                  <ButtonDarkMode
-                    checked={isNight}
-                    onChange={toggleTheme}
-                    size={7}
-                  />
-                  <p>TEMA: {isNight ? "ESCURO" : "CLARO"}</p>
-                </div>
               </div>
 
               <div className="name-level">
@@ -219,6 +210,14 @@ export function ProfileID() {
                   className="clock-icon"
                 />
                 <p>HORAS DE ESTUDO: XX</p>
+              </div>
+              <div className="profile-theme-toggle">
+                <ButtonDarkMode
+                  checked={isNight}
+                  onChange={toggleTheme}
+                  size={8}
+                />
+                <p>TEMA: {isNight ? "ESCURO" : "CLARO"}</p>
               </div>
             </div>
           </div>

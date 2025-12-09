@@ -71,20 +71,20 @@
     color: #E3EFFD;
 }
 
-:root[data-theme="light"] .profile-theme-toggle p{
+:root[data-theme="light"] .profile-theme-toggle p {
     color: #0e1330;
 }
 
 :root[data-theme="light"] .card-title {
-    background: linear-gradient(90deg, #3B45F2 0%, #6C6CF7 55%, #342FCF 100%);
+    background: linear-gradient(90deg, #045578 0%, #5EB3D8 30%, #045578 80%);
 }
 
 :root[data-theme="light"] span.badge {
-    background: linear-gradient(90deg, #3B45F2 0%, #6C6CF7 55%, #342FCF 100%);
+    background: linear-gradient(90deg, #045578 0%, #5EB3D8 30%, #045578 80%);
 }
 
 :root[data-theme="light"] span.badge {
-    background: linear-gradient(90deg, #3B45F2 0%, #6C6CF7 55%, #342FCF 100%);
+    background: linear-gradient(90deg, #045578 0%, #5EB3D8 30%, #045578 80%);
 }
 
 :root[data-theme="light"] .missions-card {
@@ -109,7 +109,7 @@
 }
 
 :root[data-theme="light"] .chip {
-    background: linear-gradient(90deg, #3B45F2 0%, #6C6CF7 55%, #342FCF 100%);
+    background: linear-gradient(90deg, #045578 0%, #5EB3D8 30%, #045578 80%);
 }
 
 :root[data-theme="light"] .chip-outline {
@@ -128,4 +128,62 @@
 :root[data-theme="light"] .btn-ghost {
     background-color: #5979B2;
     color: #ffffff;
+}
+
+:root[data-theme="light"] .store-page {
+    background-color: #faf3ff;
+}
+
+:root[data-theme="light"] .store-thumb {
+    background-color: #e3effd;
+}
+
+:root[data-theme="light"] .store-info {
+    background-color: #5979B2;
+}
+
+:root[data-theme="light"] .store-card {
+    border-color: #5979B2;
+}
+
+:root[data-theme="light"] .store-btn {
+    background-color: #D0DDEE;
+    color: #0e1330;
+    border-color: #9898C2;
+}
+
+:root[data-theme="light"] .store-search-btn {
+    background: transparent;
+    background-color: #5979B2;
+    border-color: #D0DDEE;
+}
+
+:root[data-theme="light"] .store-meta{
+    color: #d0dded;
+}
+
+:root[data-theme="light"] .store-search {
+    background-color: #B3C6DD;
+    border-color: #9898C2;
+}
+
+:root[data-theme="light"] .store-search::placeholder {
+    color: #0e1330;
+}
+
+:root[data-theme="light"] .friends-card {
+    background-color: #5979B2;
+}
+
+:root[data-theme="light"] .friends-btn {
+    background-color: #6C6CF7;
+    color: #E3EFFD;
+}
+
+:root[data-theme="light"] .friends-avatar{
+    background: linear-gradient(135deg, #64b5f6, #0d5eaf);
+}
+
+:root[data-theme="light"] .friends-emptyState{
+    color: #0e1330;
 }
