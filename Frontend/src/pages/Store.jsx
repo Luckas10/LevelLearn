@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+// src/pages/Store.jsx
+import { useEffect, useMemo, useState } from "react";
 import Sidebar from "../components/General/Sidebar";
 import Navbar from "../components/General/Navbar";
 import StoreHeader from "../components/Store/Header";
@@ -6,90 +7,60 @@ import StoreGrid from "../components/Store/Grid";
 import StoreModal from "../components/Store/Modal";
 import Swal from "sweetalert2";
 
-import Cobra from "../assets/Animals/Cobra.png";
-import Dragao from "../assets/Animals/Dragao.png";
-import Fenix from "../assets/Animals/Fenix.png";
-import Gato from "../assets/Animals/Gato.png";
-import Ourico from "../assets/Animals/Ourico.png";
-import Raposa from "../assets/Animals/Raposa.png";
 import "./Store.css";
+
+import { listShopItems, buyShopItem } from "../services/shop";
 
 export function Store() {
     const [query, setQuery] = useState("");
     const [selected, setSelected] = useState(null);
 
-    const items = useMemo(
-        () => [
-            {
-                id: 1,
-                title: "Cobra — Guardiã da Biblioteca",
-                price: 250,
-                currency: "coin",
-                imgFront: Cobra,
-                imgBack: Cobra,
-                tag: "Novo",
-                data: { raridade: "Raro", categoria: "Avatar" },
-                description:
-                    "Avatar temático da Cobra estudiosa. Aumenta seu estilo em 100%.",
-            },
-            {
-                id: 2,
-                title: "Dragão — Mestre dos Estudos",
-                price: 450,
-                currency: "coin",
-                imgFront: Dragao,
-                imgBack: Dragao,
-                tag: "Lendário",
-                data: { raridade: "Lendário", categoria: "Avatar" },
-                description:
-                    "Imponente, motiva focos épicos de estudo. Ideal para maratonas.",
-            },
-            {
-                id: 3,
-                title: "Fênix — Renascimento do Conhecimento",
-                price: 380,
-                currency: "coin",
-                imgFront: Fenix,
-                imgBack: Fenix,
-                data: { raridade: "Épico", categoria: "Avatar" },
-                description: "Para quem sempre volta mais forte após cada prova.",
-            },
-            {
-                id: 4,
-                title: "Gato — Curioso por Natureza",
-                price: 120,
-                currency: "coin",
-                imgFront: Gato,
-                imgBack: Gato,
-                data: { raridade: "Comum", categoria: "Avatar" },
-                description: "Fofo e focado. Perfeito pra sessões de leitura.",
-            },
-            {
-                id: 5,
-                title: "Ouriço — Blindado contra Procrastinação",
-                price: 190,
-                currency: "coin",
-                imgFront: Ourico,
-                imgBack: Ourico,
-                data: { raridade: "Incomum", categoria: "Avatar" },
-                description: "Espeta a preguiça e te mantém no trilho.",
-            },
-            {
-                id: 6,
-                title: "Raposa — Estratégia e Astúcia",
-                price: 220,
-                currency: "coin",
-                imgFront: Raposa,
-                imgBack: Raposa,
-                data: { raridade: "Raro", categoria: "Avatar" },
-                description: "Escolhas inteligentes em cada estudo.",
-            },
-        ],
-        []
-    );
+    const [items, setItems] = useState([]);
+    const [ownedIds, setOwnedIds] = useState([]);   // ids que o usuário já possui
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const filtered = items.filter((i) =>
-        i.title.toLowerCase().includes(query.toLowerCase())
+    // ===== CARREGAR ITENS DA API =====
+    useEffect(() => {
+        async function load() {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const apiItems = await listShopItems();
+
+                // adapta o formato para o StoreGrid/Modal
+                const mapped = apiItems.map((item) => ({
+                    ...item,
+                    id: item.id,
+                    title: item.name,
+                    description: item.description,
+                    price: item.price,
+                    currency: "coin",
+                    imgFront: `/${item.image_path}`, // public/StoreItems/...
+                    imgBack: `/${item.image_path}`,
+                    data: { raridade: "Avatar", categoria: "Avatar" }, // placeholder
+                }));
+
+                setItems(mapped);
+            } catch (err) {
+                console.error("Erro ao carregar itens da loja:", err);
+                setError("Não foi possível carregar os itens da loja.");
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        load();
+    }, []);
+
+    // filtro pelo título
+    const filtered = useMemo(
+        () =>
+            items.filter((i) =>
+                i.title.toLowerCase().includes(query.toLowerCase())
+            ),
+        [items, query]
     );
 
     function openBuy(item) {
@@ -100,6 +71,7 @@ export function Store() {
         setSelected(null);
     }
 
+    // ===== CONFIRMAR COMPRA (chama /shop/buy/{id}) =====
     async function confirmBuy(item) {
         const result = await Swal.fire({
             icon: "warning",
@@ -119,17 +91,35 @@ export function Store() {
 
         if (!result.isConfirmed) return;
 
-        await Swal.fire({
-            icon: "success",
-            title: "Compra realizada!",
-            text: `Você adquiriu o item "${item.title}".`,
-            timer: 1800,
-            showConfirmButton: false,
-        });
+        try {
+            // chama a API de compra
+            const userItems = await buyShopItem(item.id);
+            // userItems é a lista de itens do usuário => extrai os ids
+            const ids = (userItems || []).map((it) => it.id);
+            setOwnedIds(ids);
 
-        console.log(`Item comprado: ${item.title}`);
+            await Swal.fire({
+                icon: "success",
+                title: "Compra realizada!",
+                text: `Você adquiriu o item "${item.title}".`,
+                timer: 1800,
+                showConfirmButton: false,
+            });
+        } catch (err) {
+            console.error("Erro ao comprar item:", err);
 
-        closeModal();
+            const detail =
+                err?.response?.data?.detail ||
+                "Não foi possível realizar a compra.";
+
+            await Swal.fire({
+                icon: "error",
+                title: "Erro na compra",
+                text: detail,
+            });
+        } finally {
+            closeModal();
+        }
     }
 
     return (
@@ -145,15 +135,32 @@ export function Store() {
                         placeholder="INSIRA O NOME DO ASSUNTO"
                         buttonText="BUSCAR"
                     />
-                    <StoreGrid
-                        items={filtered}
-                        onBuy={openBuy}
-                        emptyText={
-                            query
-                                ? "Nenhum item encontrado para sua busca."
-                                : "A loja está vazia por enquanto."
-                        }
-                    />
+
+                    {loading && (
+                        <p style={{ color: "#fff", marginTop: "2rem" }}>
+                            Carregando itens da loja...
+                        </p>
+                    )}
+
+                    {error && !loading && (
+                        <p style={{ color: "#f87171", marginTop: "2rem" }}>
+                            {error}
+                        </p>
+                    )}
+
+                    {!loading && !error && (
+                        <StoreGrid
+                            items={filtered}
+                            onBuy={openBuy}
+                            ownedIds={ownedIds} // se quiser exibir "Comprado"
+                            emptyText={
+                                query
+                                    ? "Nenhum item encontrado para sua busca."
+                                    : "A loja está vazia por enquanto."
+                            }
+                        />
+                    )}
+
                     <StoreModal
                         open={!!selected}
                         item={selected}
