@@ -74,6 +74,8 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
     loadUser();
   }, []);
 
+  // ---------- SCROLL HORIZONTAL PELO MOUSE ----------
+
   useEffect(() => {
     const el = coversContainerRef.current;
     if (!el) return;
@@ -90,6 +92,8 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
 
     return () => el.removeEventListener("wheel", handleWheel);
   }, []);
+
+  // ---------- ABRIR E FECHAR MODAL ----------
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -194,7 +198,7 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
 
       <dialog className="createCollectionModal" ref={dialogRef}>
         <div className="collectionModalContent">
-          <p style={{ fontWeight: "bold", fontSize: "larger" }}>{editMode ? "EDITAR COLEÇÃO" : "CRIAR COLEÇÃO"}</p>
+          <p style={{ fontWeight: "bold", fontSize: "larger" }}>CRIAR COLEÇÃO</p>
 
           <input
             className="collectionInput"
