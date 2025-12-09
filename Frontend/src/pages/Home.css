@@ -612,3 +612,18 @@ body,
         width: 100%;
     }
 }
+
+/* ====== AJUSTE DO CARD DO PERSONAGEM (DESKTOP) ====== */
+@media (min-width: 981px) {
+    .character-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;          /* garante que o card preencha a célula do grid */
+    }
+
+    .character-wrap {
+        flex: 1;               /* ocupa todo o espaço vertical disponível */
+        aspect-ratio: auto;    /* libera o quadrado fixo */
+        height: 100%;
+    }
+}
