@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
     showWelcomeToast,
     showErrorModal,
+    showRegisterSuccessModal, // 👈 novo
 } from "../services/notifications";
 import Background from "../components/LoginAndRegister/Background";
 import LoginRegisterContainer from "../components/LoginAndRegister/Container";
@@ -34,8 +35,6 @@ export function LoginRegister() {
             localStorage.setItem("token", access_token);
 
             navigate("/");
-
-            // Toast de boas-vindas reaproveitável
             showWelcomeToast(user?.username);
         } catch (err) {
             const msg =
@@ -53,16 +52,14 @@ export function LoginRegister() {
         try {
             await registerUser({ username, email, password });
 
-            await Swal.fire({
-                icon: "success",
-                title: "Conta criada!",
-                text: "Seus dados já estão preenchidos, é só entrar!",
-                confirmButtonText: "Ir para o login",
-            });
+            // ✅ agora o modal de sucesso vem da camada de notificações
+            await showRegisterSuccessModal();
 
             setLoginPrefill({ email, password });
             setForceLoginModeKey((k) => k + 1);
         } catch (err) {
+            console.error("Erro no registro:", err);
+
             const msg =
                 err?.response?.data?.detail ||
                 "Não foi possível criar a conta. Tente novamente.";

@@ -24,7 +24,6 @@ const baseToast = Swal.mixin({
     },
 });
 
-
 // === FUNÇÕES GENÉRICAS ===
 export function showSuccessToast(title, options = {}) {
     return baseToast.fire({
@@ -66,6 +65,16 @@ export function showLevelUpToast(newLevel) {
 export function showAchievementToast(achievementName) {
     return showSuccessToast("Conquista desbloqueada! 🏅", {
         text: achievementName,
+    });
+}
+
+// ✅ Modal de sucesso ao registrar
+export function showRegisterSuccessModal() {
+    return Swal.fire({
+        icon: "success",
+        title: "Conta criada!",
+        text: "Seus dados já estão preenchidos, é só entrar!",
+        confirmButtonText: "Ir para o login",
     });
 }
 
