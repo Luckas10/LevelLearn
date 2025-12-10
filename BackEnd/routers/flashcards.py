@@ -18,7 +18,7 @@ class FlashcardSessionIn(SQLModel):
     deck_id: int
     correct: int
     total: int
-    elapsed_minutes: int  # ⬅️ novo
+    elapsed_minutes: float  # ⬅️ novo
 
 
 @router.post("/session-result")

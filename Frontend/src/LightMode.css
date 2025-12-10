@@ -158,13 +158,14 @@
     border-color: #D0DDEE;
 }
 
-:root[data-theme="light"] .store-meta{
+:root[data-theme="light"] .store-meta {
     color: #d0dded;
 }
 
 :root[data-theme="light"] .store-search {
     background-color: #B3C6DD;
     border-color: #9898C2;
+    color: #0e1330;
 }
 
 :root[data-theme="light"] .store-search::placeholder {
@@ -180,10 +181,29 @@
     color: #E3EFFD;
 }
 
-:root[data-theme="light"] .friends-avatar{
+:root[data-theme="light"] .friends-avatar {
     background: linear-gradient(135deg, #64b5f6, #0d5eaf);
 }
 
-:root[data-theme="light"] .friends-emptyState{
+:root[data-theme="light"] .friends-emptyState {
+    color: #0e1330;
+}
+
+:root[data-theme="light"] .studyTabsSelect {
+    background-color: #D0DDEE;
+    color: #0e1330;
+}
+
+:root[data-theme="light"] .studyTabsSelect.active {
+    background-color: #B3C6DD;
+    color: #0e1330;
+}
+
+:root[data-theme="light"] .friendsSearch {
+    background-color: #B3C6DD;
+    color: #0e1330;
+}
+
+:root[data-theme="light"] .friendsSearch .searchInput::placeholder {
     color: #0e1330;
 }

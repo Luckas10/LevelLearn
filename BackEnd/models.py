@@ -10,6 +10,12 @@ class UserAchievementLink(SQLModel, table=True):
     user_id: int = Field(foreign_key="user.id", primary_key=True)
     achievement_id: int = Field(foreign_key="achievement.id", primary_key=True)
 
+# Loja
+class UserShopItemLink(SQLModel, table=True):
+    __tablename__ = "user_shop_item_link"
+
+    user_id: int = Field(foreign_key="user.id", primary_key=True)
+    shop_item_id: int = Field(foreign_key="shopitem.id", primary_key=True)
 
 # Usuário
 
@@ -37,6 +43,11 @@ class User(SQLModel, table=True):
     achievements: List["Achievement"] = Relationship(
         back_populates="users",
         link_model=UserAchievementLink
+    )
+    
+    shop_items: List["ShopItem"] = Relationship(
+        back_populates="users",
+        link_model=UserShopItemLink
     )
 
     sent_requests: List["Friendship"] = Relationship(
@@ -100,7 +111,13 @@ class ShopItem(SQLModel, table=True):
     name: str
     price: int
     description: str
-    owner_id: Optional[int] = Field(default=None, foreign_key="user.id")
+    image_path: str   # 👈 caminho da imagem (ex.: "animals/Fenix.png")
+
+    # quem comprou esse item
+    users: List[User] = Relationship(
+        back_populates="shop_items",
+        link_model=UserShopItemLink
+    )
 
 
 # Decks

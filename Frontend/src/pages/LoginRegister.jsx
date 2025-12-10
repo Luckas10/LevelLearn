@@ -8,11 +8,17 @@ import "../style.css";
 
 export function LoginRegister() {
     const [isNight, setIsNight] = useState(false);
-    const toggleTheme = () => setIsNight(v => !v);
+    const toggleTheme = () => setIsNight((v) => !v);
     const navigate = useNavigate();
 
+    const [loginPrefill, setLoginPrefill] = useState({ email: "", password: "" });
+    const [forceLoginModeKey, setForceLoginModeKey] = useState(0);
+
     useEffect(() => {
-        document.documentElement.setAttribute("data-theme", isNight ? "dark" : "light");
+        document.documentElement.setAttribute(
+            "data-theme",
+            isNight ? "dark" : "light"
+        );
     }, [isNight]);
 
     const videoSrc = isNight
@@ -57,19 +63,20 @@ export function LoginRegister() {
         }
     };
 
-
-
-
     const handleRegister = async ({ username, email, password }) => {
         try {
             await registerUser({ username, email, password });
+
             await Swal.fire({
                 icon: "success",
                 title: "Conta criada!",
-                text: "Você já pode entrar com seu e-mail e senha.",
-                confirmButtonText: "Beleza",
+                text: "Seus dados já estão preenchidos, é só entrar!",
+                confirmButtonText: "Ir para o login",
             });
-            navigate('/login')
+
+            setLoginPrefill({ email, password });
+
+            setForceLoginModeKey((k) => k + 1);
         } catch (err) {
             const msg =
                 err?.response?.data?.detail ||
@@ -94,6 +101,8 @@ export function LoginRegister() {
                 onToggleTheme={toggleTheme}
                 onLogin={handleLogin}
                 onRegister={handleRegister}
+                loginPrefill={loginPrefill}
+                forceLoginModeKey={forceLoginModeKey}
             />
         </Background>
     );

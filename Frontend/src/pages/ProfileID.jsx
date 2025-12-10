@@ -39,15 +39,24 @@ export function ProfileID() {
   const [achievements, setAchievements] = useState([]);
 
   const [isNight, setIsNight] = useState(() => {
-    if (typeof document === "undefined") return false;
-    return document.documentElement.getAttribute("data-theme") === "dark";
+    if (typeof window === "undefined") return false;
+
+    const saved = localStorage.getItem("theme");
+    if (saved === "dark" || saved === "light") {
+      // já garante que o atributo tá certo
+      document.documentElement.setAttribute("data-theme", saved);
+      return saved === "dark";
+    }
+
+    // fallback: olha o atributo atual ou assume dark
+    const current = document.documentElement.getAttribute("data-theme");
+    return current === "dark";
   });
 
   useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      isNight ? "dark" : "light"
-    );
+    const theme = isNight ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
   }, [isNight]);
 
   const toggleTheme = () => setIsNight((v) => !v);

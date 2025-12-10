@@ -41,7 +41,7 @@ class UserRead(BaseModel):
     level: int
     coins: int
     xp_required: int                      # 👈 quanto falta pro próximo level
-    study_time: int
+    study_time: float
     achievements: List[UserAchievementRead] = []
 
     class Config:

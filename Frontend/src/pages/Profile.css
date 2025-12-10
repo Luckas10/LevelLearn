@@ -55,8 +55,8 @@
 /* ================= User Picture ================= */
 .user-picture {
     margin-left: 5%;
-    width: 250px;
-    max-width: 30%;
+    width: 300px;
+    max-width: 60%;
     height: auto;
     flex-shrink: 1;
     background: linear-gradient(135deg, #0a0a13, #0a225c);
