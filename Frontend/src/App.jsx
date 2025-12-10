@@ -13,8 +13,13 @@ import { Friends } from "./pages/Friends";
 import { BattleFlashCards } from "./pages/BattleFlashCards";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import PublicRoute from "./routes/PublicRoute.jsx";
+import { useAchievementWatcher } from "./hooks/useAchievementWatcher";
+import { useLevelWatcher } from "./hooks/useLevelWatcher";
 
 export default function App() {
+  useAchievementWatcher();
+  useLevelWatcher();
+  
   return (
     <Router>
       <Routes>

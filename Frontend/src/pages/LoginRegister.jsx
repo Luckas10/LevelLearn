@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import {
+    showWelcomeToast,
+    showErrorModal,
+    showRegisterSuccessModal, // 👈 novo
+} from "../services/notifications";
 import Background from "../components/LoginAndRegister/Background";
 import LoginRegisterContainer from "../components/LoginAndRegister/Container";
 import { loginWithPassword, registerUser } from "../services/auth";
@@ -27,39 +31,20 @@ export function LoginRegister() {
 
     const handleLogin = async ({ email, password }) => {
         try {
-            const { access_token } = await loginWithPassword({ email, password });
+            const { access_token, user } = await loginWithPassword({ email, password });
             localStorage.setItem("token", access_token);
 
             navigate("/");
-
-            Swal.fire({
-                icon: "success",
-                title: "Bem-vindo 👋",
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3200,
-                timerProgressBar: true,
-                showClass: {
-                    popup: "swal2-animate-toast-in",
-                },
-                hideClass: {
-                    popup: "swal2-animate-toast-out",
-                },
-                didOpen: (toast) => {
-                    toast.addEventListener("mouseenter", Swal.stopTimer);
-                    toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-            });
+            showWelcomeToast(user?.username);
         } catch (err) {
             const msg =
                 err?.response?.data?.detail ||
                 "Não foi possível fazer login. Verifique suas credenciais.";
-            await Swal.fire({
-                icon: "error",
-                title: "Falha no login",
-                text: Array.isArray(msg) ? msg.join("\n") : msg,
-            });
+
+            await showErrorModal(
+                "Falha no login",
+                Array.isArray(msg) ? msg.join("\n") : msg
+            );
         }
     };
 
@@ -67,25 +52,22 @@ export function LoginRegister() {
         try {
             await registerUser({ username, email, password });
 
-            await Swal.fire({
-                icon: "success",
-                title: "Conta criada!",
-                text: "Seus dados já estão preenchidos, é só entrar!",
-                confirmButtonText: "Ir para o login",
-            });
+            // ✅ agora o modal de sucesso vem da camada de notificações
+            await showRegisterSuccessModal();
 
             setLoginPrefill({ email, password });
-
             setForceLoginModeKey((k) => k + 1);
         } catch (err) {
+            console.error("Erro no registro:", err);
+
             const msg =
                 err?.response?.data?.detail ||
                 "Não foi possível criar a conta. Tente novamente.";
-            await Swal.fire({
-                icon: "error",
-                title: "Erro ao registrar",
-                text: Array.isArray(msg) ? msg.join("\n") : msg,
-            });
+
+            await showErrorModal(
+                "Erro ao registrar",
+                Array.isArray(msg) ? msg.join("\n") : msg
+            );
         }
     };
 

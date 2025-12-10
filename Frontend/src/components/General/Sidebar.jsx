@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-import { NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./Sidebar.css";
 
@@ -11,21 +10,52 @@ import { getDataUser } from "../../services/auth";
 export default function Sidebar() {
     const navigate = useNavigate();
 
-    const [userID, setUserID] = useState(0)
+    const [userID, setUserID] = useState(0);
+    const [theme, setTheme] = useState(
+        typeof document !== "undefined"
+            ? document.documentElement.getAttribute("data-theme") || "dark"
+            : "dark"
+    );
 
+    // Carrega ID do usuário
     useEffect(() => {
         async function loadUser() {
             try {
                 const user = await getDataUser();
-
                 setUserID(user.id);
-
             } catch (err) {
                 console.error("Erro ao carregar ID:", err);
             }
         }
 
         loadUser();
+    }, []);
+
+    // Observa mudança de tema via data-theme no <html>
+    useEffect(() => {
+        if (typeof document === "undefined") return;
+
+        const root = document.documentElement;
+
+        const updateTheme = () => {
+            const current = root.getAttribute("data-theme") || "dark";
+            setTheme(current);
+        };
+
+        // Primeiro set imediato
+        updateTheme();
+
+        const observer = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                if (mutation.attributeName === "data-theme") {
+                    updateTheme();
+                }
+            }
+        });
+
+        observer.observe(root, { attributes: true });
+
+        return () => observer.disconnect();
     }, []);
 
     const handleLogout = async () => {
@@ -53,10 +83,14 @@ export default function Sidebar() {
         }
     };
 
+    // Decide qual logo usar com base no tema
+    const logoSrc =
+        theme === "light" ? "/img/LogoSVGLight.svg" : "/img/LogoSVG.svg";
+
     return (
         <nav className="sidebar">
             <div className="sidebarLogo">
-                <img src="/img/LogoSVG.svg" alt="Logo" />
+                <img src={logoSrc} alt="Logo" />
                 <span>LevelLearn</span>
             </div>
 
@@ -98,7 +132,10 @@ export default function Sidebar() {
                         onClick={handleLogout}
                         className="logoutButton"
                     >
-                        <FontAwesomeIcon size="lg" icon={fas.faRightFromBracket} />
+                        <FontAwesomeIcon
+                            size="lg"
+                            icon={fas.faRightFromBracket}
+                        />
                         <span>SAIR</span>
                     </a>
                 </li>
