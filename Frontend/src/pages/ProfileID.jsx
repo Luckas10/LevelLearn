@@ -22,6 +22,27 @@ import Math from "../assets/Achievements/Math.png";
 
 import ButtonDarkMode from "../components/General/ButtonDarkMode";
 
+// (logo acima do componente, no mesmo arquivo)
+const getAchievementImageUrl = (imagePath) => {
+    if (!imagePath) {
+        // fallback se não vier nada do back
+        return "/achievements/default.png"; // crie um default se quiser
+    }
+
+    // Se já vier uma URL absoluta (http/https), usa direto
+    if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+        return imagePath;
+    }
+
+    // Se já vier começando com /achievements, também usa direto
+    if (imagePath.startsWith("/achievements")) {
+        return imagePath;
+    }
+
+    // Caso comum: veio só "primeiro_deck.png" do backend
+    return `/achievements/${imagePath}`;
+};
+
 export function ProfileID() {
   const { id } = useParams();
 
@@ -260,22 +281,18 @@ export function ProfileID() {
                   achievements.map((achievement) => (
                     <div className="achievement" key={achievement.id}>
                       <img
-                        src={achievement.image_path || Math}
+                        src={getAchievementImageUrl(achievement.image_path)}
                         alt={achievement.name}
                         className="achievement-picture"
                       />
                       <div className="achievement-info">
-                        <p className="achievement-title">
-                          {achievement.name}
-                        </p>
+                        <p className="achievement-title">{achievement.name}</p>
                         <p>{achievement.description}</p>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="no-achievements">
-                    Ainda não possui conquistas.
-                  </p>
+                  <p className="no-achievements">Ainda não possui conquistas.</p>
                 )}
               </div>
             </div>
