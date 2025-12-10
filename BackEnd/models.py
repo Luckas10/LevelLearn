@@ -127,6 +127,11 @@ class Deck(SQLModel, table=True):
     name: str
     description: str
     cover_name: str
+
+    # NOVOS CAMPOS
+    subject: str = Field(default="")  # nome da matéria (ex.: "Física")
+    monster_image_path: str = Field(default="")  # ex.: "/Monsters/fisica_monstro.svg"
+
     owner_id: int = Field(foreign_key="user.id")
     owner: Optional[User] = Relationship(back_populates="decks")
     cards: List["Card"] = Relationship(

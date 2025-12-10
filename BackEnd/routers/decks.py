@@ -16,6 +16,16 @@ class DeckCreate(BaseModel):
     name: str
     description: str
     cover_name: str
+    subject: str
+    monster_image_path: str
+
+
+class DeckUpdate(BaseModel):
+    name: str | None = None
+    description: str | None = None
+    cover_name: str | None = None
+    subject: str | None = None
+    monster_image_path: str | None = None
 
 
 @router.get("")
@@ -33,7 +43,9 @@ def cadastrar_deck(
         name=data.name,
         description=data.description,
         cover_name=data.cover_name,
-        owner_id=current_user.id,  # ⬅ AGORA TEM DONO!
+        subject=data.subject,
+        monster_image_path=data.monster_image_path,
+        owner_id=current_user.id,
     )
     session.add(deck)
     session.commit()
@@ -58,7 +70,7 @@ def deletar_deck(session: SessionDep, id: int) -> str:
 
 
 @router.put("/{id}")
-def atualizar_deck(session: SessionDep, id: int, dados: Deck) -> Deck:
+def atualizar_deck(session: SessionDep, id: int, dados: DeckUpdate) -> Deck:
     deck = session.get(Deck, id)
 
     if not deck:
@@ -72,3 +84,4 @@ def atualizar_deck(session: SessionDep, id: int, dados: Deck) -> Deck:
     session.commit()
     session.refresh(deck)
     return deck
+
