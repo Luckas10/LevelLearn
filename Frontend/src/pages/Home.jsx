@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { getDataUser } from "../services/auth";
+import api from "../services/api";
+
 import Sidebar from "../components/General/Sidebar";
 import Navbar from "../components/General/Navbar";
 import CharacterModal from "../components/Dashboard/CharacterModal";
@@ -23,24 +25,55 @@ export function Home() {
     const [userBestStreak, setUserBestStreak] = useState(0);
     const [userStudyTime, setUserStudyTime] = useState(0); // minutos
 
-    useEffect(() => {
-        async function loadUser() {
-            try {
-                const user = await getDataUser();
+    // ==== MISSÕES DIÁRIAS ====
+    const [missions, setMissions] = useState([]);
+    const [missionsLoading, setMissionsLoading] = useState(true);
 
-                setUserXP(user.xp ?? 0);
-                setUserXPRequired(user.xp_required ?? 0);
-                setUserCoins(user.coins ?? 0);
-                setUserCombo(user.combo ?? 0);
-                setUserBestStreak(user.best_streak ?? 0);
-                setUserStudyTime(user.study_time ?? 0);
-            } catch (err) {
-                console.error("Erro ao carregar dados do usuário:", err);
-            }
+    async function loadUser() {
+        try {
+            const user = await getDataUser();
+
+            setUserXP(user.xp ?? 0);
+            setUserXPRequired(user.xp_required ?? 0);
+            setUserCoins(user.coins ?? 0);
+            setUserCombo(user.combo ?? 0);
+            setUserBestStreak(user.best_streak ?? 0);
+            setUserStudyTime(user.study_time ?? 0);
+        } catch (err) {
+            console.error("Erro ao carregar dados do usuário:", err);
         }
+    }
 
+    async function loadMissions() {
+        try {
+            setMissionsLoading(true);
+            const { data } = await api.get("/daily-missions/today");
+            setMissions(data || []);
+        } catch (err) {
+            console.error("Erro ao carregar missões diárias:", err);
+            setMissions([]);
+        } finally {
+            setMissionsLoading(false);
+        }
+    }
+
+    useEffect(() => {
         loadUser();
+        loadMissions();
     }, []);
+
+    // coletar recompensa de uma missão
+    async function handleClaimMission(mission) {
+        if (!mission.completed || mission.claimed) return;
+
+        try {
+            await api.post(`/daily-missions/${mission.code}/claim`);
+            // Recarrega missões e usuário (XP / moedas vão mudar)
+            await Promise.all([loadUser(), loadMissions()]);
+        } catch (err) {
+            console.error("Erro ao coletar missão:", err);
+        }
+    }
 
     // ==== PROGRESSOS NUMÉRICOS ====
 
@@ -124,6 +157,7 @@ export function Home() {
                 <Navbar />
 
                 <div className="dashboard">
+                    {/* STATUS */}
                     <div className="card status-card">
                         <div className="card-title">Seus Status</div>
 
@@ -176,33 +210,91 @@ export function Home() {
                         </div>
                     </div>
 
+                    {/* MISSÕES DIÁRIAS */}
                     <div className="card missions-card">
                         <div className="card-title">Missões Diárias</div>
 
-                        <ul className="missions-list">
-                            <li>
-                                <span>Estudar 25 min (Pomodoro)</span>
-                                <button className="chip chip-outline">
-                                    Iniciar
-                                </button>
-                            </li>
-                            <li>
-                                <span>Responder 10 flashcards</span>
-                                <button className="chip">Continuar</button>
-                            </li>
-                            <li>
-                                <span>Concluir 1 quiz</span>
-                                <button className="chip chip-outline">
-                                    Fazer
-                                </button>
-                            </li>
-                            <li>
-                                <span>Revisão de ontem</span>
-                                <button className="chip">Abrir</button>
-                            </li>
-                        </ul>
+                        {missionsLoading ? (
+                            <p className="missions-empty">Carregando missões...</p>
+                        ) : missions.length === 0 ? (
+                            <p className="missions-empty">
+                                Nenhuma missão para hoje. 🎉
+                            </p>
+                        ) : (
+                            <ul className="missions-list">
+                                {missions.map((mission) => {
+                                    const progressRatio = mission.target
+                                        ? Math.min(
+                                              mission.progress / mission.target,
+                                              1
+                                          )
+                                        : 0;
+
+                                    const isCompleted = mission.completed;
+                                    const isClaimed = mission.claimed ?? false;
+
+                                    let buttonLabel = "Em progresso";
+                                    if (isClaimed) buttonLabel = "Coletado";
+                                    else if (isCompleted)
+                                        buttonLabel = `Coletar (+${mission.xp_reward} XP, +${mission.coins_reward} moedas)`;
+
+                                    return (
+                                        <li
+                                            key={mission.code}
+                                            className={
+                                                isClaimed ? "mission-claimed" : ""
+                                            }
+                                        >
+                                            <div className="mission-info">
+                                                <span className="mission-title">
+                                                    {mission.title}
+                                                </span>
+                                                <small className="mission-desc">
+                                                    {mission.description}
+                                                </small>
+
+                                                <div className="mission-progress">
+                                                    <span className="mission-progress-text">
+                                                        {mission.progress} /{" "}
+                                                        {mission.target}
+                                                    </span>
+                                                    <div className="bar">
+                                                        <div
+                                                            className="bar-fill"
+                                                            style={{
+                                                                width: `${
+                                                                    progressRatio *
+                                                                    100
+                                                                }%`,
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button
+                                                className={`chip ${
+                                                    isCompleted && !isClaimed
+                                                        ? ""
+                                                        : "chip-outline"
+                                                }`}
+                                                disabled={
+                                                    !isCompleted || isClaimed
+                                                }
+                                                onClick={() =>
+                                                    handleClaimMission(mission)
+                                                }
+                                            >
+                                                {buttonLabel}
+                                            </button>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        )}
                     </div>
 
+                    {/* PERSONAGEM */}
                     <div className="card character-card">
                         <div className="card-title">Seu Personagem</div>
 
@@ -218,7 +310,7 @@ export function Home() {
                                 alt="Personagem atual"
                             />
                             <div className="floating-shadow" />
-                            {/* depois trocar por level real */}
+                            {/* depois trocar pelo level real */}
                             <span className="badge">LVL 12</span>
 
                             <i className="orb orb-1" />
@@ -233,7 +325,9 @@ export function Home() {
                             >
                                 Personalizar
                             </button>
-                            <button className="btn-ghost">Ver Inventário</button>
+                            <button className="btn-ghost">
+                                Ver Inventário
+                            </button>
                         </div>
                     </div>
                 </div>

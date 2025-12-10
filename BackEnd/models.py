@@ -147,3 +147,17 @@ class PomodoroSession(SQLModel, table=True):
     short_break_minutes: int  # B_s
     long_break_minutes: int   # B_l
     created_at: datetime = Field(default_factory=datetime.utcnow)
+
+# Missões diárias
+
+class UserDailyMission(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+
+    user_id: int = Field(foreign_key="user.id")
+    code: str = Field(index=True)         # ex: "POMO_25", "FLASH_10"
+    mission_date: date = Field(index=True)        # dia da missão (YYYY-MM-DD)
+
+    progress: int = Field(default=0)      # progresso atual
+    target: int = Field(default=0)        # meta da missão
+    completed: bool = Field(default=False)
+    claimed: bool = Field(default=False)  # se já pegou a recompensa
