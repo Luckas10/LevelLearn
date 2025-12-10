@@ -567,6 +567,24 @@ body,
     transform: translateY(1px) scale(.98);
 }
 
+.mission-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;           /* espaçamento entre título e descrição */
+}
+
+.mission-title {
+    font-size: 1rem;
+    font-weight: 600;
+    display: block;
+}
+
+.mission-desc {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    display: block;
+}
+
 @media (max-width: 640px) {
     .character-modal {
         padding: 16px 16px 18px;

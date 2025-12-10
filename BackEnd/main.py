@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import lifespan
-from routers import auth, users, achievements, friends, shop, decks, cards, flashcards, pomodoro
+from routers import auth, users, achievements, friends, shop, decks, cards, flashcards, pomodoro, daily_missions
 
 # 👇 IMPORTA OS LISTENERS (gatilhos)
 import events          # conquistas / missões
@@ -42,4 +42,5 @@ app.include_router(decks.router)
 app.include_router(cards.router)
 app.include_router(flashcards.router)
 app.include_router(pomodoro.router)
+app.include_router(daily_missions.router)
 app.include_router(auth.router)
