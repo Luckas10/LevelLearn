@@ -6,12 +6,15 @@ import { faEllipsisVertical, faTrash, faPen } from "@fortawesome/free-solid-svg-
 export default function InteractiveCardCollection({
   id,
   title,
+  subject,
   to,
   image,
   onEdit,
   onDelete,
   ...props
 }) {
+  
+
   const [style, setStyle] = useState({});
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -71,6 +74,7 @@ export default function InteractiveCardCollection({
             <img src={image} className="cardImg" />
             <div className="cardContentTitle">
               <h1>{title}</h1>
+              <h2>{subject}</h2>
             </div>
           </div>
         </div>

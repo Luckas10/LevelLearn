@@ -149,6 +149,7 @@ export default function GridCard({ onSave }) {
                             id={card.id}
                             onDelete={handleDeleteCard}
                             card={card}
+                            readOnly={true} 
                         >
                             <p style={{ fontSize: "1.1rem", padding: "1rem", wordBreak: "break-word", overflow: "hidden" }}>{card.question}</p>
                             <p style={{ fontSize: "0.9rem" }}>Clique para ver o verso</p>

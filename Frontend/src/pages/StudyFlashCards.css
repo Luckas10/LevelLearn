@@ -237,6 +237,7 @@
 
 .collectionCoverOption {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #151737;
@@ -408,7 +409,7 @@
 
 .cardMenuOptions {
     position: absolute;
-    top: 2.2rem;
+    top: 3.8rem;
     left: 7.8rem;
     background: #1a1d3a;
     border: 1px solid #2c2f59;
@@ -417,6 +418,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    width: 6.3Rem;
     z-index: 50;
 }
 
@@ -528,7 +530,7 @@
     backface-visibility: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     text-align: center;
     border-radius: 0.75rem;
@@ -543,6 +545,71 @@
     background: linear-gradient(135deg, #4f46e5, #6366f1);
     color: #f9fafb;
     transform: rotateY(180deg);
+}
+
+/* Wrapper: tem perspectiva, mas NÃO gira */
+.flashcard-wrapper {
+  position: relative;
+  perspective: 1000px;
+}
+
+/* Conteúdo que gira */
+.flashcard-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.flashcard-inner.flip {
+  transform: rotateY(180deg);
+}
+
+/* Faces (frente e verso) */
+.flashcard-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  padding: 1rem;
+  border-radius: 16px;
+
+  backface-visibility: hidden;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  word-break: break-word;
+}
+
+.flashcard-front {
+  transform: rotateY(0deg);
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+  background: #151838;
+}
+
+/* Texto */
+.flashcard-text {
+  font-size: 1.1rem;
+}
+
+.flashcard-hint {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.interactive-card-appear {
+    animation: interactive-card-pop 0.28s ease-out;
 }
 
 @keyframes interactive-card-pop {
@@ -562,6 +629,3 @@
     }
 }
 
-.interactive-card-appear {
-    animation: interactive-card-pop 0.28s ease-out;
-}

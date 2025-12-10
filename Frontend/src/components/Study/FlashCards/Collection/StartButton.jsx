@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 
-export function PlayButton({to}) {
+export function StartButton({to}) {
   return (
     <NavLink to={to} className="startButtonContainer">
       <button className="startButton">

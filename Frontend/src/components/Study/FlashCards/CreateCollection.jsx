@@ -16,7 +16,7 @@ import geografia from "/CoverImages/geografia.svg";
 import ingles from "/CoverImages/ingles.svg";
 import biologia from "/CoverImages/biologia.svg";
 
-export default function StudyCreateCollection({ onSave, editMode=false, initialData=null }) {
+export default function StudyCreateCollection({ onSave, editMode = false, initialData = null }) {
   const [userId, setUserId] = useState(0);
   const dialogRef = useRef(null);
   const coversContainerRef = useRef(null);
@@ -25,19 +25,68 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
   const [description, setDescription] = useState("");
   const [cover, setCover] = useState(null);
 
+  const [subject, setSubject] = useState("");
+  const [monsterImage, setMonsterImage] = useState("");
+
   const [open, setOpen] = useState(false);
 
   const covers = [
-    fisica,
-    matematica,
-    portugues,
-    historia,
-    edfisica,
-    ingles,
-    geografia,
-    quimica,
-    biologia,
+    {
+      img: fisica,
+      title: "Física",
+      subject: "Física",
+      monster: "/Monsters/Monstro-fisica.svg",
+    },
+    {
+      img: matematica,
+      title: "Matemática",
+      subject: "Matemática",
+      monster: "/Monsters/Monstro-matematica.svg",
+    },
+    {
+      img: portugues,
+      title: "Português",
+      subject: "Português",
+      monster: "/Monsters/Monstro-portugues.svg",
+    },
+    {
+      img: historia,
+      title: "História",
+      subject: "História",
+      monster: "/Monsters/Monstro-historia.svg",
+    },
+    {
+      img: edfisica,
+      title: "Ed. Física",
+      subject: "Ed. Física",
+      monster: "/Monsters/Monstro-edfisica.svg",
+    },
+    {
+      img: ingles,
+      title: "Inglês",
+      subject: "Inglês",
+      monster: "/Monsters/Monstro-ingles.svg",
+    },
+    {
+      img: geografia,
+      title: "Geografia",
+      subject: "Geografia",
+      monster: "/Monsters/Monstro-geografia.svg",
+    },
+    {
+      img: quimica,
+      title: "Química",
+      subject: "Química",
+      monster: "/Monsters/Monstro-quimica.svg",
+    },
+    {
+      img: biologia,
+      title: "Biologia",
+      subject: "Biologia",
+      monster: "/Monsters/Monstro-biologia.svg",
+    },
   ];
+
 
   const openModal = () => setOpen(true);
 
@@ -53,15 +102,20 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
   // ---------- PREENCHE OS INPUTS AUTOMATICAMENTE QUANDO FOR EDITAR --------------
 
   useEffect(() => {
-  if (editMode && initialData) {
-    setName(initialData.name || "");
-    setDescription(initialData.description || "");
-    setCover(initialData.cover_name || null);
-  }
+    if (editMode && initialData) {
+      setName(initialData.name || "");
+      setDescription(initialData.description || "");
+      setCover(initialData.cover_name || null);
+
+      // NOVOS CAMPOS
+      setSubject(initialData.subject || "");
+      setMonsterImage(initialData.monster_image_path || "");
+    }
   }, [editMode, initialData]);
 
+
   // ---------- CARREGAR USER ----------
-  
+
   useEffect(() => {
     async function loadUser() {
       try {
@@ -149,8 +203,11 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
       name,
       description,
       cover_name: cover,
-      owner_id: userId,
+      subject,                // NOVO
+      monster_image_path: monsterImage, // NOVO
+      owner_id: userId,       // backend ignora, usa o token, mas pode deixar
     };
+
 
     try {
       if (editMode) {
@@ -221,18 +278,23 @@ export default function StudyCreateCollection({ onSave, editMode=false, initialD
           <p style={{ fontSize: "larger" }}>CAPA DA COLEÇÃO:</p>
 
           <div className="collectionCoverOptions" ref={coversContainerRef}>
-            {covers.map((img, i) => (
+            {covers.map((c, i) => (
               <div
                 key={i}
-                className={`collectionCoverOption ${cover === img ? "selectedCover" : ""
-                  }`}
-                onClick={() => setCover(img)}
+                className={`collectionCoverOption ${cover === c.img ? "selectedCover" : ""}`}
+                onClick={() => {
+                  setCover(c.img);
+                  setSubject(c.subject);           // nome da matéria
+                  setMonsterImage(c.monster);      // caminho do monstro
+                }}
+
               >
                 <img
-                  src={img}
+                  src={c.img}
                   style={{ width: "8.5rem", height: "8.5rem" }}
-                  alt="Capa da coleção"
+                  alt={c.title}
                 />
+                <h1 style={{ fontSize: "1rem" }}>{c.title}</h1>
               </div>
             ))}
           </div>

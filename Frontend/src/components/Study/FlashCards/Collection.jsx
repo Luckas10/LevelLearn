@@ -45,6 +45,7 @@ export default function StudyCollection() {
             image={c.cover_name}
             to={`/study/flashcards/selected/${c.id}`}
             title={c.name}
+            subject={c.subject}
             onEdit={() => setEditingCollection(c)}
             onDelete={handleDeleteCollection}
           />

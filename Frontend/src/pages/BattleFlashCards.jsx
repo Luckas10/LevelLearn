@@ -46,6 +46,7 @@ export function BattleFlashCards() {
     // ====== INFO DO DECK ======
     const [deck, setDeck] = useState(null);
     const [loadingDeck, setLoadingDeck] = useState(true);
+    const [monsterImage, setMonsterImage] = useState(String)
 
     // ====== ESTATÍSTICAS DA BATALHA ======
     const [correctCount, setCorrectCount] = useState(0);
@@ -452,7 +453,7 @@ export function BattleFlashCards() {
                             </div>
 
                             <img
-                                src={monstroBattle}
+                                src={deck.monster_image_path}
                                 alt="monstro"
                                 className={
                                     "blf-sprite blf-sprite-enemy" +

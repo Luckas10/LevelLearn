@@ -1,6 +1,5 @@
 // InfoPanel.jsx
-import { PlayButton } from "./StartButton.jsx";
-import { getDataUser } from "../../../../services/auth.js";
+import { StartButton } from "./StartButton.jsx";
 
 export default function InfoPanel({ id, description, name, cover }) {
   return (
@@ -19,7 +18,7 @@ export default function InfoPanel({ id, description, name, cover }) {
             <p className="collectionDescription">{description}</p>
           </div>
 
-          <PlayButton to={`/study/battleflashcards/${id}`} />
+          <StartButton to={`/study/battleflashcards/${id}`} />
         </div>
       </div>
     </div>
