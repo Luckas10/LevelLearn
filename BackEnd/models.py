@@ -111,14 +111,16 @@ class ShopItem(SQLModel, table=True):
     name: str
     price: int
     description: str
-    image_path: str   # 👈 caminho da imagem (ex.: "animals/Fenix.png")
+
+    # NOVOS CAMPOS: imagens da frente e de costas
+    image_front_path: str   # exemplo: "/StoreItems/Cobra.png"
+    image_back_path: str    # exemplo: "/StoreItems/CobraBack.png"
 
     # quem comprou esse item
     users: List[User] = Relationship(
         back_populates="shop_items",
         link_model=UserShopItemLink
     )
-
 
 # Decks
 
