@@ -24,6 +24,7 @@ export function Home() {
     const [userCombo, setUserCombo] = useState(0);
     const [userBestStreak, setUserBestStreak] = useState(0);
     const [userStudyTime, setUserStudyTime] = useState(0); // minutos
+    const [userLevel, setUserLevel] = useState(1);         // 👈 novo estado
 
     // ==== MISSÕES DIÁRIAS ====
     const [missions, setMissions] = useState([]);
@@ -39,6 +40,7 @@ export function Home() {
             setUserCombo(user.combo ?? 0);
             setUserBestStreak(user.best_streak ?? 0);
             setUserStudyTime(user.study_time ?? 0);
+            setUserLevel(user.level ?? 1);   // 👈 pegando o level que vem da API
         } catch (err) {
             console.error("Erro ao carregar dados do usuário:", err);
         }
@@ -311,7 +313,7 @@ export function Home() {
                             />
                             <div className="floating-shadow" />
                             {/* depois trocar pelo level real */}
-                            <span className="badge">LVL 12</span>
+                            <span className="badge">LVL {userLevel}</span>
 
                             <i className="orb orb-1" />
                             <i className="orb orb-2" />
