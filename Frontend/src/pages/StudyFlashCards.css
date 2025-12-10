@@ -279,6 +279,7 @@
     background-color: #4346E6;
     border: none;
     cursor: pointer;
+    font-weight: bold;
     transition: 0.5s;
 }
 

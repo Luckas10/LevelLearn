@@ -16,6 +16,12 @@ import TimerLongo from "../assets/Pomodore/timerlongo.svg";
 import Settings from "../assets/Pomodore/settings.svg";
 import Missions from "../assets/Pomodore/missions.svg";
 
+import LightPomodore from "../assets/Pomodore/light-pomodore.svg";
+import LightTimerCurto from "../assets/Pomodore/light-timercurto.svg";
+import LightTimerLongo from "../assets/Pomodore/light-timerlongo.svg";
+import LightSettings from "../assets/Pomodore/light-settings.svg";
+import LightMissions from "../assets/Pomodore/light-missions.svg";
+
 const alarmMap = {
   "ALARME 1": "/alarms/alarme1.mp3",
   "ALARME 2": "/alarms/alarme2.mp3",
@@ -25,7 +31,43 @@ const alarmMap = {
 };
 
 export function StudyPomodore() {
+  // =========================
+  // THEME: ícones light/dark
+  // =========================
+  const [theme, setTheme] = useState(
+    typeof document !== "undefined"
+      ? document.documentElement.getAttribute("data-theme") || "dark"
+      : "dark"
+  );
 
+  useEffect(() => {
+    const root = document.documentElement;
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.attributeName === "data-theme") {
+          const current = root.getAttribute("data-theme") || "dark";
+          setTheme(current);
+        }
+      }
+    });
+
+    observer.observe(root, { attributes: true });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const isLightTheme = theme === "light";
+
+  const pomodoreIcon = isLightTheme ? LightPomodore : Pomodore;
+  const shortIcon = isLightTheme ? LightTimerCurto : TimerCurto;
+  const longIcon = isLightTheme ? LightTimerLongo : TimerLongo;
+  const settingsIcon = isLightTheme ? LightSettings : Settings;
+  const missionsIcon = isLightTheme ? LightMissions : Missions;
+  const swordIcon = Sword; // não tem versão light
+
+  // =========================
+  // ESTADO DO TIMER
+  // =========================
   const [alarmAudio, setAlarmAudio] = useState(null);
 
   const [time, setTime] = useState(25 * 60);
@@ -47,6 +89,22 @@ export function StudyPomodore() {
     alarmSound: "ALARME 1",
   });
 
+  const [autoActive, setAutoActive] = useState(false);
+  const [pomodorosSinceLong, setPomodorosSinceLong] = useState(0);
+  const [completedPomodoros, setCompletedPomodoros] = useState(0);
+
+  // Carrega config salva
+  useEffect(() => {
+    const saved = localStorage.getItem("pomodoroSettings");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setSettings(parsed);
+      setTime(parsed.pomodoro * 60);
+      setInitialTime(parsed.pomodoro * 60);
+    }
+  }, []);
+
+  // Carrega / troca o som de alarme
   useEffect(() => {
     const soundPath = alarmMap[settings.alarmSound];
     if (!soundPath) return;
@@ -62,22 +120,6 @@ export function StudyPomodore() {
     setAlarmAudio(audio);
   }, [settings.alarmSound]);
 
-
-
-  const [autoActive, setAutoActive] = useState(false);
-  const [pomodorosSinceLong, setPomodorosSinceLong] = useState(0);
-  const [completedPomodoros, setCompletedPomodoros] = useState(0);
-
-  useEffect(() => {
-    const saved = localStorage.getItem("pomodoroSettings");
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      setSettings(parsed);
-      setTime(parsed.pomodoro * 60);
-      setInitialTime(parsed.pomodoro * 60);
-    }
-  }, []);
-
   const applySettings = (newSettings) => {
     setSettings(newSettings);
 
@@ -86,6 +128,7 @@ export function StudyPomodore() {
     if (mode === "long") handleReset(newSettings.long * 60, "long");
   };
 
+  // Loop do timer
   useEffect(() => {
     let timer;
     if (isRunning && time > 0) {
@@ -96,6 +139,7 @@ export function StudyPomodore() {
     return () => clearInterval(timer);
   }, [isRunning, time]);
 
+  // Auto-mode
   useEffect(() => {
     if (isRunning && settings.autoEnabled && !autoActive) {
       setAutoActive(true);
@@ -105,7 +149,7 @@ export function StudyPomodore() {
     if (!isRunning && autoActive) {
       setAutoActive(false);
     }
-  }, [isRunning, settings.autoEnabled]);
+  }, [isRunning, settings.autoEnabled, autoActive]);
 
   const minutes = String(Math.floor(time / 60)).padStart(2, "0");
   const seconds = String(time % 60).padStart(2, "0");
@@ -121,11 +165,19 @@ export function StudyPomodore() {
       case "long":
         return ["#facc15", "#fde047"];
       default:
-        return ["#4f46e5", "#8b5cf6"];
+        return ["#64b5f6", "#0d5eaf"];
     }
   };
 
   const [startColor, endColor] = getGradientColors();
+
+  // 🔥 AQUI: estilo dinâmico do texto do timer no modo claro
+  const timerTextStyle = isLightTheme
+    ? {
+        color: startColor,
+        textShadow: `0 0 15px ${startColor}80`,
+      }
+    : {};
 
   const handleStart = () => {
     if (!isRunning && settings.autoEnabled) {
@@ -134,6 +186,13 @@ export function StudyPomodore() {
       setCompletedPomodoros(0);
     }
     setIsRunning((r) => !r);
+  };
+
+  const stopAlarm = () => {
+    if (alarmAudio) {
+      alarmAudio.pause();
+      alarmAudio.currentTime = 0;
+    }
   };
 
   const handleReset = (newTime, newMode) => {
@@ -147,20 +206,12 @@ export function StudyPomodore() {
     setCompletedPomodoros(0);
   };
 
-  const stopAlarm = () => {
-    if (alarmAudio) {
-      alarmAudio.pause();
-      alarmAudio.currentTime = 0;
-    }
-  };
-
-
   const handlePeriodEnd = async () => {
     setIsRunning(false);
 
     if (settings.alarmEnabled && alarmAudio) {
       alarmAudio.currentTime = 0;
-      alarmAudio.play().catch(() => { });
+      alarmAudio.play().catch(() => {});
     }
 
     const titles = {
@@ -222,7 +273,6 @@ export function StudyPomodore() {
     }
   };
 
-
   return (
     <div className="studyPomodore-page">
       <Sidebar />
@@ -245,7 +295,8 @@ export function StudyPomodore() {
                     cy="250"
                     style={{
                       strokeDasharray: circumference,
-                      strokeDashoffset: circumference * (1 - progress / 100),
+                      strokeDashoffset:
+                        circumference * (1 - progress / 100),
                       transition: "stroke-dashoffset 0.5s linear",
                       transform: "rotate(-90deg)",
                       transformOrigin: "50% 50%",
@@ -260,7 +311,7 @@ export function StudyPomodore() {
                   </defs>
                 </svg>
 
-                <div className="timer-text">
+                <div className="timer-text" style={timerTextStyle}>
                   {minutes}:{seconds}
                 </div>
 
@@ -273,15 +324,17 @@ export function StudyPomodore() {
             <div className="pomodore-buttons">
               <div className="timer-buttons">
                 <button onClick={handleStart} className="btnPomodore start">
-                  <img src={Sword} alt="" />
+                  <img src={swordIcon} alt="" />
                   {isRunning ? "PAUSAR" : "COMEÇAR"}
                 </button>
 
                 <button
-                  onClick={() => handleReset(settings.pomodoro * 60, "pomodoro")}
+                  onClick={() =>
+                    handleReset(settings.pomodoro * 60, "pomodoro")
+                  }
                   className="btnPomodore pomo"
                 >
-                  <img src={Pomodore} alt="" />
+                  <img src={pomodoreIcon} alt="" />
                   POMODORO
                 </button>
 
@@ -289,7 +342,7 @@ export function StudyPomodore() {
                   onClick={() => handleReset(settings.short * 60, "short")}
                   className="btnPomodore"
                 >
-                  <img src={TimerCurto} alt="" />
+                  <img src={shortIcon} alt="" />
                   PAUSA CURTA
                 </button>
 
@@ -297,7 +350,7 @@ export function StudyPomodore() {
                   onClick={() => handleReset(settings.long * 60, "long")}
                   className="btnPomodore"
                 >
-                  <img src={TimerLongo} alt="" />
+                  <img src={longIcon} alt="" />
                   PAUSA LONGA
                 </button>
 
@@ -305,7 +358,7 @@ export function StudyPomodore() {
                   className="btnPomodore"
                   onClick={() => setShowToDoList(true)}
                 >
-                  <img src={Missions} alt="" />
+                  <img src={missionsIcon} alt="" />
                   TAREFAS
                 </button>
 
@@ -313,7 +366,7 @@ export function StudyPomodore() {
                   className="btnPomodore"
                   onClick={() => setShowSettings(true)}
                 >
-                  <img src={Settings} alt="" />
+                  <img src={settingsIcon} alt="" />
                   CONFIGURAÇÕES
                 </button>
               </div>
@@ -347,3 +400,5 @@ export function StudyPomodore() {
     </div>
   );
 }
+
+export default StudyPomodore;

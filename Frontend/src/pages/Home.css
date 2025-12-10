@@ -181,10 +181,10 @@ body,
     border-radius: 16px;
     background:
         radial-gradient(60% 80% at 50% 10%,
-            color-mix(in srgb, #3B45F2 80%, transparent),
+            color-mix(in srgb, var(--char-glow, #3B45F2) 80%, transparent),
             transparent 70%),
         radial-gradient(70% 70% at 50% 120%,
-            color-mix(in srgb, #49e3ff 55%, transparent),
+            color-mix(in srgb, var(--char-glow, #49e3ff) 55%, transparent),
             transparent 70%),
         linear-gradient(180deg,
             rgba(255, 255, 255, .03),
@@ -192,6 +192,7 @@ body,
         #0f1224;
     border: 1px solid rgba(255, 255, 255, .08);
 }
+
 
 .character-img {
     width: min(70%, 320px);
@@ -222,7 +223,7 @@ body,
     height: 55%;
     bottom: 10%;
     background: radial-gradient(closest-side,
-            color-mix(in srgb, #3B45F2 40%, transparent),
+            color-mix(in srgb, var(--char-glow, #3B45F2) 40%, transparent),
             transparent 70%);
     filter: blur(24px);
 }
@@ -237,10 +238,8 @@ body,
 .orb-1 {
     width: 8px;
     height: 8px;
-    background:
-        color-mix(in srgb, #49e3ff 85%, #ffffff 15%);
-    box-shadow: 0 0 12px
-        color-mix(in srgb, #49e3ff 80%, transparent);
+    background: color-mix(in srgb, var(--char-glow, #49e3ff) 85%, #ffffff 15%);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--char-glow, #49e3ff) 80%, transparent);
     top: 18%;
     left: 18%;
     animation: orbit 10s linear infinite;
@@ -249,26 +248,24 @@ body,
 .orb-2 {
     width: 10px;
     height: 10px;
-    background:
-        color-mix(in srgb, #49e3ff 65%, #ffffff 35%);
-    box-shadow: 0 0 16px
-        color-mix(in srgb, #49e3ff 60%, transparent);
+    background: color-mix(in srgb, var(--char-glow, #49e3ff) 65%, #ffffff 35%);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--char-glow, #49e3ff) 60%, transparent);
     top: 28%;
     right: 18%;
     animation: orbit 12s linear infinite reverse;
 }
 
+
 .orb-3 {
     width: 6px;
     height: 6px;
-    background:
-        color-mix(in srgb, #49e3ff 45%, #b8e1ff 55%);
-    box-shadow: 0 0 10px
-        color-mix(in srgb, #49e3ff 50%, transparent);
+    background: color-mix(in srgb, var(--char-glow, #49e3ff) 45%, #ffffff 55%);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--char-glow, #49e3ff) 50%, transparent);
     bottom: 22%;
     left: 24%;
     animation: orbit 8s linear infinite;
 }
+
 
 .badge {
     position: absolute;
@@ -421,15 +418,13 @@ body,
     display: grid;
     place-items: center;
     background: rgba(3, 6, 25, 0.75);
-    z-index: 9999;
+    z-index: 10000;
     padding: 16px;
 }
 
 .character-modal {
     width: min(820px, 100%);
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(0, 0, 0, .12)),
-        #0e1330;
+    background-color: #0e1330;
     border-radius: 26px;
     border: 1px solid rgba(83, 104, 255, 0.9);
     box-shadow: 0 18px 48px rgba(0, 0, 0, .7);
@@ -593,17 +588,16 @@ body,
     }
 }
 
-/* ====== AJUSTE DO CARD DO PERSONAGEM (DESKTOP) ====== */
 @media (min-width: 981px) {
     .character-card {
         display: flex;
         flex-direction: column;
-        height: 100%;          /* garante que o card preencha a célula do grid */
+        height: 100%;
     }
 
     .character-wrap {
-        flex: 1;               /* ocupa todo o espaço vertical disponível */
-        aspect-ratio: auto;    /* libera o quadrado fixo */
+        flex: 1;
+        aspect-ratio: auto;
         height: 100%;
     }
 }

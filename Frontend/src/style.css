@@ -15,6 +15,10 @@
     filter 0.25s ease;
 }
 
+* {
+  outline: none;
+}
+
 body,
 html {
   box-sizing: border-box;

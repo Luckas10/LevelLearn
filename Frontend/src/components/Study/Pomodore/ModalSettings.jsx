@@ -286,7 +286,7 @@ export function ModalSettings({ open, onClose, settings, onSave }) {
       <label>Escolha seu alarme</label>
       <div className="select-container">
         
-        <select
+        <select style={{ marginTop: "10px" }}
           value={localSettings.alarmSound}
           onChange={(e) =>
             updateField("alarmSound", e.target.value)
