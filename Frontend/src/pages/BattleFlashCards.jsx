@@ -1,4 +1,3 @@
-// BattleFlashCards.jsx
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { sendSessionResult } from "../services/flashcards";
@@ -12,53 +11,43 @@ import { ModalTitle } from "../components/Study/FlashCards/Collection/Battle/Mod
 import { BattleCardModal } from "../components/Study/FlashCards/Collection/Battle/BattleCardModal";
 
 import bgBattle from "../assets/Battle/Cenario-noite-desktop.png";
-// import gatoBattle from "../assets/Battle/Gato-tras-battle.svg"; // ⬅️ não precisamos mais
 import monstroBattle from "../assets/Battle/Monstro-quimica-battle.svg";
 
 import "./BattleFlashCards.css";
 
 import { getCardsByDeckId } from "../services/cards";
 import { getDeckById } from "../services/deck";
-import { getDataUser } from "../services/auth"; // ⬅️ para pegar avatar atual
+import { getDataUser } from "../services/auth";
 
 export function BattleFlashCards() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    // ====== HP CONTROLADO ======
     const [playerHp, setPlayerHp] = useState(100);
     const [enemyHp, setEnemyHp] = useState(100);
 
-    // personagem do jogador na batalha (sprite de costas)
     const [playerBattleImg, setPlayerBattleImg] = useState(
-        "/Animals/Gato-tras-battle.svg" // fallback padrão
+        "/Animals/Gato-tras-battle.svg"
     );
 
-    // mensagem dinâmica do ataque
     const [attackMessage, setAttackMessage] = useState("");
 
-    // quem está levando o ataque no momento: "player" | "enemy" | null
     const [attackedTarget, setAttackedTarget] = useState(null);
 
-    // ====== MODAIS FLUXO ======
-    const [step, setStep] = useState("title"); // title → front → back → attack
+    const [step, setStep] = useState("title");
 
-    // ====== CARTAS REAIS DO DECK ======
     const [cards, setCards] = useState([]);
     const [index, setIndex] = useState(0);
     const [loadingCards, setLoadingCards] = useState(true);
     const [cardsError, setCardsError] = useState(null);
 
-    // ====== INFO DO DECK ======
     const [deck, setDeck] = useState(null);
     const [loadingDeck, setLoadingDeck] = useState(true);
 
-    // ====== ESTATÍSTICAS DA BATALHA ======
     const [correctCount, setCorrectCount] = useState(0);
     const [wrongCount, setWrongCount] = useState(0);
     const [battleStart, setBattleStart] = useState(null);
 
-    // ====== MODAL DE RESULTADO ======
     const [showResultModal, setShowResultModal] = useState(false);
     const [result, setResult] = useState(null);
     const resultDialogRef = useRef(null);
@@ -79,7 +68,6 @@ export function BattleFlashCards() {
         "Ácido da Distração",
     ];
 
-    // helper pra formatar tempo mm:ss
     const formatTime = (ms) => {
         const totalSeconds = Math.floor(ms / 1000);
         const minutes = Math.floor(totalSeconds / 60);
@@ -121,7 +109,6 @@ export function BattleFlashCards() {
         }
     }, [showResultModal]);
 
-    // carrega as cartas do deck selecionado
     useEffect(() => {
         async function loadCards() {
             try {
@@ -152,7 +139,6 @@ export function BattleFlashCards() {
         }
     }, [id]);
 
-    // carrega os dados do deck (nome, descrição, etc.)
     useEffect(() => {
         async function loadDeck() {
             try {
@@ -171,7 +157,6 @@ export function BattleFlashCards() {
         }
     }, [id]);
 
-    // carrega o avatar de batalha do usuário (/users/me)
     useEffect(() => {
         async function loadUserAvatarBattle() {
             try {
@@ -190,7 +175,6 @@ export function BattleFlashCards() {
         loadUserAvatarBattle();
     }, []);
 
-    // animação inicial do título
     useEffect(() => {
         if (step === "title") {
             const timer = setTimeout(() => setStep("front"), 1800);
@@ -203,13 +187,11 @@ export function BattleFlashCards() {
 
         const totalCards = cards.length || 1;
 
-        // dano arredondado em inteiros
         const enemyDamage = Math.ceil(100 / totalCards);
 
         const allowedErrors = Math.max(1, Math.floor(totalCards / 3));
         const playerDamage = Math.ceil(100 / (allowedErrors + 1));
 
-        // atualiza contadores locais e depois estado
         let nextCorrect = correctCount;
         let nextWrong = wrongCount;
         if (correct) nextCorrect += 1;
@@ -231,7 +213,6 @@ export function BattleFlashCards() {
         if (correct) {
             newEnemyHp = enemyHp - enemyDamage;
 
-            // vilão só "morre" de fato na última carta
             if (!isLastCard && newEnemyHp <= 0) {
                 newEnemyHp = 5;
             }
@@ -256,12 +237,10 @@ export function BattleFlashCards() {
         const finishBattle = async (outcome) => {
             const timeMs = battleStart ? Date.now() - battleStart : 0;
 
-            // calcula tempo em minutos com casa decimal (ex.: 0.09)
             const elapsed_minutes = Number((timeMs / 60000).toFixed(2));
             const total = cards.length || 0;
             const deck_id = deck?.id ?? Number(id);
 
-            // valores que vamos mostrar no modal
             let xpGain = 0;
             let coinsGain = 0;
             let level = null;
@@ -270,7 +249,6 @@ export function BattleFlashCards() {
             let streak = null;
             let bestStreak = null;
 
-            // chama a API se tiver deck_id
             if (deck_id) {
                 try {
                     const resp = await sendSessionResult({
@@ -331,13 +309,11 @@ export function BattleFlashCards() {
         };
 
         setTimeout(() => {
-            // derrota imediata se o player morrer
             if (newPlayerHp <= 0) {
                 finishBattle("lose");
                 return;
             }
 
-            // última carta: decide vitória/derrota
             if (isLastCard) {
                 if (newEnemyHp <= 0) {
                     finishBattle("win");
@@ -347,14 +323,12 @@ export function BattleFlashCards() {
                 return;
             }
 
-            // segue a batalha
             setAttackedTarget(null);
 
             if (index + 1 < totalCards) {
                 setIndex((i) => i + 1);
                 setStep("front");
             } else {
-                // fallback teórico
                 finishBattle("lose");
             }
         }, 2200);
@@ -391,14 +365,12 @@ export function BattleFlashCards() {
                     className="blf-content"
                     style={{ backgroundImage: `url(${bgBattle})` }}
                 >
-                    {/* Título da batalha usando o nome do deck */}
                     <div className="blf-battle-header">
                         <div className="blf-battle-title">
                             {loadingDeck ? "Carregando deck..." : battleTitle}
                         </div>
                     </div>
 
-                    {/* Mensagens de loading/erro de cartas */}
                     {loadingCards && (
                         <div className="blf-loading-cards">
                             Carregando cartas do deck...
@@ -415,9 +387,7 @@ export function BattleFlashCards() {
                         </div>
                     )}
 
-                    {/* ====== A R E N A ====== */}
                     <div className="blf-arena">
-                        {/* Player */}
                         <div className="blf-actor blf-player">
                             <div className="blf-hp-wrap blf-hp-left">
                                 <div className="blf-hp-rail">
@@ -443,7 +413,6 @@ export function BattleFlashCards() {
                             />
                         </div>
 
-                        {/* Inimigo */}
                         <div className="blf-actor blf-enemy">
                             <div className="blf-hp-wrap blf-hp-right">
                                 <div className="blf-hp-rail">
@@ -478,7 +447,6 @@ export function BattleFlashCards() {
                 </div>
             </section>
 
-            {/* ====== MODAIS ====== */}
             <ModalTitle
                 show={step === "title" && cards.length > 0 && !showResultModal}
                 title={battleTitle}
@@ -491,7 +459,6 @@ export function BattleFlashCards() {
                 onAnswer={handleAnswer}
             />
 
-            {/* ====== MODAL DE RESULTADO ====== */}
             {result && (
                 <dialog
                     ref={resultDialogRef}

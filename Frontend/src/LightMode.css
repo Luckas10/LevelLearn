@@ -340,11 +340,11 @@
 }
 
 
-.settings-dialog::-webkit-scrollbar-thumb {
+:root[data-theme="light"] .settings-dialog::-webkit-scrollbar-thumb {
     background: linear-gradient(180deg, #64b5f6, #0d5eaf);
 }
 
-.settings-dialog::-webkit-scrollbar-thumb:hover {
+:root[data-theme="light"] .settings-dialog::-webkit-scrollbar-thumb:hover {
     background: #5356f1;
 }
 
