@@ -119,9 +119,10 @@
 }
 
 /* GRID & CARD */
+/* GRID & CARD */
 .friends-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));  /* VOLTA PRA ISSO */
     gap: 18px;
 }
 
@@ -305,7 +306,7 @@
 }
 
 /* RESPONSIVO */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
     .friends-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
