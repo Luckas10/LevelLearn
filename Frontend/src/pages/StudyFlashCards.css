@@ -100,7 +100,6 @@
     color: white;
     padding: 0.6rem 1.2rem;
     height: 3rem;
-    margin-right: 3rem;
     background-color: #342FCF;
     border-radius: 10px;
     border: none;
@@ -296,13 +295,14 @@
     margin-top: 2rem;
     padding: 0 3rem;
     grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
-    gap: 32px;
+    gap: 55px;
     justify-items: center;
     align-items: start;
 }
 
 .collectionContainer {
-    width: 16rem;
+    width: 16rem;              /* largura confortável (gordinho) */
+    max-width: 16rem;        /* evita quebrar em telas muito estreitas */
     height: 20rem;
     background-color: #151838;
     border-radius: 15px;
@@ -439,6 +439,25 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
+.libraryFriendsCollections {
+    width: 100%;
+}
+
+.libraryControls {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.librarySelect {
+    background-color: #151737;
+    border-radius: 999px;
+    border: 1px solid #2c2f59;
+    height: 2.5rem;
+    color: #f5f5f5;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+}
+
 /* ====== RESPONSIVO ====== */
 
 /* tablet */
@@ -452,18 +471,16 @@
         padding: 0 1.5rem;
         grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
     }
+
+     .libraryHeader {
+        padding: 0 1.5rem;
+    }
 }
 
 /* tablet pequeno / mobile landscape */
 @media (max-width: 768px) {
-    .studyCollection {
-        padding: 0 1rem;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 24px;
-    }
-
-    .createCollectionButton {
-        margin-right: 1rem;
+    .libraryHeader {
+        padding: 0 1.5rem;
     }
 }
 
@@ -484,9 +501,37 @@
         max-width: 280px;
     }
 
+    /* 👇 2 colunas fixas, com largura mínima boa pra não ficar fino */
     .studyCollection {
-        padding: 0 0.5rem;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        padding: 0 0rem 1.5rem;
+        grid-template-columns: repeat(2, minmax(150px, 1fr)); /* garante card larguinho */
+        gap: 1.4rem;
+        justify-items: center;
+    }
+
+    /* deixa o card ocupar bem a coluna, mas sem esticar demais */
+    .collectionContainer {
+        width: 100%;
+        max-width: 16rem; /* ajusta o "gordinho" no mobile */
+        height: 14rem;
+    }
+
+    .libraryHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0 0 0 0;
+    }
+
+    .libraryControls {
+        width: 100%;
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .libraryControls .librarySelect {
+        flex: 1;              /* cada select ocupa metade da linha */
+        text-align: center;
     }
 }
 

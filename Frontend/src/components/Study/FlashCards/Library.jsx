@@ -11,6 +11,7 @@ export default function StudyLibrary() {
 
     const [filterOption, setFilterOption] = useState("all");     // all | friends
     const [sortOption, setSortOption] = useState("alpha");       // alpha | newest_desc | newest_asc
+    const [searchTerm, setSearchTerm] = useState("");
 
     const loadCollections = async () => {
         const [allCollections, friendsDecks] = await Promise.all([
@@ -27,34 +28,40 @@ export default function StudyLibrary() {
     }, []);
 
     const getFilteredAndSortedCollections = () => {
-        // define base (todas ou dos amigos)
-        let base =
-            filterOption === "friends" ? friendCollections : collections;
+    let base =
+        filterOption === "friends" ? friendCollections : collections;
 
-        let result = [...base];
+    let result = [...base];
 
-        // ================================
-        //  ORDENAÇÃO
-        // ================================
-        if (sortOption === "alpha") {
-            result.sort((a, b) =>
-                a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" })
-            );
-        }
+    const term = searchTerm.trim().toLowerCase();
+    if (term) {
+        result = result.filter((c) => {
+            const nameMatch = c.name?.toLowerCase().includes(term);
+            const subjectMatch = c.subject?.toLowerCase().includes(term);
+            return nameMatch || subjectMatch;
+        });
+    }
 
-        // ↓ Mais recentes (DESC) = ordem natural que veio do backend
-        if (sortOption === "newest_desc") {
-            // NÃO muda nada — apenas usa o array original
-            result = [...base].reverse();
-        }
+    // ================================
+    //  ORDENAÇÃO
+    // ================================
+    if (sortOption === "alpha") {
+        result.sort((a, b) =>
+            a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" })
+        );
+    }
 
-        // ↑ Mais recentes (ASC) = array invertido
-        if (sortOption === "newest_asc") {
-            result = [...base];
-        }
+    if (sortOption === "newest_desc") {
+        result = [...result].reverse();
+    }
 
-        return result;
-    };
+    if (sortOption === "newest_asc") {
+        // já está em ordem natural
+        result = [...result];
+    }
+
+    return result;
+};
 
     const processedCollections = getFilteredAndSortedCollections();
 
@@ -66,6 +73,8 @@ export default function StudyLibrary() {
                     type="text"
                     className="searchInputLibrary"
                     placeholder="Buscar coleções"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
 

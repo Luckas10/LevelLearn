@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
     showWelcomeToast,
     showErrorModal,
-    showRegisterSuccessModal, // 👈 novo
+    showRegisterSuccessModal, 
 } from "../services/notifications";
 import Background from "../components/LoginAndRegister/Background";
 import LoginRegisterContainer from "../components/LoginAndRegister/Container";

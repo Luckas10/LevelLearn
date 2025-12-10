@@ -135,7 +135,7 @@ export default function LoginRegisterContainer({
                                         src={
                                             isNight
                                                 ? "/img/LogoSVG.svg"
-                                                : "/img/LogoLightSVG.svg"
+                                                : "/img/LogoSVGLight.svg"
                                         }
                                         alt="LevelLearn"
                                     />
@@ -207,7 +207,7 @@ export default function LoginRegisterContainer({
                             <div className="logo">
                                 <div className="brand">
                                     <img
-                                        src="/img/LogoSVG.svg"
+                                        src="/img/LogoSVGLight.svg"
                                         alt="LevelLearn"
                                     />
                                     <h4>LevelLearn</h4>
