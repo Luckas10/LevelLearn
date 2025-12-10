@@ -453,7 +453,7 @@ export function BattleFlashCards() {
                             </div>
 
                             <img
-                                src={deck.monster_image_path}
+                                src={deck?.monster_image_path}
                                 alt="monstro"
                                 className={
                                     "blf-sprite blf-sprite-enemy" +
