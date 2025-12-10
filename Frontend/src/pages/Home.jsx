@@ -6,17 +6,15 @@ import Sidebar from "../components/General/Sidebar";
 import Navbar from "../components/General/Navbar";
 import CharacterModal from "../components/Dashboard/CharacterModal";
 
-import Gato from "../assets/Animals/Gato.png";
-import Cobra from "../assets/Animals/Cobra.png";
-import Dragao from "../assets/Animals/Dragao.png";
-import Fenix from "../assets/Animals/Fenix.png";
-import Ourico from "../assets/Animals/Ourico.png";
-import Raposa from "../assets/Animals/Raposa.png";
-
 import "./Home.css";
 
 export function Home() {
-    const [currentCharacter, setCurrentCharacter] = useState(Gato);
+    // personagem atual (URL da imagem de frente)
+    const [currentCharacter, setCurrentCharacter] = useState("/StoreItems/Gato.png");
+    const [currentAvatarId, setCurrentAvatarId] = useState(null);
+
+    // inventário de avatares (vem de /shop/me)
+    const [inventory, setInventory] = useState([]);
 
     const [userXP, setUserXP] = useState(0);
     const [userXPRequired, setUserXPRequired] = useState(0);
@@ -24,12 +22,25 @@ export function Home() {
     const [userCombo, setUserCombo] = useState(0);
     const [userBestStreak, setUserBestStreak] = useState(0);
     const [userStudyTime, setUserStudyTime] = useState(0); // minutos
-    const [userLevel, setUserLevel] = useState(1);         // 👈 novo estado
+    const [userLevel, setUserLevel] = useState(1);
 
     // ==== MISSÕES DIÁRIAS ====
     const [missions, setMissions] = useState([]);
     const [missionsLoading, setMissionsLoading] = useState(true);
 
+    // ===== Helpers de avatar =====
+    function getGlowForItem(name = "") {
+        const lower = name.toLowerCase();
+        if (lower.includes("gato")) return "#5368ff";
+        if (lower.includes("raposa")) return "#dddddd";
+        if (lower.includes("dragão") || lower.includes("dragao")) return "#00ff00";
+        if (lower.includes("fênix") || lower.includes("fenix")) return "#fff70f";
+        if (lower.includes("ouriço") || lower.includes("ourico")) return "#c5970d";
+        if (lower.includes("cobra")) return "#9a0b93";
+        return "#3B45F2";
+    }
+
+    // ===== Carregar usuário (/users/me) =====
     async function loadUser() {
         try {
             const user = await getDataUser();
@@ -40,12 +51,29 @@ export function Home() {
             setUserCombo(user.combo ?? 0);
             setUserBestStreak(user.best_streak ?? 0);
             setUserStudyTime(user.study_time ?? 0);
-            setUserLevel(user.level ?? 1);   // 👈 pegando o level que vem da API
+            setUserLevel(user.level ?? 1);
+
+            setCurrentAvatarId(user.current_avatar_id ?? null);
+            setCurrentCharacter(
+                user.current_avatar_front_path || "/StoreItems/Gato.png"
+            );
         } catch (err) {
             console.error("Erro ao carregar dados do usuário:", err);
         }
     }
 
+    // ===== Carregar inventário (/shop/me) =====
+    async function loadInventory() {
+        try {
+            const { data } = await api.get("/shop/me");
+            setInventory(data || []);
+        } catch (err) {
+            console.error("Erro ao carregar inventário:", err);
+            setInventory([]);
+        }
+    }
+
+    // ===== Missões diárias =====
     async function loadMissions() {
         try {
             setMissionsLoading(true);
@@ -61,6 +89,7 @@ export function Home() {
 
     useEffect(() => {
         loadUser();
+        loadInventory();
         loadMissions();
     }, []);
 
@@ -70,7 +99,6 @@ export function Home() {
 
         try {
             await api.post(`/daily-missions/${mission.code}/claim`);
-            // Recarrega missões e usuário (XP / moedas vão mudar)
             await Promise.all([loadUser(), loadMissions()]);
         } catch (err) {
             console.error("Erro ao coletar missão:", err);
@@ -106,35 +134,46 @@ export function Home() {
             ? "Nenhum minuto ainda"
             : `${studyHours}h ${studyMinutesRest}min`;
 
+    // ===== Modal de personagens =====
     const [showModal, setShowModal] = useState(false);
-    const [selectedCharacter, setSelectedCharacter] = useState({
-        id: 1,
-        name: "Gato",
-        img: Gato,
-    });
+    const [selectedCharacter, setSelectedCharacter] = useState(null);
 
-    const characters = [
-        { id: 1, name: "Gato", img: Gato, glow: "#5368ff" },
-        { id: 2, name: "Raposa", img: Raposa, glow: "#dddddd" },
-        { id: 3, name: "Dragão", img: Dragao, glow: "#00ff00" },
-        { id: 4, name: "Fênix", img: Fenix, glow: "#fff70f" },
-        { id: 5, name: "Ouriço", img: Ourico, glow: "#c5970d" },
-        { id: 6, name: "Cobra", img: Cobra, glow: "#9a0b93" },
-        { id: 8, name: "Raposa 2", img: Raposa, glow: "#dddddd" },
-        { id: 9, name: "Dragão 2", img: Dragao, glow: "#00ff00" },
-        { id: 10, name: "Fênix 2", img: Fenix, glow: "#fff70f" },
-        { id: 11, name: "Ouriço 2", img: Ourico, glow: "#c5970d" },
-        { id: 12, name: "Cobra 2", img: Cobra, glow: "#9a0b93" },
-        { id: 13, name: "Raposa 3", img: Raposa, glow: "#dddddd" },
-        { id: 14, name: "Dragão 3", img: Dragao, glow: "#00ff00" },
-        { id: 15, name: "Fênix 3", img: Fenix, glow: "#fff70f" },
-        { id: 16, name: "Ouriço 3", img: Ourico, glow: "#c5970d" },
-    ];
+    // caminho padrão da imagem do Gato
+    const GATO_FRONT = "/StoreItems/Gato.png";
 
-    const currentCharData = characters.find((c) => c.img === currentCharacter);
+    // tenta encontrar o Gato no inventário (ele foi seedado e associado ao user)
+    const gatoItem = (inventory || []).find(
+        (item) => item.image_front_path === GATO_FRONT
+    );
+
+    // Gato sempre aparece no modal
+    const baseGato = {
+        id: gatoItem?.id ?? null,
+        name: gatoItem?.name || "Gato",
+        img: GATO_FRONT,
+        glow: getGlowForItem(gatoItem?.name || "Gato"),
+    };
+
+    // demais avatares comprados (exceto o Gato, pra não duplicar)
+    const inventoryCharacters = (inventory || [])
+        .filter((item) => item.id !== gatoItem?.id)
+        .map((item) => ({
+            id: item.id,
+            name: item.name,
+            img: item.image_front_path,
+            glow: getGlowForItem(item.name),
+        }));
+
+    // lista final: Gato + todos os outros
+    const characters = [baseGato, ...inventoryCharacters];
+
+    const currentCharData =
+        characters.find((c) => c.img === currentCharacter) || characters[0];
     const currentGlow = currentCharData?.glow || "#3B45F2";
 
     function openCharacterModal() {
+        if (!characters || characters.length === 0) return;
+
         const found = characters.find((c) => c.img === currentCharacter);
         setSelectedCharacter(found || characters[0]);
         setShowModal(true);
@@ -144,11 +183,34 @@ export function Home() {
         setShowModal(false);
     }
 
-    function handleConfirmCharacter() {
-        if (selectedCharacter) {
-            setCurrentCharacter(selectedCharacter.img);
+    // confirma o personagem escolhido e salva no backend
+    async function handleConfirmCharacter() {
+        if (!selectedCharacter) {
+            setShowModal(false);
+            return;
         }
-        setShowModal(false);
+
+        try {
+            if (selectedCharacter.id) {
+                // qualquer avatar com id, inclusive o Gato
+                const { data: updatedUser } = await api.post(
+                    `/users/me/avatar/${selectedCharacter.id}`
+                );
+
+                setCurrentAvatarId(updatedUser.current_avatar_id ?? null);
+                setCurrentCharacter(
+                    updatedUser.current_avatar_front_path || GATO_FRONT
+                );
+            } else {
+                // fallback absoluto (se por algum bug não tiver id)
+                setCurrentAvatarId(null);
+                setCurrentCharacter(GATO_FRONT);
+            }
+        } catch (err) {
+            console.error("Erro ao atualizar avatar:", err);
+        } finally {
+            setShowModal(false);
+        }
     }
 
     return (
@@ -190,14 +252,18 @@ export function Home() {
                                 >
                                     <div
                                         className="bar-fill"
-                                        style={{ width: `${levelProgress * 100}%` }}
+                                        style={{
+                                            width: `${levelProgress * 100}%`,
+                                        }}
                                     />
                                 </div>
                             </div>
 
                             {/* FOCO / ESTUDO */}
                             <div className="status-pill">
-                                <span className="label">Tempo de estudo</span>
+                                <span className="label">
+                                    Tempo de estudo
+                                </span>
                                 <span className="value">{studyLabel}</span>
                                 <div
                                     className="bar"
@@ -205,7 +271,9 @@ export function Home() {
                                 >
                                     <div
                                         className="bar-fill"
-                                        style={{ width: `${focusProgress * 100}%` }}
+                                        style={{
+                                            width: `${focusProgress * 100}%`,
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -217,7 +285,9 @@ export function Home() {
                         <div className="card-title">Missões Diárias</div>
 
                         {missionsLoading ? (
-                            <p className="missions-empty">Carregando missões...</p>
+                            <p className="missions-empty">
+                                Carregando missões...
+                            </p>
                         ) : missions.length === 0 ? (
                             <p className="missions-empty">
                                 Nenhuma missão para hoje. 🎉
@@ -227,7 +297,8 @@ export function Home() {
                                 {missions.map((mission) => {
                                     const progressRatio = mission.target
                                         ? Math.min(
-                                              mission.progress / mission.target,
+                                              mission.progress /
+                                                  mission.target,
                                               1
                                           )
                                         : 0;
@@ -244,7 +315,9 @@ export function Home() {
                                         <li
                                             key={mission.code}
                                             className={
-                                                isClaimed ? "mission-claimed" : ""
+                                                isClaimed
+                                                    ? "mission-claimed"
+                                                    : ""
                                             }
                                         >
                                             <div className="mission-info">
@@ -312,7 +385,6 @@ export function Home() {
                                 alt="Personagem atual"
                             />
                             <div className="floating-shadow" />
-                            {/* depois trocar pelo level real */}
                             <span className="badge">LVL {userLevel}</span>
 
                             <i className="orb orb-1" />
@@ -327,7 +399,10 @@ export function Home() {
                             >
                                 Personalizar
                             </button>
-                            <button className="btn-ghost">
+                            <button
+                                className="btn-ghost"
+                                onClick={openCharacterModal}
+                            >
                                 Ver Inventário
                             </button>
                         </div>

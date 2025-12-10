@@ -16,7 +16,7 @@ export function Store() {
     const [selected, setSelected] = useState(null);
 
     const [items, setItems] = useState([]);
-    const [ownedIds, setOwnedIds] = useState([]);   // ids que o usuário já possui
+    const [ownedIds, setOwnedIds] = useState([]); // ids que o usuário já possui
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -30,19 +30,40 @@ export function Store() {
                 const apiItems = await listShopItems();
 
                 // adapta o formato para o StoreGrid/Modal
-                const mapped = apiItems.map((item) => ({
-                    ...item,
-                    id: item.id,
-                    title: item.name,
-                    description: item.description,
-                    price: item.price,
-                    currency: "coin",
-                    imgFront: `/${item.image_path}`, // public/StoreItems/...
-                    imgBack: `/${item.image_path}`,
-                    data: { raridade: "Avatar", categoria: "Avatar" }, // placeholder
-                }));
+                const mapped = apiItems.map((item) => {
+                    // paths já vêm começando com "/", mas garantimos
+                    const imgFront = item.image_front_path?.startsWith("/")
+                        ? item.image_front_path
+                        : `/${item.image_front_path || ""}`;
+
+                    const imgBack = item.image_back_path?.startsWith("/")
+                        ? item.image_back_path
+                        : `/${item.image_back_path || ""}`;
+
+                    return {
+                        ...item,
+                        id: item.id,
+                        title: item.name,
+                        description: item.description,
+                        price: item.price,
+                        currency: "coin",
+
+                        imgFront,
+                        imgBack,
+                        battleImg: item.battle_back_path ?? null,
+
+                        owned: item.owned ?? false,
+                        data: { raridade: "Avatar", categoria: "Avatar" }, // placeholder
+                    };
+                });
 
                 setItems(mapped);
+
+                // já guarda os ids dos itens que o usuário possui
+                const ownedFromApi = mapped
+                    .filter((i) => i.owned)
+                    .map((i) => i.id);
+                setOwnedIds(ownedFromApi);
             } catch (err) {
                 console.error("Erro ao carregar itens da loja:", err);
                 setError("Não foi possível carregar os itens da loja.");
@@ -54,12 +75,15 @@ export function Store() {
         load();
     }, []);
 
-    // filtro pelo título
+    // ===== FILTRO PELO TÍTULO (e opcionalmente esconder comprados) =====
     const filtered = useMemo(
         () =>
-            items.filter((i) =>
-                i.title.toLowerCase().includes(query.toLowerCase())
-            ),
+            items
+                .filter((i) =>
+                    i.title.toLowerCase().includes(query.toLowerCase())
+                )
+                // se quiser que itens comprados sumam da vitrine:
+                .filter((i) => !i.owned),
         [items, query]
     );
 
@@ -94,9 +118,17 @@ export function Store() {
         try {
             // chama a API de compra
             const userItems = await buyShopItem(item.id);
+
             // userItems é a lista de itens do usuário => extrai os ids
             const ids = (userItems || []).map((it) => it.id);
             setOwnedIds(ids);
+
+            // marca o item como "owned" localmente para sumir da lista
+            setItems((prev) =>
+                prev.map((p) =>
+                    p.id === item.id ? { ...p, owned: true } : p
+                )
+            );
 
             await Swal.fire({
                 icon: "success",
@@ -152,7 +184,7 @@ export function Store() {
                         <StoreGrid
                             items={filtered}
                             onBuy={openBuy}
-                            ownedIds={ownedIds} // se quiser exibir "Comprado"
+                            ownedIds={ownedIds}
                             emptyText={
                                 query
                                     ? "Nenhum item encontrado para sua busca."

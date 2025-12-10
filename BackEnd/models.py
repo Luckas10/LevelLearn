@@ -39,6 +39,19 @@ class User(SQLModel, table=True):
 
     study_time_minutes: int = Field(default=0)
 
+    # 👇 NOVO: avatar selecionado atualmente
+    current_avatar_id: Optional[int] = Field(
+        default=None,
+        foreign_key="shopitem.id"
+    )
+
+    # 👇 relacionamento opcional pro avatar atual (facilita join)
+    current_avatar: Optional["ShopItem"] = Relationship(
+        sa_relationship_kwargs={
+            "foreign_keys": "[User.current_avatar_id]"
+        }
+    )
+
     # Relacionamentos
     achievements: List["Achievement"] = Relationship(
         back_populates="users",
@@ -112,11 +125,14 @@ class ShopItem(SQLModel, table=True):
     price: int
     description: str
 
-    # NOVOS CAMPOS: imagens da frente e de costas
-    image_front_path: str   # exemplo: "/StoreItems/Cobra.png"
-    image_back_path: str    # exemplo: "/StoreItems/CobraBack.png"
+    # Imagens
+    image_front_path: str      # ex: "/StoreItems/Cobra.png"
+    image_back_path: str       # ex: "/StoreItems/CobraBack.png"
+    battle_back_path: str      # ex: "/Battle/Cobra-tras-battle.svg"
 
-    # quem comprou esse item
+    # Controle de exibição na loja (Gato = False)
+    visible_in_store: bool = Field(default=True)
+
     users: List[User] = Relationship(
         back_populates="shop_items",
         link_model=UserShopItemLink

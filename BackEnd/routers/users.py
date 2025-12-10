@@ -7,7 +7,7 @@ from typing import List
 from passlib.context import CryptContext
 
 from database import SessionDep
-from models import User
+from models import User, ShopItem, UserShopItemLink
 from routers.auth import get_current_user
 from rewards import xp_threshold_for_level  # 👈 importa a função de XP
 
@@ -44,6 +44,10 @@ class UserRead(BaseModel):
     study_time: float
     achievements: List[UserAchievementRead] = []
 
+    current_avatar_id: int | None = None
+    current_avatar_front_path: str | None = None
+    current_avatar_battle_back_path: str | None = None
+
     class Config:
         from_attributes = True
 
@@ -53,13 +57,34 @@ router = APIRouter(prefix="/users", tags=["Usuários"])
 
 def build_user_read(user: User) -> UserRead:
     """
-    Monta o UserRead calculando quanto XP falta pro próximo level.
+    Monta o UserRead calculando quanto XP falta pro próximo level
+    e incluindo dados do avatar atual (frente e batalha).
     """
-    # XP total necessário para CHEGAR no próximo level
+
+    # ===== Cálculo de XP =====
     total_for_next = xp_threshold_for_level(user.level + 1)
-    # quanto falta a partir do XP atual
     xp_required = max(0, total_for_next - user.xp)
 
+    # ===== Avatar atual =====
+    avatar = getattr(user, "current_avatar", None)
+
+    # Defaults para o Gato padrão
+    DEFAULT_FRONT = "/StoreItems/Gato.png"
+    DEFAULT_BATTLE = "/Animals/Gato-tras-battle.svg"
+
+    # Se o usuário tem um avatar selecionado e válido
+    if avatar:
+        current_avatar_id = avatar.id
+        current_avatar_front_path = avatar.image_front_path
+        current_avatar_battle_back_path = avatar.battle_back_path
+
+    else:
+        # Usa o Gato padrão
+        current_avatar_id = None
+        current_avatar_front_path = DEFAULT_FRONT
+        current_avatar_battle_back_path = DEFAULT_BATTLE
+
+    # ===== Retorno =====
     return UserRead(
         id=user.id,
         username=user.username,
@@ -70,8 +95,14 @@ def build_user_read(user: User) -> UserRead:
         coins=user.coins,
         xp_required=xp_required,
         study_time=user.study_time_minutes,
-        achievements=user.achievements,  # convertido para UserAchievementRead via from_attributes
+        achievements=user.achievements,
+
+        # Avatar
+        current_avatar_id=current_avatar_id,
+        current_avatar_front_path=current_avatar_front_path,
+        current_avatar_battle_back_path=current_avatar_battle_back_path,
     )
+
 
 
 @router.get("", response_model=List[UserRead])
@@ -110,6 +141,26 @@ def cadastrar_user(session: SessionDep, data: UserCreate) -> User:
     session.add(new_user)
     session.commit()
     session.refresh(new_user)
+
+    # 👇 Tenta achar o avatar Gato (pelo nome ou outro critério)
+    gato_item = session.exec(
+        select(ShopItem).where(ShopItem.name.ilike("%Gato%"))
+    ).first()
+
+    if gato_item:
+        # associa Gato ao usuário
+        link = UserShopItemLink(
+            user_id=new_user.id,
+            shop_item_id=gato_item.id
+        )
+        session.add(link)
+
+        # define o Gato como avatar atual
+        new_user.current_avatar_id = gato_item.id
+        session.add(new_user)
+        session.commit()
+        session.refresh(new_user)
+
     return new_user
 
 
@@ -171,3 +222,30 @@ def buscar_user_por_id(
     if not user:
         raise HTTPException(status_code=404, detail="Usuário não encontrado.")
     return build_user_read(user)
+
+@router.post("/me/avatar/{item_id}", response_model=UserRead)
+def set_current_avatar(
+    item_id: int,
+    session: SessionDep,
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Define qual ShopItem será o avatar atual do usuário.
+    Só permite itens que o usuário possui.
+    """
+    session.refresh(current_user)
+
+    # verifica se o usuário possui o item
+    owns = any(item.id == item_id for item in (current_user.shop_items or []))
+    if not owns:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Você não possui esse avatar."
+        )
+
+    current_user.current_avatar_id = item_id
+    session.add(current_user)
+    session.commit()
+    session.refresh(current_user)
+
+    return build_user_read(current_user)

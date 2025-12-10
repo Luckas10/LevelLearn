@@ -17,19 +17,25 @@ class ShopItemCreate(BaseModel):
     name: str
     description: str
     price: int
-    image_path: str
-
+    image_front_path: str
+    image_back_path: str
+    battle_back_path: str
+    visible_in_store: bool = True
 
 class ShopItemRead(BaseModel):
     id: int
     name: str
     description: str
     price: int
-    image_path: str
+    image_front_path: str
+    image_back_path: str
+    battle_back_path: str
+
+    # se o usuário já possui o item (usado na loja)
+    owned: bool = False
 
     class Config:
         from_attributes = True
-
 
 # ===== Rotas de administração da loja (listar / criar / deletar) =====
 
@@ -37,27 +43,65 @@ class ShopItemRead(BaseModel):
 def listar_itens(
     session: SessionDep,
     current_user: User = Depends(get_current_user)
-) -> List[ShopItem]:
-    # lista todos os itens disponíveis na loja
-    return session.exec(select(ShopItem)).all()
+) -> List[ShopItemRead]:
+    """
+    Lista itens da loja que estão visíveis e marca quais o usuário já possui.
+    """
+    # itens visíveis na loja
+    itens_loja = session.exec(
+        select(ShopItem).where(ShopItem.visible_in_store == True)
+    ).all()
 
+    # ids dos itens que o usuário já tem
+    session.refresh(current_user)
+    owned_ids = {item.id for item in current_user.shop_items}
+
+    result: List[ShopItemRead] = []
+    for item in itens_loja:
+        result.append(
+            ShopItemRead(
+                id=item.id,
+                name=item.name,
+                description=item.description,
+                price=item.price,
+                image_front_path=item.image_front_path,
+                image_back_path=item.image_back_path,
+                battle_back_path=item.battle_back_path,
+                owned=item.id in owned_ids,
+            )
+        )
+
+    return result
 
 @router.post("", response_model=ShopItemRead, status_code=status.HTTP_201_CREATED)
 def cadastrar_item(
     data: ShopItemCreate,
     session: SessionDep,
     current_user: User = Depends(get_current_user)
-) -> ShopItem:
+) -> ShopItemRead:
     item = ShopItem(
         name=data.name,
         description=data.description,
         price=data.price,
-        image_path=data.image_path,
+        image_front_path=data.image_front_path,
+        image_back_path=data.image_back_path,
+        battle_back_path=data.battle_back_path,
+        visible_in_store=data.visible_in_store,
     )
     session.add(item)
     session.commit()
     session.refresh(item)
-    return item
+
+    return ShopItemRead(
+        id=item.id,
+        name=item.name,
+        description=item.description,
+        price=item.price,
+        image_front_path=item.image_front_path,
+        image_back_path=item.image_back_path,
+        battle_back_path=item.battle_back_path,
+        owned=False,
+    )
 
 
 @router.delete("/{id}")
@@ -86,11 +130,24 @@ def comprar_item(
     if not item:
         raise HTTPException(status_code=404, detail="Item não encontrado.")
 
-    # evitar compra duplicada (igual unlock de conquista)
     session.refresh(current_user)
+
+    # evitar compra duplicada
     if item in current_user.shop_items:
         # já tem o item - só retorna o inventário
-        return current_user.shop_items
+        return [
+            ShopItemRead(
+                id=i.id,
+                name=i.name,
+                description=i.description,
+                price=i.price,
+                image_front_path=i.image_front_path,
+                image_back_path=i.image_back_path,
+                battle_back_path=i.battle_back_path,
+                owned=True,
+            )
+            for i in current_user.shop_items
+        ]
 
     # checar moedas
     if current_user.coins < item.price:
@@ -106,7 +163,20 @@ def comprar_item(
     session.add(current_user)
     session.commit()
     session.refresh(current_user)
-    return current_user.shop_items
+
+    return [
+        ShopItemRead(
+            id=i.id,
+            name=i.name,
+            description=i.description,
+            price=i.price,
+            image_front_path=i.image_front_path,
+            image_back_path=i.image_back_path,
+            battle_back_path=i.battle_back_path,
+            owned=True,
+        )
+        for i in current_user.shop_items
+    ]
 
 
 @router.get("/me", response_model=List[ShopItemRead])
@@ -115,4 +185,29 @@ def meus_itens(
     current_user: User = Depends(get_current_user)
 ):
     session.refresh(current_user)
-    return current_user.shop_items or []
+
+    # 🔹 Garante que o usuário SEMPRE tenha o Gato no inventário
+    gato = session.exec(
+        select(ShopItem).where(ShopItem.image_front_path == "/StoreItems/Gato.png")
+    ).first()
+
+    if gato and gato not in current_user.shop_items:
+        current_user.shop_items.append(gato)
+        session.add(current_user)
+        session.commit()
+        session.refresh(current_user)
+
+    # Agora monta o inventário completo (Gato + outros avatares)
+    return [
+        ShopItemRead(
+            id=i.id,
+            name=i.name,
+            description=i.description,
+            price=i.price,
+            image_front_path=i.image_front_path,
+            image_back_path=i.image_back_path,
+            battle_back_path=i.battle_back_path,
+            owned=True,  # inventário => sempre true
+        )
+        for i in (current_user.shop_items or [])
+    ]
