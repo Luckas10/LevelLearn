@@ -12,13 +12,14 @@ import { ModalTitle } from "../components/Study/FlashCards/Collection/Battle/Mod
 import { BattleCardModal } from "../components/Study/FlashCards/Collection/Battle/BattleCardModal";
 
 import bgBattle from "../assets/Battle/Cenario-noite-desktop.png";
-import gatoBattle from "../assets/Battle/Gato-tras-battle.svg";
+// import gatoBattle from "../assets/Battle/Gato-tras-battle.svg"; // ⬅️ não precisamos mais
 import monstroBattle from "../assets/Battle/Monstro-quimica-battle.svg";
 
 import "./BattleFlashCards.css";
 
 import { getCardsByDeckId } from "../services/cards";
 import { getDeckById } from "../services/deck";
+import { getDataUser } from "../services/auth"; // ⬅️ para pegar avatar atual
 
 export function BattleFlashCards() {
     const { id } = useParams();
@@ -27,6 +28,11 @@ export function BattleFlashCards() {
     // ====== HP CONTROLADO ======
     const [playerHp, setPlayerHp] = useState(100);
     const [enemyHp, setEnemyHp] = useState(100);
+
+    // personagem do jogador na batalha (sprite de costas)
+    const [playerBattleImg, setPlayerBattleImg] = useState(
+        "/Animals/Gato-tras-battle.svg" // fallback padrão
+    );
 
     // mensagem dinâmica do ataque
     const [attackMessage, setAttackMessage] = useState("");
@@ -46,7 +52,6 @@ export function BattleFlashCards() {
     // ====== INFO DO DECK ======
     const [deck, setDeck] = useState(null);
     const [loadingDeck, setLoadingDeck] = useState(true);
-    const [monsterImage, setMonsterImage] = useState(String)
 
     // ====== ESTATÍSTICAS DA BATALHA ======
     const [correctCount, setCorrectCount] = useState(0);
@@ -64,14 +69,14 @@ export function BattleFlashCards() {
         "Raio da Estequiometria",
         "Explosão de Conhecimento",
         "Chama da Sabedoria",
-        "Orbe Quântico"
+        "Orbe Quântico",
     ];
 
     const enemyPowers = [
         "Névoa da Confusão",
         "Poção da Dúvida",
         "Explosão de Erros",
-        "Ácido da Distração"
+        "Ácido da Distração",
     ];
 
     // helper pra formatar tempo mm:ss
@@ -94,7 +99,6 @@ export function BattleFlashCards() {
         }
     };
 
-
     useEffect(() => {
         const dialog = resultDialogRef.current;
         if (!dialog) return;
@@ -116,7 +120,6 @@ export function BattleFlashCards() {
             }
         }
     }, [showResultModal]);
-
 
     // carrega as cartas do deck selecionado
     useEffect(() => {
@@ -168,6 +171,25 @@ export function BattleFlashCards() {
         }
     }, [id]);
 
+    // carrega o avatar de batalha do usuário (/users/me)
+    useEffect(() => {
+        async function loadUserAvatarBattle() {
+            try {
+                const user = await getDataUser();
+                const battlePath =
+                    user.current_avatar_battle_back_path ||
+                    "/Animals/Gato-tras-battle.svg";
+
+                setPlayerBattleImg(battlePath);
+            } catch (err) {
+                console.error("Erro ao carregar avatar de batalha:", err);
+                setPlayerBattleImg("/Animals/Gato-tras-battle.svg");
+            }
+        }
+
+        loadUserAvatarBattle();
+    }, []);
+
     // animação inicial do título
     useEffect(() => {
         if (step === "title") {
@@ -175,7 +197,6 @@ export function BattleFlashCards() {
             return () => clearTimeout(timer);
         }
     }, [step]);
-
 
     const handleAnswer = (correct) => {
         if (!card || showResultModal) return;
@@ -259,18 +280,6 @@ export function BattleFlashCards() {
                         elapsed_minutes,
                     });
 
-                    // resp vem exatamente assim:
-                    // {
-                    //   "xp_gain": 30,
-                    //   "coins_gain": 24,
-                    //   "xp_total": 110,
-                    //   "coins_total": 91,
-                    //   "level": 2,
-                    //   "study_time": 0.09,
-                    //   "streak": 1,
-                    //   "best_streak": 1
-                    // }
-
                     xpGain = resp.xp_gain ?? 0;
                     coinsGain = resp.coins_gain ?? 0;
                     level = resp.level ?? null;
@@ -283,14 +292,9 @@ export function BattleFlashCards() {
                         "Erro ao enviar resultado da sessão de flashcards:",
                         err
                     );
-                    // se quiser, dá pra manter um fallback local aqui:
-                    // xpGain = nextCorrect * 10;
-                    // coinsGain = nextCorrect * 5;
                 }
             }
 
-            // monta o objeto de resultado usando SEMPRE
-            // o que veio do backend (ou 0 / fallback)
             if (outcome === "win") {
                 setResult({
                     outcome: "win",
@@ -312,7 +316,7 @@ export function BattleFlashCards() {
                     timeMs,
                     correct: nextCorrect,
                     wrong: nextWrong,
-                    xp: xpGain,        // se perdeu, provavelmente 0 – mas vem do backend
+                    xp: xpGain,
                     coins: coinsGain,
                     level,
                     xpTotal,
@@ -325,8 +329,6 @@ export function BattleFlashCards() {
 
             setShowResultModal(true);
         };
-
-
 
         setTimeout(() => {
             // derrota imediata se o player morrer
@@ -375,7 +377,6 @@ export function BattleFlashCards() {
     };
 
     const handleBackToCollection = () => {
-        // volta pra tela anterior (que provavelmente é a CollectionSelected)
         navigate(-1);
     };
 
@@ -405,9 +406,7 @@ export function BattleFlashCards() {
                     )}
 
                     {cardsError && !loadingCards && (
-                        <div className="blf-error-cards">
-                            {cardsError}
-                        </div>
+                        <div className="blf-error-cards">{cardsError}</div>
                     )}
 
                     {!loadingCards && cards.length === 0 && !cardsError && (
@@ -427,15 +426,19 @@ export function BattleFlashCards() {
                                         style={{ width: `${playerHp}%` }}
                                     />
                                 </div>
-                                <span className="blf-hp-num">{playerHp}/100</span>
+                                <span className="blf-hp-num">
+                                    {playerHp}/100
+                                </span>
                             </div>
 
                             <img
-                                src={gatoBattle}
-                                alt="gato"
+                                src={playerBattleImg}
+                                alt="personagem do jogador"
                                 className={
                                     "blf-sprite blf-sprite-player" +
-                                    (attackedTarget === "player" ? " blf-hit" : "")
+                                    (attackedTarget === "player"
+                                        ? " blf-hit"
+                                        : "")
                                 }
                             />
                         </div>
@@ -449,15 +452,19 @@ export function BattleFlashCards() {
                                         style={{ width: `${enemyHp}%` }}
                                     />
                                 </div>
-                                <span className="blf-hp-num">{enemyHp}/100</span>
+                                <span className="blf-hp-num">
+                                    {enemyHp}/100
+                                </span>
                             </div>
 
                             <img
-                                src={deck?.monster_image_path}
+                                src={deck?.monster_image_path || monstroBattle}
                                 alt="monstro"
                                 className={
                                     "blf-sprite blf-sprite-enemy" +
-                                    (attackedTarget === "enemy" ? " blf-hit" : "")
+                                    (attackedTarget === "enemy"
+                                        ? " blf-hit"
+                                        : "")
                                 }
                             />
                         </div>
@@ -505,49 +512,66 @@ export function BattleFlashCards() {
 
                             <ul className="blf-result-stats">
                                 <li>
-                                    Tempo de batalha: <strong>{formatTime(result.timeMs)}</strong>
+                                    Tempo de batalha:{" "}
+                                    <strong>
+                                        {formatTime(result.timeMs)}
+                                    </strong>
                                 </li>
                                 <li>
-                                    Questões acertadas: <strong>{result.correct}</strong>
+                                    Questões acertadas:{" "}
+                                    <strong>{result.correct}</strong>
                                 </li>
                                 <li>
-                                    Questões erradas: <strong>{result.wrong}</strong>
+                                    Questões erradas:{" "}
+                                    <strong>{result.wrong}</strong>
                                 </li>
                                 <li>
-                                    XP recebido: <strong>{result.xp}</strong>
+                                    XP recebido:{" "}
+                                    <strong>{result.xp}</strong>
                                 </li>
                                 <li>
-                                    Moedas recebidas: <strong>{result.coins}</strong>
+                                    Moedas recebidas:{" "}
+                                    <strong>{result.coins}</strong>
                                 </li>
 
                                 {result.level && (
                                     <li>
-                                        Nível atual: <strong>{result.level}</strong>
+                                        Nível atual:{" "}
+                                        <strong>{result.level}</strong>
                                     </li>
                                 )}
 
                                 {result.xpTotal != null && (
                                     <li>
-                                        XP total: <strong>{result.xpTotal}</strong>
+                                        XP total:{" "}
+                                        <strong>{result.xpTotal}</strong>
                                     </li>
                                 )}
 
                                 {result.coinsTotal != null && (
                                     <li>
-                                        Moedas totais: <strong>{result.coinsTotal}</strong>
+                                        Moedas totais:{" "}
+                                        <strong>{result.coinsTotal}</strong>
                                     </li>
                                 )}
 
                                 {result.streak != null && (
                                     <li>
-                                        Dias seguidos: <strong>{result.streak}</strong>
+                                        Dias seguidos:{" "}
+                                        <strong>{result.streak}</strong>
                                         {result.bestStreak != null && (
-                                            <> (recorde: <strong>{result.bestStreak}</strong>)</>
+                                            <>
+                                                {" "}
+                                                (recorde:{" "}
+                                                <strong>
+                                                    {result.bestStreak}
+                                                </strong>
+                                                )
+                                            </>
                                         )}
                                     </li>
                                 )}
                             </ul>
-
 
                             <div className="blf-result-actions">
                                 <button
@@ -569,14 +593,16 @@ export function BattleFlashCards() {
                         <>
                             <h2 className="modal-title">DERROTA... 💀</h2>
                             <p className="blf-result-text">
-                                Você não conseguiu causar dano suficiente ao vilão em{" "}
-                                <strong>{battleTitle}</strong>.
+                                Você não conseguiu causar dano suficiente ao
+                                vilão em <strong>{battleTitle}</strong>.
                             </p>
 
                             <ul className="blf-result-stats">
                                 <li>
                                     Tempo de batalha:{" "}
-                                    <strong>{formatTime(result.timeMs)}</strong>
+                                    <strong>
+                                        {formatTime(result.timeMs)}
+                                    </strong>
                                 </li>
                                 <li>
                                     Questões acertadas:{" "}
@@ -607,7 +633,6 @@ export function BattleFlashCards() {
                     )}
                 </dialog>
             )}
-
         </div>
     );
 }
