@@ -1,6 +1,6 @@
 import Sidebar from "../components/General/Sidebar";
 import Navbar from "../components/General/Navbar";
-import UserIcon from "../assets/Animals/Raposa.png";
+import UserIcon from "../assets/Animals/Raposa.png"; // pode trocar depois por um ícone genérico
 import TrophyIcon from "../assets/Trophy.png";
 import LightTrophyIcon from "../assets/LightTrophy.png";
 import ClockIcon from "../assets/Clock.png";
@@ -8,6 +8,7 @@ import LightClockIcon from "../assets/LightClock.png";
 import DecksIcon from "../assets/Decks.png";
 import LightDecksIcon from "../assets/LightDecks.png";
 import ProgressBar from "../components/Profile/ProgressBar";
+import { getDeckCountByUserId } from "../services/deck";
 import "./Profile.css";
 
 import { getUserByID } from "../services/profile";
@@ -17,30 +18,23 @@ import { getFriendsOfUser } from "../services/friends";
 import { useState, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 
-import Raposa from "../assets/Animals/Raposa.png";
-import Math from "../assets/Achievements/Math.png";
-
 import ButtonDarkMode from "../components/General/ButtonDarkMode";
 
-// (logo acima do componente, no mesmo arquivo)
+// helper pras imagens de conquistas
 const getAchievementImageUrl = (imagePath) => {
-    if (!imagePath) {
-        // fallback se não vier nada do back
-        return "/achievements/default.png"; // crie um default se quiser
-    }
+  if (!imagePath) {
+    return "/achievements/default.png";
+  }
 
-    // Se já vier uma URL absoluta (http/https), usa direto
-    if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-        return imagePath;
-    }
+  if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+    return imagePath;
+  }
 
-    // Se já vier começando com /achievements, também usa direto
-    if (imagePath.startsWith("/achievements")) {
-        return imagePath;
-    }
+  if (imagePath.startsWith("/achievements")) {
+    return imagePath;
+  }
 
-    // Caso comum: veio só "primeiro_deck.png" do backend
-    return `/achievements/${imagePath}`;
+  return `/achievements/${imagePath}`;
 };
 
 export function ProfileID() {
@@ -51,8 +45,12 @@ export function ProfileID() {
   const [userName, setUserName] = useState("USERNAME");
   const [userLevel, setUserLevel] = useState(1);
   const [userXP, setUserXP] = useState(0);
+  const [userXPRequired, setUserXPRequired] = useState(0);
   const [userCoins, setUserCoins] = useState(0);
   const [userCombo, setUserCombo] = useState(0);
+  const [userDecksCount, setUserDecksCount] = useState(0);
+  const [userStudyTime, setUserStudyTime] = useState(0); // minutos acumulados
+  const [userAvatarPath, setUserAvatarPath] = useState("/StoreItems/Gato.png");
 
   const [friendCount, setFriendCount] = useState(0);
   const [friends, setFriends] = useState([]);
@@ -64,12 +62,10 @@ export function ProfileID() {
 
     const saved = localStorage.getItem("theme");
     if (saved === "dark" || saved === "light") {
-      // já garante que o atributo tá certo
       document.documentElement.setAttribute("data-theme", saved);
       return saved === "dark";
     }
 
-    // fallback: olha o atributo atual ou assume dark
     const current = document.documentElement.getAttribute("data-theme");
     return current === "dark";
   });
@@ -129,39 +125,55 @@ export function ProfileID() {
           return;
         }
 
+        // CORRETO
+        const decksCountResp = await getDeckCountByUserId(id);
+        setUserDecksCount(decksCountResp.total);
+
         setUserName(user.username);
         setUserLevel(user.level);
         setUserXP(user.xp);
+        setUserXPRequired(user.xp_required ?? 0);
         setUserCoins(user.coins);
         setUserCombo(user.combo);
+        setUserStudyTime(user.study_time ?? 0);
+
+        setUserAvatarPath(
+          user.current_avatar_front_path || "/StoreItems/Gato.png"
+        );
+
         setError(null);
 
-        try {
-          const friendsResponse = await getFriendsOfUser(id);
-          setFriends(friendsResponse);
-          setFriendCount(friendsResponse.length);
-        } catch {
-          setFriends([]);
-          setFriendCount(0);
-        }
+        const friendsResponse = await getFriendsOfUser(id);
+        setFriends(friendsResponse);
+        setFriendCount(friendsResponse.length);
 
-        try {
-          const achievementsResponse = await getAchievementsByUserID(id);
-          setAchievements(achievementsResponse);
-        } catch {
-          setAchievements([]);
-        }
+        const achievementsResponse = await getAchievementsByUserID(id);
+        setAchievements(achievementsResponse);
+
       } catch (err) {
-        if (err.response && err.response.status === 404) {
-          setError("Usuário não encontrado.");
-        } else {
-          setError("Ocorreu um erro ao carregar o usuário.");
-        }
+        setError("Ocorreu um erro ao carregar o usuário.");
       }
     }
 
     loadProfileData();
   }, [id]);
+
+
+  // progresso de XP (mesma lógica do Navbar/Home)
+  const levelProgress = (() => {
+    const xp = userXP || 0;
+    const required = userXPRequired || 0;
+
+    if (xp <= 0 && required <= 0) return 0;
+    if (required <= 0) return 1;
+
+    const progress = xp / (xp + required);
+    return Math.min(Math.max(progress, 0), 1);
+  })();
+
+  // horas de estudo: minutos acumulados -> horas com 1 casa decimal
+  const studyHoursDecimal = (userStudyTime || 0) / 60;
+  const studyHoursLabel = studyHoursDecimal.toFixed(1); // ex: "3.5"
 
   if (error) {
     return (
@@ -193,7 +205,7 @@ export function ProfileID() {
             <div className="user-container">
               <div className="user-avatar-block">
                 <img
-                  src={UserIcon}
+                  src={userAvatarPath || UserIcon}
                   alt="User Image"
                   className="user-picture"
                 />
@@ -207,11 +219,19 @@ export function ProfileID() {
                   {userName}
                 </h1>
                 <h1 className="user-status">
-                  <span className="user-level">LVL: {userLevel}</span> |{" "}
-                  <span className="user-xp">XP: {userXP}</span>
+                  <span className="user-level">
+                    LVL: {userLevel}
+                  </span>{" "}
+                  |{" "}
+                  <span className="user-xp">
+                    XP: {userXP}
+                  </span>
                 </h1>
                 <div className="progress">
-                  <ProgressBar value={75} size="sm" />
+                  <ProgressBar
+                    value={levelProgress * 100}
+                    size="sm"
+                  />
                 </div>
               </div>
             </div>
@@ -223,7 +243,10 @@ export function ProfileID() {
                   alt="Trophy Icon"
                   className="trophy-icon"
                 />
-                <p>CONQUISTAS: XX</p>
+                <p>
+                  CONQUISTAS:{" "}
+                  {achievements ? achievements.length : 0}
+                </p>
               </div>
               <div className="badgeProfile">
                 <img
@@ -231,7 +254,7 @@ export function ProfileID() {
                   alt="Decks Icon"
                   className="decks-icon"
                 />
-                <p>DECKS: XX</p>
+                <p>DECKS: {userDecksCount}</p>
               </div>
               <div className="badgeProfile">
                 <img
@@ -239,7 +262,7 @@ export function ProfileID() {
                   alt="Clock Icon"
                   className="clock-icon"
                 />
-                <p>HORAS DE ESTUDO: XX</p>
+                <p>HORAS DE ESTUDO: {studyHoursLabel}h</p>
               </div>
               <div className="profile-theme-toggle">
                 <ButtonDarkMode
@@ -258,7 +281,9 @@ export function ProfileID() {
             <div className="friends-container">
               <h1>Amigos ({friendCount})</h1>
               {friends.length === 0 && (
-                <p className="no-friends">Ainda não tem amigos.</p>
+                <p className="no-friends">
+                  Ainda não tem amigos.
+                </p>
               )}
               <div className="friend-list">
                 {friends.map((friend) => (
@@ -267,7 +292,11 @@ export function ProfileID() {
                     key={friend.id}
                     className="friend"
                   >
-                    <img src={friend.avatar || Raposa} alt="Friend img" />
+                    <img
+                      src={friend.current_avatar_front_path || "/StoreItems/Gato.png"}
+                      alt="Friend img"
+                    />
+
                     <span>{friend.username}</span>
                   </NavLink>
                 ))}
@@ -279,20 +308,31 @@ export function ProfileID() {
               <div className="achievements-list">
                 {achievements.length > 0 ? (
                   achievements.map((achievement) => (
-                    <div className="achievement" key={achievement.id}>
+                    <div
+                      className="achievement"
+                      key={achievement.id}
+                    >
                       <img
-                        src={getAchievementImageUrl(achievement.image_path)}
+                        src={getAchievementImageUrl(
+                          achievement.image_path
+                        )}
                         alt={achievement.name}
                         className="achievement-picture"
                       />
                       <div className="achievement-info">
-                        <p className="achievement-title">{achievement.name}</p>
-                        <p>{achievement.description}</p>
+                        <p className="achievement-title">
+                          {achievement.name}
+                        </p>
+                        <p>
+                          {achievement.description}
+                        </p>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="no-achievements">Ainda não possui conquistas.</p>
+                  <p className="no-achievements">
+                    Ainda não possui conquistas.
+                  </p>
                 )}
               </div>
             </div>

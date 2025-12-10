@@ -7,7 +7,7 @@ import { getDataUser } from "../../services/auth";
 
 import "./Navbar.css";
 
-export default function Navbar() {
+export default function Navbar({ reloadFlag = 0 }) {   // 👈 recebe o sinal
     const [userName, setUserName] = useState("USERNAME");
     const [userLevel, setUserLevel] = useState(1);
     const [userXP, setUserXP] = useState(0);
@@ -32,7 +32,7 @@ export default function Navbar() {
         }
 
         loadUser();
-    }, []);
+    }, [reloadFlag]); // 👈 sempre que reloadFlag mudar, recarrega
 
     // progresso baseado no XP que falta
     const levelProgress = (() => {
@@ -78,12 +78,12 @@ export default function Navbar() {
                 <span>LVL {userLevel}</span>
                 <div
                     className="level-bar"
-                    title={xpTooltip}            // 👈 tooltip aqui
+                    title={xpTooltip}
                 >
                     <div
                         className="level-bar-fill"
                         style={{
-                            width: `${levelProgress * 100}%`
+                            width: `${levelProgress * 100}%`,
                         }}
                     />
                 </div>

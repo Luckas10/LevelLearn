@@ -24,6 +24,8 @@ export function Home() {
     const [userStudyTime, setUserStudyTime] = useState(0); // minutos
     const [userLevel, setUserLevel] = useState(1);
 
+    const [navbarReloadFlag, setNavbarReloadFlag] = useState(0);
+
     // ==== MISSÕES DIÁRIAS ====
     const [missions, setMissions] = useState([]);
     const [missionsLoading, setMissionsLoading] = useState(true);
@@ -57,6 +59,7 @@ export function Home() {
             setCurrentCharacter(
                 user.current_avatar_front_path || "/StoreItems/Gato.png"
             );
+            setNavbarReloadFlag((prev) => prev + 1);
         } catch (err) {
             console.error("Erro ao carregar dados do usuário:", err);
         }
@@ -127,12 +130,16 @@ export function Home() {
     );
 
     // formatar tempo de estudo em "Xh Ym"
-    const studyHours = Math.floor(userStudyTime / 60);
-    const studyMinutesRest = userStudyTime % 60;
+    const roundedStudyTime = Math.round(userStudyTime);
+
+    const studyHours = Math.floor(roundedStudyTime / 60);
+    const studyMinutesRest = roundedStudyTime % 60;
+
     const studyLabel =
-        userStudyTime <= 0
+        roundedStudyTime <= 0
             ? "Nenhum minuto ainda"
             : `${studyHours}h ${studyMinutesRest}min`;
+
 
     // ===== Modal de personagens =====
     const [showModal, setShowModal] = useState(false);
@@ -218,7 +225,7 @@ export function Home() {
             <Sidebar />
 
             <section className="home-section">
-                <Navbar />
+                <Navbar reloadFlag={navbarReloadFlag} />
 
                 <div className="dashboard">
                     {/* STATUS */}
@@ -398,12 +405,6 @@ export function Home() {
                                 onClick={openCharacterModal}
                             >
                                 Personalizar
-                            </button>
-                            <button
-                                className="btn-ghost"
-                                onClick={openCharacterModal}
-                            >
-                                Ver Inventário
                             </button>
                         </div>
                     </div>
