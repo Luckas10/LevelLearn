@@ -28,24 +28,24 @@ class User(SQLModel, table=True):
     level: int = Field(default=1)
     xp: int = Field(default=0)
     coins: int = Field(default=0)
-    # 🔥 sequência diária atual (em dias)
+    # Sequência diária atual (em dias)
     combo: int = Field(default=0)
 
-    # 🏆 maior sequência diária que o usuário já teve
+    # Maior sequência diária que o usuário já teve
     best_streak: int = Field(default=0)
 
-    # 📅 última data em que a sequência foi contada
+    # Última data em que a sequência foi contada
     last_streak_date: Optional[date] = Field(default=None)
 
     study_time_minutes: int = Field(default=0)
 
-    # 👇 NOVO: avatar selecionado atualmente
+    # NOVO: avatar selecionado atualmente
     current_avatar_id: Optional[int] = Field(
         default=None,
         foreign_key="shopitem.id"
     )
 
-    # 👇 relacionamento opcional pro avatar atual (facilita join)
+    # Relacionamento opcional pro avatar atual (facilita join)
     current_avatar: Optional["ShopItem"] = Relationship(
         sa_relationship_kwargs={
             "foreign_keys": "[User.current_avatar_id]"
@@ -176,7 +176,7 @@ class FlashcardSession(SQLModel, table=True):
 
     correct: int          # acertos
     total: int            # total respondidas
-    elapsed_minutes: int = Field(default=0)  # ⬅️ tempo que levou na sessão
+    elapsed_minutes: int = Field(default=0)  # tempo que levou na sessão
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 class PomodoroSession(SQLModel, table=True):
