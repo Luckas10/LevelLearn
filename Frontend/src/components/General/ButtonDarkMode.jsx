@@ -2,7 +2,7 @@ import "./ButtonDarkMode.css";
 
 export default function ButtonDarkMode({ checked, onChange, size = 16 }) {
     return (
-        <label className="theme-switch" style={{ "--toggle-size": `${size}px` }}>
+        <label className="theme-switch" style={{ "--toggle-size": `${size}px`, marginRight: "4px" }}>
             <input
                 type="checkbox"
                 className="theme-switch__checkbox"
