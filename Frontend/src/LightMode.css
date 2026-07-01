@@ -368,6 +368,7 @@
 
 :root[data-theme="light"] .settings-dialog {
     color: #0e1330;
+    background-color: #E3EFFD;
 }
 
 :root[data-theme="light"] .settings-dialog input {
